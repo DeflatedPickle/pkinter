@@ -14,7 +14,7 @@ class ToggledLabelFrame (ttk.LabelFrame):
     It can be toggled on or off, so widgets inside of it aren't always shown.
 
             -----USAGE-----
-    toggledFrame = ToggledFrame (parent, ontext = [string], offtext = [string], defaultstate = [boolean])
+    toggledFrame = ToggledLabelFrame (parent, ontext = [string], offtext = [string], defaultstate = [boolean])
     toggledFrame.pack ()
     button = Button (toggledFrame.subframe).pack ()
 
