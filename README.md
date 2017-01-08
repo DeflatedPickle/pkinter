@@ -1,7 +1,10 @@
 ## Widgets
 <a href="#toggledlabelframe" class="button">ToggledLabelFrame</a>
+<a href="#labeledseparator" class="button">LabeledSeparator</a>
+<a href="#roundingscale" class="button">RoundingScale</a>
+<a href="#entrytext" class="button">EntryText</a>
+<a href="#limitedentry" class="button">LimitedEntry</a>
 <a href="#about" class="button">About</a>
-<button type="button" onclick="#about">About</button>
 
 <a name="toggledlabelframe"></a>
 
@@ -18,6 +21,8 @@ toggledFrame = ToggledLabelFrame (parent, ontext = "On", offtext = "Off", defaul
 toggledFrame.pack ()
 ```
 
+<a name="labeledseparator"></a>
+
 ### LabeledSeparator
 
 ![Imgur](http://i.imgur.com/4oXN6WN.png?1)
@@ -31,6 +36,8 @@ labeledSeparator = LabeledSeparator (parent, text = "Separator", orient = "horiz
 labeledSeparator.pack (fill = "x")
 ```
 
+<a name="roundingscale"></a>
+
 ### RoundingScale
 
 The rounding scale works just like a normal one, though it rounds its' value to a solid integer.
@@ -41,6 +48,8 @@ The rounding scale works just like a normal one, though it rounds its' value to 
 roundingScale = RoundingScale (parent, from_ = 0, to = 10)
 roundingScale.pack ()
 ```
+
+<a name="entrytext"></a>
 
 ### EntryText
 
@@ -54,6 +63,8 @@ The entry text shows a string of text inside of it when the user hasn't input an
 entryText = EntryText (parent, text = "Password")
 entryText.pack ()
 ```
+
+<a name="limitedentry"></a>
 
 ### LimitedEntry
 
