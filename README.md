@@ -2,7 +2,7 @@
 
 ### ToggledLabelFrame
 
-![Image](http://i.imgur.com/QtLlBZf.png)
+[Imgur](http://i.imgur.com/QtLlBZf.png)
 
 The toggled label frame can be used to clean up a GUI by hiding widgets inside of it.
 
@@ -15,7 +15,7 @@ toggledFrame.pack ()
 
 ### LabeledSeparator
 
-![Image](http://i.imgur.com/4oXN6WN.png)
+[Imgur](http://i.imgur.com/4oXN6WN.png?1)
 
 The labeled separator can be used to separate parts of the GUI with text.
 
