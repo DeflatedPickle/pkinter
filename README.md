@@ -1,6 +1,7 @@
 ## Widgets
 <a href="#toggledlabelframe" class="button">ToggledLabelFrame</a>
 <a href="#about" class="button">About</a>
+<button type="button" href="#about">About</button>
 
 <a name="toggledlabelframe"></a>
 
