@@ -14,7 +14,7 @@ class LabeledSeparator (ttk.Frame):
     It has a label on the separator which can be customized.
 
             -----USAGE-----
-    labeledSeparator = labeledSeparator (parent, text = [string], orient = [string], textalign = [string], padding = [integer])
+    labeledSeparator = LabeledSeparator (parent, text = [string], orient = [string], textalign = [string], padding = [integer])
     labeledSeparator.pack (fill = "x")
 
             -----CONTENTS-----
