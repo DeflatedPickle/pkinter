@@ -31,6 +31,7 @@ labeledSeparator.pack (fill = "x")
 The rounding scale works just like a normal one, though it rounds its' value to a solid integer.
 
 **Code:**
+
 ```python
 roundingScale = RoundingScale (parent, from_ = 0, to = 10)
 roundingScale.pack ()
@@ -43,6 +44,7 @@ roundingScale.pack ()
 The entry text shows a string of text inside of it when the user hasn't input anything.
 
 **Code:**
+
 ```python
 entryText = EntryText (parent, text = "Password")
 entryText.pack ()
@@ -53,6 +55,7 @@ entryText.pack ()
 The limited entry works like a normal one, though the user can only input a certain amount of characters.
 
 **Code:**
+
 ```python
 limitedEntry = LimitedEntry (parent, maxchars = 10)
 limitedEntry.pack ()
