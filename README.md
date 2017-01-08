@@ -1,5 +1,8 @@
 ## Widgets
+<a href="#toggledlabelframe" class="button">ToggledLabelFrame</a>
+<a href="#about" class="button">About</a>
 
+<a name="toggledlabelframe"></a>
 ### ToggledLabelFrame
 
 ![Imgur](http://i.imgur.com/QtLlBZf.png)
@@ -61,5 +64,6 @@ limitedEntry = LimitedEntry (parent, maxchars = 10)
 limitedEntry.pack ()
 ```
 
+<a name="about"></a>
 ### About
 Pkinter is a set of custom widgets for Tkinter and TTK
