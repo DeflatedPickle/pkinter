@@ -8,7 +8,7 @@ The toggled label frame can be used to clean up a GUI by hiding widgets inside o
 
 Code:
 
-```python
+```markdown
 toggledFrame = ToggledLabelFrame (parent, ontext = "On", offtext = "Off", defaultstate = False)
 toggledFrame.pack ()
 ```
@@ -21,7 +21,7 @@ The labeled separator can be used to separate parts of the GUI with text.
 
 Code:
 
-```python
+```markdown
 labeledSeparator = LabeledSeparator (parent, text = "Separator", orient = "horizontal", textalign = "", padding = 5)
 labeledSeparator.pack (fill = "x")
 ```
