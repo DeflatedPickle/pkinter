@@ -3,6 +3,7 @@ from .labeledseparator import *
 from .roundingscale import *
 from .entrytext import *
 from .limitedentry import *
+from .colourpickerbutton import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
