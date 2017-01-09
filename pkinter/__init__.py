@@ -4,6 +4,7 @@ from .roundingscale import *
 from .entrytext import *
 from .limitedentry import *
 from .colourpickerbutton import *
+from .editablelabel import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
