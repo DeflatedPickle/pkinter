@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "EntryText"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "DeflatedPickle"
 
 class EntryText (ttk.Entry):
@@ -54,6 +54,6 @@ class EntryText (ttk.Entry):
 if __name__ == "__main__":
     root = tk.Tk ()
     entrywt = EntryText (root, text = "Text")
-    entrywt.grid (row = 0, column = 0)
+    entrywt.grid (row = 0, column = 0, padx = 5, pady = 5)
     ttk.Button (root).grid (row = 1, column = 0)
     root.mainloop ()

@@ -28,4 +28,6 @@ class Template (ttk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk ()
+    temp = Template (root)
+    temp.grid (row = 0, column = 0, padx = 5, pady = 5)
     root.mainloop ()

@@ -5,7 +5,7 @@ from tkinter.colorchooser import *
 #link
 
 __title__ = "ColourPickerButton"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "DeflatedPickle"
 
 class ColourPickerButton (ttk.Button):
@@ -55,7 +55,7 @@ class ColourPickerButton (ttk.Button):
 if __name__ == "__main__":
     root = tk.Tk ()
     cpbutton = ColourPickerButton (root, text = "Pick A Colour")
-    cpbutton.grid (row = 0, column = 0)
+    cpbutton.grid (row = 0, column = 0, padx = 5, pady = 5)
     ttk.Button (root, text = "Reset", command = lambda: cpbutton.reset ()).grid (row = 1, column = 0)
 
     entry = ttk.Entry (root)

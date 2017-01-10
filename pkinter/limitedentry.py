@@ -47,5 +47,5 @@ class LimitedEntry (ttk.Entry):
 if __name__ == "__main__":
     root = tk.Tk ()
     lentry = LimitedEntry (root, maxchars = 10)
-    lentry.grid (row = 0, column = 0)
+    lentry.grid (row = 0, column = 0, padx = 5, pady = 5)
     root.mainloop ()

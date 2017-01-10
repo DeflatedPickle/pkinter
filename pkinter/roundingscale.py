@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "RoundingScale"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "DeflatedPickle"
 
 class RoundingScale (ttk.Scale):
@@ -39,5 +39,5 @@ class RoundingScale (ttk.Scale):
 if __name__ == "__main__":
     root = tk.Tk ()
     rscale = RoundingScale (root, from_ = 0, to = 10)
-    rscale.grid (row = 0, column = 0)
+    rscale.grid (row = 0, column = 0, padx = 5, pady = 5)
     root.mainloop ()

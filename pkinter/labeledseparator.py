@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "LabeledSeparator"
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __author__ = "DeflatedPickle"
 
 class LabeledSeparator (ttk.Frame):
@@ -58,9 +58,9 @@ if __name__ == "__main__":
     root = tk.Tk ()
     root.grid_columnconfigure (0, weight = 1)
     hlseparator = LabeledSeparator (root, text = "Horizontal", orient = "horizontal", textalign = "", padding = 5)
-    hlseparator.grid (row = 0, column = 0, sticky = "ew")
+    hlseparator.grid (row = 0, column = 0, sticky = "ew", padx = 5, pady = 5)
 
     root.grid_rowconfigure (1, weight = 1)
     vlseparator = LabeledSeparator (root, text = "LabeledSeparator", orient = "vertical", textalign = "", padding = 5)
-    vlseparator.grid (row = 1, column = 0, sticky = "ns")
+    vlseparator.grid (row = 1, column = 0, sticky = "ns", padx = 5, pady = 5)
     root.mainloop ()
