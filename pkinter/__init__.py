@@ -9,7 +9,7 @@ from .collapsiblepane import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "0.1.0"
+__version__ = "0.4.3"
 
 #__all__ = ["toggledlabelframe"]
 
