@@ -7,5 +7,5 @@
 - Ribbon
 
 ## References
-http://docs.wxwidgets.org/3.1/page_screenshots.html
-http://doc.qt.io/qt-5/gallery.html
+- [wxWidgets](http://docs.wxwidgets.org/3.1/page_screenshots.html)
+- [Qt](http://doc.qt.io/qt-5/gallery.html)
