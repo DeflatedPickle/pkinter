@@ -6,6 +6,7 @@ from .limitedentry import *
 from .colourpickerbutton import *
 from .editablelabel import *
 from .collapsiblepane import *
+from .hyperlink import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
