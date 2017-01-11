@@ -5,7 +5,7 @@ from tkinter.colorchooser import *
 #link
 
 __title__ = "ColourPickerButton"
-__version__ = "0.1.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 class ColourPickerButton (ttk.Button):

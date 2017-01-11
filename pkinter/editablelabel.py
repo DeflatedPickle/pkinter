@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "EditableLabel"
-__version__ = "0.1.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 class EditableLabel (ttk.Label):

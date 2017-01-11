@@ -4,7 +4,7 @@ from tkinter import ttk
 #https://wxpython.org/Phoenix/docs/html/wx.CollapsiblePane.html
 
 __title__ = "CollapsiblePane"
-__version__ = "0.1.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 class CollapsiblePane (ttk.Frame):
