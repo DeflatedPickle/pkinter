@@ -1,5 +1,4 @@
 ## Planned Widgets
-- PageView
 - EmbeddedWindow
 - LineNumbers
 - ToolBox
@@ -9,7 +8,6 @@
 - Toolbar
 - Statusbar
 - ScrollableFrame
-- Hyperlink
 
 ## References
 - [wxWidgets](http://docs.wxwidgets.org/3.1/page_screenshots.html)
