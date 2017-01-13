@@ -1,4 +1,5 @@
-from setuptools import setup
+#from setuptools import setup
+from distutils.core import setup
 
 setup (name = "Pkinter",
       version = "1.8.1",
@@ -7,5 +8,10 @@ setup (name = "Pkinter",
       author = "DeflatedPickle",
       author_email = "DeflatedPickle@gmail.com",
       license = "MIT",
-      packages = ["pkinter"],
-      zip_safe = False)
+      classifiers = [
+      "Intended Audience :: Developers",
+      "License :: OSI Approved :: MIT License",
+      "Programming Language :: Python :: 3",
+      ],
+      keywords = ["pkinter", "tkinter", "GUI"],
+      packages = ["pkinter"])
