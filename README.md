@@ -1,3 +1,7 @@
+```python
+import pkinter as pk
+```
+
 ## Widgets
 <a href="#toggledlabelframe" class="button">ToggledLabelFrame</a>
 <a href="#labeledseparator" class="button">LabeledSeparator</a>
@@ -22,7 +26,7 @@ The toggled label frame can be used to clean up a GUI by hiding widgets inside o
 **Code:**
 
 ```python
-toggledFrame = ToggledLabelFrame (parent, ontext = "On", offtext = "Off", defaultstate = False)
+toggledFrame = pk.ToggledLabelFrame (parent, ontext = "On", offtext = "Off", defaultstate = False)
 toggledFrame.pack ()
 ```
 
@@ -33,11 +37,11 @@ toggledFrame.pack ()
 ![Imgur](http://i.imgur.com/4oXN6WN.png?1)
 
 The labeled separator can be used to separate parts of the GUI with text.
-t
+
 **Code:**
 
 ```python
-labeledSeparator = LabeledSeparator (parent, text = "Separator", orient = "horizontal", textalign = "", padding = 5)
+labeledSeparator = pk.LabeledSeparator (parent, text = "Separator", orient = "horizontal", textalign = "", padding = 5)
 labeledSeparator.pack (fill = "x")
 ```
 
@@ -52,7 +56,7 @@ The rounding scale works just like a normal one, though it rounds its' value to 
 **Code:**
 
 ```python
-roundingScale = RoundingScale (parent, from_ = 0, to = 10)
+roundingScale = pk.RoundingScale (parent, from_ = 0, to = 10)
 roundingScale.pack ()
 ```
 
@@ -67,7 +71,7 @@ The entry text shows a string of text inside of it when the user hasn't input an
 **Code:**
 
 ```python
-entryText = EntryText (parent, text = "Password")
+entryText = pk.EntryText (parent, text = "Password")
 entryText.pack ()
 ```
 
@@ -82,7 +86,7 @@ The limited entry works like a normal one, though the user can only input a cert
 **Code:**
 
 ```python
-limitedEntry = LimitedEntry (parent, maxchars = 10)
+limitedEntry = pk.LimitedEntry (parent, maxchars = 10)
 limitedEntry.pack ()
 ```
 
@@ -93,7 +97,7 @@ limitedEntry.pack ()
 <a href="http://imgur.com/ERKM54a"><img src="http://i.imgur.com/ERKM54a.gif" title="source: imgur.com" /></a>
 
 ```python
-colourPickerButton = ColourPickerButton (parent, text = "Pick A Colour")
+colourPickerButton = pk.ColourPickerButton (parent, text = "Pick A Colour")
 colourPickerButton.pack ()
 ```
 
@@ -104,7 +108,7 @@ colourPickerButton.pack ()
 <a href="http://imgur.com/HFR9UJ1"><img src="http://i.imgur.com/HFR9UJ1.gif" title="source: imgur.com" /></a>
 
 ```python
-editableLabel = EditableLabel (parent, text = "Edit", doesresize = False)
+editableLabel = pk.EditableLabel (parent, text = "Edit", doesresize = False)
 editableLabel.pack ()
 ```
 
@@ -115,7 +119,7 @@ editableLabel.pack ()
 <a href="http://imgur.com/GK1erub"><img src="http://i.imgur.com/GK1erub.gif" title="source: imgur.com" /></a>
 
 ```python
-collapsiblePane = CollapsiblePane (parent, expandedtext = "Expanded <<", collapsedtext = "Collapsed >>")
+collapsiblePane = pk.CollapsiblePane (parent, expandedtext = "Expanded <<", collapsedtext = "Collapsed >>")
 collapsiblePane.pack ()
 ```
 
@@ -126,7 +130,7 @@ collapsiblePane.pack ()
 <a href="http://imgur.com/85BnW98"><img src="http://i.imgur.com/85BnW98.gif" title="source: imgur.com" /></a>
 
 ```python
-hyperlink = Hyperlink (parent, link = "https://github.com/DeflatedPickle/pkinter")
+hyperlink = pk.Hyperlink (parent, link = "https://github.com/DeflatedPickle/pkinter")
 hyperlink.pack ()
 ```
 
@@ -137,7 +141,7 @@ hyperlink.pack ()
 <a href="http://imgur.com/46UgxNK"><img src="http://i.imgur.com/46UgxNK.gif" title="source: imgur.com" /></a>
 
 ```python
-pageView = PageView (parent, backtext = "< Back", nexttext = "Next >")
+pageView = pk.PageView (parent, backtext = "< Back", nexttext = "Next >")
 pageView.pack ()
 ```
 
