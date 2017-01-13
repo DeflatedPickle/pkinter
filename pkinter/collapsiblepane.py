@@ -4,22 +4,34 @@ from tkinter import ttk
 #https://wxpython.org/Phoenix/docs/html/wx.CollapsiblePane.html
 
 __title__ = "CollapsiblePane"
-__version__ = "1.0.1"
+__version__ = "1.2.1"
 __author__ = "DeflatedPickle"
 
 class CollapsiblePane (ttk.Frame):
     """
             -----DESCRIPTION-----
+    This widget is used to store any other widgets inside of it.
+    It can be toggled on or off, so widgets inside of it aren't always shown.
 
             -----USAGE-----
+    collapsiblePane = CollapsiblePane (parent, expandedtext = [string], collapsedtext = [string])
+    collapsiblePane.pack ()
+    button = Button (collapsiblePane.subframe).pack ()
 
             -----CONTENTS-----
     ---VARIABLES---
+    expandedtext  = The text shown on the button when the pane is open.
+    collapsedtext = The text shown on the button when the pane is closed.
+    variable      = The variable used for the button.
 
     ---WIDGETS---
     Self
+    button        = The button that toggles the subframe.
+    subframe      = The frame that holds the widget.
 
     ---FUNCTIONS---
+    activate ()   = Checks value of variable and shows or hides the frame.
+    toggle ()     = Switches the label frame to the opposite state.
     """
     def __init__ (self, parent, expandedtext = "Expanded <<", collapsedtext = "Collapsed >>", *args):
         ttk.Frame.__init__ (self, parent, *args)
@@ -46,6 +58,9 @@ class CollapsiblePane (ttk.Frame):
             self.button.configure (text = self.collapsedtext)
 
     def toggle (self):
+        """
+        Switches the label frame to the opposite state.
+        """
         self.variable.set (not self.variable.get ())
         self.activate ()
 

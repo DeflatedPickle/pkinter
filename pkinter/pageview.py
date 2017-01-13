@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "PageView"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __author__ = "DeflatedPickle"
 
 class PageView (ttk.Frame):
@@ -91,6 +91,9 @@ class PageView (ttk.Frame):
             self.workoutpages ()
 
     def add (self, child = None):
+        """
+        Adds a new page to the widget.
+        """
         self.framelist.append (child)
         self.framelist [self.index.get ()].pack (fill = "both", expand = True)
         self.totalpages = str (len (self.framelist))

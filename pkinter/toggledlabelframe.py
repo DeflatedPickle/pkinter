@@ -5,7 +5,7 @@ from tkinter import ttk
 
 __title__ = "ToggledLabelFrame"
 __author__ = "DeflatedPickle"
-__version__ = "1.0.1"
+__version__ = "1.1.1"
 
 class ToggledLabelFrame (ttk.LabelFrame):
     """
@@ -34,7 +34,7 @@ class ToggledLabelFrame (ttk.LabelFrame):
 
     ---FUNCTIONS---
     activate ()  = Checks value of variable and shows or hides the frame.
-    toggle ()    = Toggles the button.
+    toggle ()    = Switches the label frame to the opposite state.
     """
     def __init__ (self, parent, ontext = "Active", offtext = "Inactive", defaultstate = False, state = "enabled", *args):
         ttk.LabelFrame.__init__ (self, parent, labelanchor = "n", *args)
@@ -67,6 +67,9 @@ class ToggledLabelFrame (ttk.LabelFrame):
             self.button.configure (text = self.offtext)
 
     def toggle (self):
+        """
+        Switches the label frame to the opposite state.
+        """
         self.variable.set (not self.variable.get ())
         self.activate ()
 

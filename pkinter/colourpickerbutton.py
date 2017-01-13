@@ -5,7 +5,7 @@ from tkinter.colorchooser import *
 #link
 
 __title__ = "ColourPickerButton"
-__version__ = "1.0.2"
+__version__ = "1.2.2"
 __author__ = "DeflatedPickle"
 
 class ColourPickerButton (ttk.Button):
@@ -44,10 +44,16 @@ class ColourPickerButton (ttk.Button):
         ttk.Style ().configure ("ColourButton.TButton", background = colour [1])
 
     def reset (self):
+        """
+        Resets the button.
+        """
         self.configure (text = self.text)
         ttk.Style ().configure ("ColourButton.TButton", background = ttk.Style ().lookup ("TButton", "background"))
 
     def get (self):
+        """
+        Gets the text of the button.
+        """
         return self ["text"]
 
 ##################################################
