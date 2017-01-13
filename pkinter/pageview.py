@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "PageView"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __author__ = "DeflatedPickle"
 
 class PageView (ttk.Frame):
@@ -108,7 +108,7 @@ class PageView (ttk.Frame):
 if __name__ == "__main__":
     root = tk.Tk ()
     pview = PageView (root)
-    pview.pack (fill = "both", expand = True, padx = 5, pady = 5)
+    pview.pack (expand = True, padx = 5, pady = 5)
 
     frame1 = ttk.Frame (pview.subframe)
     for i in range (3):

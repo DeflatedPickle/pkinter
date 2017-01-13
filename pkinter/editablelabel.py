@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "EditableLabel"
-__version__ = "1.0.1"
+__version__ = "1.1.1"
 __author__ = "DeflatedPickle"
 
 class EditableLabel (ttk.Label):
@@ -70,5 +70,5 @@ class EditableLabel (ttk.Label):
 if __name__ == "__main__":
     root = tk.Tk ()
     elabel = EditableLabel (root, doesresize = False)
-    elabel.grid (row = 0, column = 0, padx = 5, pady = 5)
+    elabel.pack (expand = True, padx = 5, pady = 5)
     root.mainloop ()

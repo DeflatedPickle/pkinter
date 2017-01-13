@@ -6,7 +6,7 @@ import webbrowser
 #link
 
 __title__ = "Hyperlink"
-__version__ = "1.0.2"
+__version__ = "1.1.2"
 __author__ = "DeflatedPickle"
 
 class Hyperlink (ttk.Label):
@@ -66,5 +66,5 @@ class Hyperlink (ttk.Label):
 if __name__ == "__main__":
     root = tk.Tk ()
     hlink = Hyperlink (root, link = "https://github.com/DeflatedPickle/pkinter")
-    hlink.grid (row = 0, column = 0, padx = 5, pady = 5)
+    hlink.pack (expand = True, padx = 5, pady = 5)
     root.mainloop ()

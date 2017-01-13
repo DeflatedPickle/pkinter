@@ -5,7 +5,7 @@ from tkinter import ttk
 
 __title__ = "ToggledLabelFrame"
 __author__ = "DeflatedPickle"
-__version__ = "1.1.1"
+__version__ = "1.2.1"
 
 class ToggledLabelFrame (ttk.LabelFrame):
     """
@@ -77,27 +77,8 @@ class ToggledLabelFrame (ttk.LabelFrame):
 
 if __name__ == "__main__":
     root = tk.Tk ()
-    tframeoff = ToggledLabelFrame (root, ontext = "Off", offtext = "On", defaultstate = False, state = "enabled")
-    tframeoff.grid (row = 0, column = 0, padx = 5, pady = 5)
-    ttk.Button (tframeoff.subframe).pack ()
-    ttk.Button (tframeoff.subframe).pack ()
-    ttk.Button (tframeoff.subframe).pack ()
-
-    tframeon = ToggledLabelFrame (root, ontext = "Off", offtext = "On", defaultstate = True, state = "enabled")
-    tframeon.grid (row = 0, column = 1, padx = 5, pady = 5)
-    ttk.Button (tframeon.subframe).pack ()
-    ttk.Entry (tframeon.subframe).pack ()
-
-    tframeoff = ToggledLabelFrame (root, ontext = "Off", offtext = "On", defaultstate = False, state = "disabled")
-    tframeoff.grid (row = 2, column = 0, padx = 5, pady = 5)
-    ttk.Button (tframeoff.subframe).pack ()
-    ttk.Combobox (tframeoff.subframe).pack ()
-    ttk.Button (tframeoff.subframe).pack ()
-
-    togglebutton = ttk.Button (root, text = "Toggle", command = tframeoff.toggle)
-    togglebutton.grid (row = 1, column = 0)
-
-    tframeon = ToggledLabelFrame (root, ontext = "Off", offtext = "On", defaultstate = True, state = "disabled")
-    tframeon.grid (row = 2, column = 1, padx = 5, pady = 5)
-    ttk.Button (tframeon.subframe).pack ()
+    tframe = ToggledLabelFrame (root, ontext = "Off", offtext = "On", defaultstate = False, state = "enabled")
+    tframe.pack (expand = True, padx = 5, pady = 5)
+    for i in range (3):
+        ttk.Button (tframe.subframe).pack ()
     root.mainloop ()

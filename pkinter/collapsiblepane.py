@@ -4,7 +4,7 @@ from tkinter import ttk
 #https://wxpython.org/Phoenix/docs/html/wx.CollapsiblePane.html
 
 __title__ = "CollapsiblePane"
-__version__ = "1.2.1"
+__version__ = "1.3.1"
 __author__ = "DeflatedPickle"
 
 class CollapsiblePane (ttk.Frame):
@@ -69,7 +69,7 @@ class CollapsiblePane (ttk.Frame):
 if __name__ == "__main__":
     root = tk.Tk ()
     cpane = CollapsiblePane (root)
-    cpane.grid (row = 0, column = 0, padx = 5, pady = 5)
-    for i in range (5):
+    cpane.pack (expand = True, padx = 5, pady = 5)
+    for i in range (3):
         ttk.Button (cpane.subframe).pack (side = "left")
     root.mainloop ()

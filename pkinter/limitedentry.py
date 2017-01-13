@@ -4,7 +4,7 @@ from tkinter import ttk
 #link
 
 __title__ = "LimitedEntry"
-__version__ = "1.0.1"
+__version__ = "1.1.1"
 __author__ = "DeflatedPickle"
 
 class LimitedEntry (ttk.Entry):
@@ -47,5 +47,5 @@ class LimitedEntry (ttk.Entry):
 if __name__ == "__main__":
     root = tk.Tk ()
     lentry = LimitedEntry (root, maxchars = 10)
-    lentry.grid (row = 0, column = 0, padx = 5, pady = 5)
+    lentry.pack (expand = True, padx = 5, pady = 5)
     root.mainloop ()
