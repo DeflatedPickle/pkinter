@@ -1,3 +1,9 @@
+<a href="#gettingstarted" class="button">Getting Started</a>
+<a href="#widgets" class="button">Widgets</a>
+<a href="#about" class="button">About</a>
+
+<a name="gettingstarted"></a>
+
 ## Getting Started
 
 ### Installing The Library
@@ -8,6 +14,8 @@ First off, you will need to have Python 3 installed and have Python in your syst
 
 To use the library in your code, simply import like so: `import pkinter as pk`.
 You will also need to import Tkinter, you can import that like this: `import tkinter as tk`.
+
+<a name="widgets"></a>
 
 ## Widgets
 <a href="#toggledlabelframe" class="button">ToggledLabelFrame</a>
@@ -20,7 +28,6 @@ You will also need to import Tkinter, you can import that like this: `import tki
 <a href="#collapsiblepane" class="button">CollapsiblePane</a>
 <a href="#hyperlink" class="button">Hyperlink</a>
 <a href="#pageview" class="button">PageView</a>
-<a href="#about" class="button">About</a>
 
 <a name="toggledlabelframe"></a>
 
