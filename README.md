@@ -1,6 +1,13 @@
-```python
-import pkinter as pk
-```
+## Getting Started
+
+### Installing The Library
+
+First off, you will need to have Python 3 installed and have Python in your system PATH. Then, you will need to open your systems' command prompt and type: `pip install pkinter`, this will install this library to your system.
+
+### Using The Library
+
+To use the library in your code, simply import like so: `import pkinter as pk`.
+You will also need to import Tkinter, you can import that like this: `import tkinter as tk`.
 
 ## Widgets
 <a href="#toggledlabelframe" class="button">ToggledLabelFrame</a>
