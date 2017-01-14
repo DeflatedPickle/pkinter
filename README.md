@@ -33,7 +33,7 @@ You will also need to import Tkinter, you can import that like this: `import tki
 
 ### ToggledLabelFrame
 
-<a href="http://imgur.com/j0Spm27"><img src="http://i.imgur.com/j0Spm27.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/j0Spm27"><img src="http://i.imgur.com/j0Spm27.gif" title="ToggledLabelFrame" /></a>
 
 The toggled label frame can be used to clean up a GUI by hiding widgets inside of it.
 
@@ -48,7 +48,7 @@ toggledFrame.pack ()
 
 ### LabeledSeparator
 
-![Imgur](http://i.imgur.com/4oXN6WN.png?1)
+<a href="http://imgur.com/4oXN6WN"><img src="http://i.imgur.com/4oXN6WN.png?1" title="LabeledSeparator" /></a>
 
 The labeled separator can be used to separate parts of the GUI with text.
 
@@ -63,7 +63,7 @@ labeledSeparator.pack (fill = "x")
 
 ### RoundingScale
 
-<a href="http://imgur.com/3R4WBYf"><img src="http://i.imgur.com/3R4WBYf.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/3R4WBYf"><img src="http://i.imgur.com/3R4WBYf.gif" title="RoundingScale" /></a>
 
 The rounding scale works just like a normal one, though it rounds its' value to a solid integer.
 
@@ -78,7 +78,7 @@ roundingScale.pack ()
 
 ### EntryText
 
-<a href="http://imgur.com/WIvFwfl"><img src="http://i.imgur.com/WIvFwfl.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/WIvFwfl"><img src="http://i.imgur.com/WIvFwfl.gif" title="EntryText" /></a>
 
 The entry text shows a string of text inside of it when the user hasn't input anything.
 
@@ -93,7 +93,7 @@ entryText.pack ()
 
 ### LimitedEntry
 
-<a href="http://imgur.com/ARAI0VN"><img src="http://i.imgur.com/ARAI0VN.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/ARAI0VN"><img src="http://i.imgur.com/ARAI0VN.gif" title="LimitedEntry" /></a>
 
 The limited entry works like a normal one, though the user can only input a certain amount of characters.
 
@@ -108,7 +108,7 @@ limitedEntry.pack ()
 
 ### ColourPickerButton
 
-<a href="http://imgur.com/ERKM54a"><img src="http://i.imgur.com/ERKM54a.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/ERKM54a"><img src="http://i.imgur.com/ERKM54a.gif" title="ColourPickerButton" /></a>
 
 ```python
 colourPickerButton = pk.ColourPickerButton (parent, text = "Pick A Colour")
@@ -119,7 +119,7 @@ colourPickerButton.pack ()
 
 ### EditableLabel
 
-<a href="http://imgur.com/HFR9UJ1"><img src="http://i.imgur.com/HFR9UJ1.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/HFR9UJ1"><img src="http://i.imgur.com/HFR9UJ1.gif" title="EditableLabel" /></a>
 
 ```python
 editableLabel = pk.EditableLabel (parent, text = "Edit", doesresize = False)
@@ -130,7 +130,7 @@ editableLabel.pack ()
 
 ### CollapsiblePane
 
-<a href="http://imgur.com/GK1erub"><img src="http://i.imgur.com/GK1erub.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/GK1erub"><img src="http://i.imgur.com/GK1erub.gif" title="CollapsiblePane" /></a>
 
 ```python
 collapsiblePane = pk.CollapsiblePane (parent, expandedtext = "Expanded <<", collapsedtext = "Collapsed >>")
@@ -141,7 +141,7 @@ collapsiblePane.pack ()
 
 ### Hyperlink
 
-<a href="http://imgur.com/85BnW98"><img src="http://i.imgur.com/85BnW98.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/85BnW98"><img src="http://i.imgur.com/85BnW98.gif" title="Hyperlink" /></a>
 
 ```python
 hyperlink = pk.Hyperlink (parent, link = "https://github.com/DeflatedPickle/pkinter")
@@ -152,7 +152,7 @@ hyperlink.pack ()
 
 ### PageView
 
-<a href="http://imgur.com/46UgxNK"><img src="http://i.imgur.com/46UgxNK.gif" title="source: imgur.com" /></a>
+<a href="http://imgur.com/46UgxNK"><img src="http://i.imgur.com/46UgxNK.gif" title="PageView" /></a>
 
 ```python
 pageView = pk.PageView (parent, backtext = "< Back", nexttext = "Next >")
