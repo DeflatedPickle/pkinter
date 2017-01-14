@@ -1,12 +1,13 @@
-#from setuptools import setup
-from distutils.core import setup
+from setuptools import setup
+#from distutils.core import setup
 
-setup (name = "Pkinter",
+setup (name = "pkinter",
       version = "1.8.1",
       description = "A set of useful GUI widgets inherited from TkInter.",
-      url = "https://github.com/DeflatedPickle/pkinter",
       author = "DeflatedPickle",
       author_email = "DeflatedPickle@gmail.com",
+      url = "https://github.com/DeflatedPickle/pkinter",
+      download_url = "https://github.com/DeflatedPickle/pkinter/tarball/0.1",
       license = "MIT",
       classifiers = [
       "Intended Audience :: Developers",
