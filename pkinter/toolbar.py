@@ -4,14 +4,21 @@ from tkinter import ttk
 #link
 
 __title__ = "Toolbar"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __author__ = "DeflatedPickle"
 
 class Toolbar (ttk.Frame):
     """
             -----DESCRIPTION-----
+    The Toolbar can be used to add an ease of using commands.
 
             -----USAGE-----
+    toolbar = Toolbar (parent)
+    toolbar.pack ()
+    toolbar.add_button (text = [string], image = [string], side = [string])
+    toolbar.add_checkbutton (text = [string], image = [string], variable = [variable], side = [left])
+    toolbar.add_radiobutton (text = [string], image = [string], value = [integer], side = [string])
+    toolbar.add_separator ()
 
             -----CONTENTS-----
     ---VARIABLES---
@@ -20,6 +27,10 @@ class Toolbar (ttk.Frame):
     Self
 
     ---FUNCTIONS---
+    add_button ()      = Adds a button to the toolbar.
+    add_checkbutton () = Adds a checkbutton to the toolbar.
+    add_radiobutton () = Adds a radiobutton to the toolbar.
+    add_separator ()   = Adds a separator to the toolbar.
     """
     def __init__ (self, parent, *args):
         ttk.Frame.__init__ (self, parent, *args)
