@@ -36,6 +36,7 @@ You will also need to import Tkinter, you can import that like this: `import tki
 <a href="#collapsiblepane" class="button">CollapsiblePane</a>
 <a href="#hyperlink" class="button">Hyperlink</a>
 <a href="#pageview" class="button">PageView</a>
+<a href="#toolbar" class="button">Toolbar</a>
 
 <a name="toggledlabelframe"></a>
 
@@ -118,6 +119,8 @@ limitedEntry.pack ()
 
 <a href="http://imgur.com/ERKM54a"><img src="http://i.imgur.com/ERKM54a.gif" title="ColourPickerButton" /></a>
 
+The colour picker button allows the user to pick a colour with ease.
+
 ```python
 colourPickerButton = pk.ColourPickerButton (parent, text = "Pick A Colour")
 colourPickerButton.pack ()
@@ -128,6 +131,8 @@ colourPickerButton.pack ()
 ### EditableLabel
 
 <a href="http://imgur.com/HFR9UJ1"><img src="http://i.imgur.com/HFR9UJ1.gif" title="EditableLabel" /></a>
+
+The editable label allows the user to edit a label and give different text.
 
 ```python
 editableLabel = pk.EditableLabel (parent, text = "Edit", doesresize = False)
@@ -140,6 +145,8 @@ editableLabel.pack ()
 
 <a href="http://imgur.com/GK1erub"><img src="http://i.imgur.com/GK1erub.gif" title="CollapsiblePane" /></a>
 
+The collapsible pane frame can be used to clean up a GUI by hiding widgets inside of it.
+
 ```python
 collapsiblePane = pk.CollapsiblePane (parent, expandedtext = "Expanded <<", collapsedtext = "Collapsed >>")
 collapsiblePane.pack ()
@@ -150,6 +157,8 @@ collapsiblePane.pack ()
 ### Hyperlink
 
 <a href="http://imgur.com/85BnW98"><img src="http://i.imgur.com/85BnW98.gif" title="Hyperlink" /></a>
+
+The hyperlink allows you to place a link to a website that'll take the user to that site upon a click.
 
 ```python
 hyperlink = pk.Hyperlink (parent, link = "https://github.com/DeflatedPickle/pkinter")
@@ -162,9 +171,22 @@ hyperlink.pack ()
 
 <a href="http://imgur.com/46UgxNK"><img src="http://i.imgur.com/46UgxNK.gif" title="PageView" /></a>
 
+The page view allows you to add as many pages to a frame, the user can then browse through every page.
+
 ```python
 pageView = pk.PageView (parent, backtext = "< Back", nexttext = "Next >")
 pageView.pack ()
+```
+
+<a name="toolbar"></a>
+
+### Toolbar
+
+The toolbar adds buttons to activate commands easier than menus.
+
+```python
+toolbar = pk.Toolbar (parent)
+toolbar.pack ()
 ```
 
 <a name="about"></a>

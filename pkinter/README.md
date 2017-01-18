@@ -5,7 +5,6 @@
 - CustomWindow
 - Ribbon
 - CheckListBox
-- Toolbar
 - Statusbar
 - ScrollableFrame
 

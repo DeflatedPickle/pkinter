@@ -8,7 +8,8 @@ from .editablelabel import *
 from .collapsiblepane import *
 from .hyperlink import *
 from .pageview import *
+from .toolbar import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.8.1"
+__version__ = "1.9.1"
