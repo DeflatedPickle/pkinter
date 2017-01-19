@@ -37,6 +37,7 @@ You will also need to import Tkinter, you can import that like this: `import tki
 <a href="#hyperlink" class="button">Hyperlink</a>
 <a href="#pageview" class="button">PageView</a>
 <a href="#toolbar" class="button">Toolbar</a>
+<a href="#statusbar" class="button">Statusbar</a>
 
 <a name="toggledlabelframe"></a>
 
@@ -187,6 +188,17 @@ The toolbar adds buttons to activate commands easier than menus.
 ```python
 toolbar = pk.Toolbar (parent)
 toolbar.pack ()
+```
+
+<a name="statusbar"></a>
+
+### Statusbar
+
+The statusbar adds labels to show variables easier.
+
+```python
+statusbar = pk.Statusbar (parent)
+statusbar.pack ()
 ```
 
 <a name="about"></a>
