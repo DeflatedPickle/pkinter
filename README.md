@@ -7,7 +7,9 @@
 [![PyPI](https://img.shields.io/pypi/dm/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
 
 <a href="#gettingstarted" class="button">Getting Started</a>
+
 <a href="#widgets" class="button">Widgets</a>
+
 <a href="#about" class="button">About</a>
 
 <a name="gettingstarted"></a>
@@ -27,16 +29,27 @@ You will also need to import Tkinter, you can import that like this: `import tki
 
 ## Widgets
 <a href="#toggledlabelframe" class="button">ToggledLabelFrame</a>
+
 <a href="#labeledseparator" class="button">LabeledSeparator</a>
+
 <a href="#roundingscale" class="button">RoundingScale</a>
+
 <a href="#entrytext" class="button">EntryText</a>
+
 <a href="#limitedentry" class="button">LimitedEntry</a>
+
 <a href="#colourpickerbutton" class="button">ColourPickerButton</a>
+
 <a href="#editablelabel" class="button">EditableLabel</a>
+
 <a href="#collapsiblepane" class="button">CollapsiblePane</a>
+
 <a href="#hyperlink" class="button">Hyperlink</a>
+
 <a href="#pageview" class="button">PageView</a>
+
 <a href="#toolbar" class="button">Toolbar</a>
+
 <a href="#statusbar" class="button">Statusbar</a>
 
 <a name="toggledlabelframe"></a>
