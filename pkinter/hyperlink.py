@@ -34,7 +34,9 @@ class Hyperlink (ttk.Label):
     button ()          = Runs when the user clicks the widget.
     button_released () = Runs when the user stops clicking on the widget.
     """
-    def __init__ (self, parent, link = "https://github.com/DeflatedPickle/pkinter", show_text = "Hyperlink", *args):
+    def __init__ (self, parent, link = "https://github.com/DeflatedPickle/pkinter", show_text = "", *args):
+        if show_text == "":
+            show_text = link
         ttk.Label.__init__ (self, parent, text = show_text, foreground = "blue", cursor = "arrow", *args)
         main_font = font.nametofont("TkDefaultFont")
         self.font = main_font.copy()
