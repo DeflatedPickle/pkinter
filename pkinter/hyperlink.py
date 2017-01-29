@@ -36,8 +36,9 @@ class Hyperlink (ttk.Label):
     """
     def __init__ (self, parent, link = "https://github.com/DeflatedPickle/pkinter", show_text = "Hyperlink", *args):
         ttk.Label.__init__ (self, parent, text = show_text, foreground = "blue", cursor = "arrow", *args)
+        main_font = font.nametofont("TkDefaultFont")
+        self.font = main_font.copy()
         self.link = link
-        self.font = font.Font (self, self.cget ("font"))
         self.configure (font = self.font)
 
         self.bind ("<Enter>", self.enter)
