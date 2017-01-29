@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import font
-import webbrowser
+import os
 
 #link
 
@@ -22,6 +22,7 @@ class Hyperlink (ttk.Label):
             -----CONTENTS-----
     ---VARIABLES---
     link               = Holds the website to go to.
+    show_text          = Holds the text shown in the hyperlink label.
     font               = The font of the label.
 
     ---WIDGETS---
@@ -33,8 +34,8 @@ class Hyperlink (ttk.Label):
     button ()          = Runs when the user clicks the widget.
     button_released () = Runs when the user stops clicking on the widget.
     """
-    def __init__ (self, parent, link = "https://github.com/DeflatedPickle/pkinter", *args):
-        ttk.Label.__init__ (self, parent, text = link, foreground = "blue", cursor = "arrow", *args)
+    def __init__ (self, parent, link = "https://github.com/DeflatedPickle/pkinter", show_text = "Hyperlink", *args):
+        ttk.Label.__init__ (self, parent, text = show_text, foreground = "blue", cursor = "arrow", *args)
         self.link = link
         self.font = font.Font (self, self.cget ("font"))
         self.configure (font = self.font)
@@ -59,7 +60,10 @@ class Hyperlink (ttk.Label):
     def button_released (self, *args):
         self.configure (foreground = "dodgerblue", cursor = "arrow")
         self.font.configure (underline = False)
-        webbrowser.open_new_tab (self.link)
+        try:
+            os.startfile(self.link)
+        except FileNotFoundError:
+            raise ValueError("Link value: {} is not a functioning URL".format(self.link))
 
 ##################################################
 
