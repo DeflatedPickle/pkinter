@@ -1,4 +1,6 @@
 ## Pkinter
+A set of useful widgets for use with TkInter.
+
 [![PyPI](https://img.shields.io/pypi/v/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
 [![PyPI](https://img.shields.io/pypi/pyversions/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
 

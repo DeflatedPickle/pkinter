@@ -2,8 +2,8 @@ from setuptools import setup
 #from distutils.core import setup
 
 setup (name = "pkinter",
-      version = "1.11.2",
-      description = "A set of useful GUI widgets inherited from TkInter.",
+      version = "1.12.2",
+      description = "A set of useful widgets for use with TkInter.",
       author = "DeflatedPickle",
       author_email = "DeflatedPickle@gmail.com",
       url = "https://github.com/DeflatedPickle/pkinter",
