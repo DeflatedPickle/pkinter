@@ -1,8 +1,13 @@
 ## Planned Widgets
+- ValidEntry
+- InvalidEntry
+- BoundButton
+
+
 - EmbeddedWindow
 - LineNumbers
 - ToolBox
-- CustomWindow
+- CustomWindow (in the works)
 - Ribbon
 - CheckListBox
 - ScrollableFrame

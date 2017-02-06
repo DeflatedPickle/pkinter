@@ -14,4 +14,4 @@ from .linenumbers import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.10.2"
+__version__ = "1.11.2"
