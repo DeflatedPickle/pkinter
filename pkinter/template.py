@@ -4,23 +4,28 @@ from tkinter import ttk
 # link
 
 __title__ = "Template"
-__version__ = "1.0.3"
+__version__ = "1.1.3"
 __author__ = "DeflatedPickle"
 
 
 class Template(ttk.Frame):
     """
             -----DESCRIPTION-----
+    A template for new widgets.
 
             -----USAGE-----
+    template = Template(parent)
+    template.pack()
 
             -----CONTENTS-----
     ---VARIABLES---
+    None
 
     ---WIDGETS---
     Self
 
     ---FUNCTIONS---
+    None
     """
     def __init__(self, parent, *args):
         ttk.Frame.__init__(self, parent, *args)

@@ -30,6 +30,7 @@ class BoundButton(ttk.Button):
     Self
 
     ---FUNCTIONS---
+    None
     """
     def __init__(self, parent, text="", key="Return", command=None, *args):
         ttk.Button.__init__(self, parent, default="active", text=text, command=command, *args)
