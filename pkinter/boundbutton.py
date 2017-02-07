@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "BoundButton"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
@@ -32,7 +32,7 @@ class BoundButton(ttk.Button):
     ---FUNCTIONS---
     """
     def __init__(self, parent, text="", key="Return", command=None, *args):
-        ttk.Button.__init__(self, parent, text=text, command=command, *args)
+        ttk.Button.__init__(self, parent, default="active", text=text, command=command, *args)
         self.key = key
         self.command = command
 
