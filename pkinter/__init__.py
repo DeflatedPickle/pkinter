@@ -14,7 +14,8 @@ from .linenumbers import *
 from .boundbutton import *
 from .validentry import *
 from .choicebook import *
+from .invalidentry import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.15.15"
+__version__ = "1.16.15"

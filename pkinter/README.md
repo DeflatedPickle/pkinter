@@ -1,6 +1,4 @@
 ## Planned Widgets
-- InvalidEntry
-- PasswordEntry
 - RadioListBox
 - ScrollableFrame
 - EmbeddedWindow
