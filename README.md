@@ -224,8 +224,3 @@ The ValidEntry can be given a list of strings and shows green text if the text i
 validEntry = ValidEntry(parent, valid_list=["foo", "bar", "baz"])
 validEntry.pack()
 ```
-
----
-
-### About
-Pkinter is a set of custom widgets for Tkinter and TTK
