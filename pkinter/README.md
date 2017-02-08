@@ -1,13 +1,23 @@
 ## Planned Widgets
-- ValidEntry
 - InvalidEntry
-
-
-- EmbeddedWindow
-- ToolBox
-- Ribbon
-- CheckListBox
+- RadioListBox
 - ScrollableFrame
+- EmbeddedWindow
+- Ribbon
+
+#### wx
+- CheckListBox
+
+- FilePicker
+- DirectoryPicker
+- FontPicker
+
+- ChoiceBook
+- ListBook
+- PropertyGrid
+
+#### qt
+- ToolBox
 
 ## References
 - [wxWidgets](http://docs.wxwidgets.org/3.1/page_screenshots.html)
