@@ -183,6 +183,8 @@ statusbar.pack()
 
 ### LineNumbers
 
+<a href="http://imgur.com/SFkDaFF"><img src="http://i.imgur.com/SFkDaFF.gif" title="LineNumbers" /></a>
+
 The LineNumbers widget is used to show the lines of a Text widget.
 
 ```python
@@ -198,6 +200,8 @@ text.pack(side="right", fill="both")
 
 ### BoundButton
 
+<a href="http://imgur.com/tbCqti7"><img src="http://i.imgur.com/tbCqti7.gif" title="BoundButton" /></a>
+
 The BoundButton can be bound to a key.
 
 ```python
@@ -211,6 +215,8 @@ boundButton.pack()
 ---
 
 ### ValidEntry
+
+<a href="http://imgur.com/kn3qg8x"><img src="http://i.imgur.com/kn3qg8x.gif" title="ValidEntry" /></a>
 
 The ValidEntry can be given a list of strings and shows green text if the text in the Entry is in the list.
 

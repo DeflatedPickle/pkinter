@@ -45,9 +45,16 @@ class BoundButton(ttk.Button):
 if __name__ == "__main__":
 
     def function():
-        print("Respect")
+        if variable.get() == "foo":
+            variable.set("bar")
+
+        elif variable.get() == "bar":
+            variable.set("foo")
 
     root = tk.Tk()
     bbutton = BoundButton(root, text="Press F", key="f", command=function)
     bbutton.pack(expand=True, padx=5, pady=5)
+    variable = tk.StringVar()
+    variable.set("foo")
+    label = ttk.Label(root, textvariable=variable).pack(expand=True, padx=5,pady=5)
     root.mainloop()

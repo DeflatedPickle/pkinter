@@ -70,7 +70,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     vscroll = ttk.Scrollbar(root, orient="vertical")
     vscroll.pack(side="right", fill="y", padx=[0, 5], pady=5)
-    text = tk.Text(root)
+    text = tk.Text(root, width=1, height=1)
     text.pack(side="right", fill="both", expand=True, pady=5)
     lnumbers = LineNumbers(root, textwidget=text, scrollwidget=vscroll)
     lnumbers.pack(side="left", fill="y", padx=[5, 0], pady=5)
