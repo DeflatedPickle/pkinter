@@ -13,7 +13,8 @@ from .statusbar import *
 from .linenumbers import *
 from .boundbutton import *
 from .validentry import *
+from .choicebook import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.13.15"
+__version__ = "1.14.15"

@@ -1,5 +1,6 @@
 ## Planned Widgets
 - InvalidEntry
+- PasswordEntry
 - RadioListBox
 - ScrollableFrame
 - EmbeddedWindow
@@ -12,7 +13,6 @@
 - DirectoryPicker
 - FontPicker
 
-- ChoiceBook
 - ListBook
 - PropertyGrid
 
