@@ -17,4 +17,4 @@ from .choicebook import *
 
 __title__ = "Pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.14.15"
+__version__ = "1.15.15"
