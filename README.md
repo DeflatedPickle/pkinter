@@ -15,15 +15,15 @@ First off, you will need to have Python 3 installed and have Python in your syst
 ## Using The Library
 
 To use the library in your code, simply import like so: `import pkinter as pk`.
-You will also need to import Tkinter, you can import that like this: `import tkinter as tk`.
+You will also need to import Tkinter, you can import that like this: `import tkinter as tk`, and if you want native TkInter widgets, also do `from tkinter import ttk`.
 
 ## Widgets
 
-### ToggledLabelFrame
+### pk.ToggledLabelFrame
 
 <a href="http://imgur.com/j0Spm27"><img src="http://i.imgur.com/j0Spm27.gif" title="ToggledLabelFrame" /></a>
 
-The toggled label frame can be used to clean up a GUI by hiding widgets inside of it.
+The pk.ToggledLabelFrame can be used to clean up a GUI by hiding widgets inside of it.
 
 **Code:**
 
@@ -34,11 +34,11 @@ toggledFrame.pack()
 
 ---
 
-### LabeledSeparator
+### pk.LabeledSeparator
 
 <a href="http://imgur.com/4oXN6WN"><img src="http://i.imgur.com/4oXN6WN.png?1" title="LabeledSeparator" /></a>
 
-The labeled separator can be used to separate parts of the GUI with text.
+The pk.LabeledSeparator can be used to separate parts of the GUI with text.
 
 **Code:**
 
@@ -49,11 +49,11 @@ labeledSeparator.pack(fill="x")
 
 ---
 
-### RoundingScale
+### pk.RoundingScale
 
 <a href="http://imgur.com/3R4WBYf"><img src="http://i.imgur.com/3R4WBYf.gif" title="RoundingScale" /></a>
 
-The rounding scale works just like a normal one, though it rounds its' value to a solid integer.
+The pk.RoundingScale works just like a normal one, though it rounds its' value to a solid integer.
 
 **Code:**
 
@@ -64,11 +64,11 @@ roundingScale.pack()
 
 ---
 
-### EntryText
+### pk.EntryText
 
 <a href="http://imgur.com/WIvFwfl"><img src="http://i.imgur.com/WIvFwfl.gif" title="EntryText" /></a>
 
-The entry text shows a string of text inside of it when the user hasn't input anything.
+The pk.EntryText shows a string of text inside of it when the user hasn't input anything.
 
 **Code:**
 
@@ -79,11 +79,11 @@ entryText.pack()
 
 ---
 
-### LimitedEntry
+### pk.LimitedEntry
 
 <a href="http://imgur.com/ARAI0VN"><img src="http://i.imgur.com/ARAI0VN.gif" title="LimitedEntry" /></a>
 
-The limited entry works like a normal one, though the user can only input a certain amount of characters.
+The pk.LimitedEntry works like a normal one, though the user can only input a certain amount of characters.
 
 **Code:**
 
@@ -94,11 +94,11 @@ limitedEntry.pack()
 
 ---
 
-### ColourPickerButton
+### pk.ColourPickerButton
 
 <a href="http://imgur.com/ERKM54a"><img src="http://i.imgur.com/ERKM54a.gif" title="ColourPickerButton" /></a>
 
-The colour picker button allows the user to pick a colour with ease.
+The pk.ColourPickerButton allows the user to pick a colour with ease.
 
 ```python
 colourPickerButton = pk.ColourPickerButton(parent, text="Pick A Colour")
@@ -107,11 +107,11 @@ colourPickerButton.pack()
 
 ---
 
-### EditableLabel
+### pk.EditableLabel
 
 <a href="http://imgur.com/HFR9UJ1"><img src="http://i.imgur.com/HFR9UJ1.gif" title="EditableLabel" /></a>
 
-The editable label allows the user to edit a label and give different text.
+The pk.EditableLabel allows the user to edit a label and give different text.
 
 ```python
 editableLabel = pk.EditableLabel(parent, text="Edit", doesresize=False)
@@ -120,11 +120,11 @@ editableLabel.pack()
 
 ---
 
-### CollapsiblePane
+### pk.CollapsiblePane
 
 <a href="http://imgur.com/GK1erub"><img src="http://i.imgur.com/GK1erub.gif" title="CollapsiblePane" /></a>
 
-The collapsible pane frame can be used to clean up a GUI by hiding widgets inside of it.
+The pk.CollapsiblePane frame can be used to clean up a GUI by hiding widgets inside of it.
 
 ```python
 collapsiblePane = pk.CollapsiblePane(parent, expandedtext="Expanded <<", collapsedtext="Collapsed >>")
@@ -133,11 +133,11 @@ collapsiblePane.pack()
 
 ---
 
-### Hyperlink
+### pk.Hyperlink
 
 <a href="http://imgur.com/85BnW98"><img src="http://i.imgur.com/85BnW98.gif" title="Hyperlink" /></a>
 
-The hyperlink allows you to place a link to a website that'll take the user to that site upon a click.
+The pk.Hyperlink allows you to place a link to a website that'll take the user to that site upon a click.
 
 ```python
 hyperlink = pk.Hyperlink(parent, link="https://github.com/DeflatedPickle/pkinter")
@@ -146,11 +146,11 @@ hyperlink.pack()
 
 ---
 
-### PageView
+### pk.PageView
 
 <a href="http://imgur.com/46UgxNK"><img src="http://i.imgur.com/46UgxNK.gif" title="PageView" /></a>
 
-The page view allows you to add as many pages to a frame, the user can then browse through every page.
+The pk.PageView allows you to add as many pages to a frame, the user can then browse through every page.
 
 ```python
 pageView = pk.PageView(parent, backtext="< Back", nexttext="Next >")
@@ -159,9 +159,9 @@ pageView.pack()
 
 ---
 
-### Toolbar
+### pk.Toolbar
 
-The toolbar adds buttons to activate commands easier than menus.
+The pk.Toolbar adds buttons to activate commands easier than menus.
 
 ```python
 toolbar = pk.Toolbar(parent)
@@ -170,9 +170,9 @@ toolbar.pack()
 
 ---
 
-### Statusbar
+### pk.Statusbar
 
-The statusbar adds labels to show variables easier.
+The pk.Statusbar adds labels to show variables easier.
 
 ```python
 statusbar = pk.Statusbar(parent)
@@ -181,11 +181,11 @@ statusbar.pack()
 
 ---
 
-### LineNumbers
+### pk.LineNumbers
 
 <a href="http://imgur.com/SFkDaFF"><img src="http://i.imgur.com/SFkDaFF.gif" title="LineNumbers" /></a>
 
-The LineNumbers widget is used to show the lines of a Text widget.
+The pk.LineNumbers widget is used to show the lines of a Text widget.
 
 ```python
 text = tk.Text(parent)
@@ -198,29 +198,81 @@ text.pack(side="right", fill="both")
 
 ---
 
-### BoundButton
+### pk.BoundButton
 
 <a href="http://imgur.com/tbCqti7"><img src="http://i.imgur.com/tbCqti7.gif" title="BoundButton" /></a>
 
-The BoundButton can be bound to a key.
+The pk.BoundButton can be bound to a key.
 
 ```python
 def function():
     print("Button Pressed")
 
-boundButton = BoundButton(parent, text="Press Return", key="Return", command=function)
+boundButton = pk.BoundButton(parent, text="Press Return", key="Return", command=function)
 boundButton.pack()
 ```
 
 ---
 
-### ValidEntry
+### pk.ValidEntry
 
 <a href="http://imgur.com/kn3qg8x"><img src="http://i.imgur.com/kn3qg8x.gif" title="ValidEntry" /></a>
 
-The ValidEntry can be given a list of strings and shows green text if the text in the Entry is in the list.
+The pk.ValidEntry can be given a list of strings and shows green text if the text in the Entry is in the list.
 
 ```python
-validEntry = ValidEntry(parent, valid_list=["foo", "bar", "baz"])
+validEntry = pk.ValidEntry(parent, valid_list=["foo", "bar", "baz"])
 validEntry.pack()
+```
+
+---
+
+### pk.ChoiceBook
+
+<a href="http://imgur.com/93B2O8d"><img src="http://i.imgur.com/93B2O8d.gif" title="ChoiceBook" /></a>
+
+The pk.ChoiceBook allows navigation through given frames with a Combobox.
+
+```python
+choiceBook = pk.ChoiceBook(parent, combobox_position="top")
+choiceBook.pack()
+```
+
+---
+
+### pk.PasswordEntry
+
+<a href="http://imgur.com/kdY7QfR"><img src="http://i.imgur.com/kdY7QfR.gif" title="PasswordEntry" /></a>
+
+The pk.PasswordEntry changes any text input into it into a given character.
+
+```python
+passwordEntry = pk.PasswordEntry(parent, cover_character="*")
+passwordEntry.pack()
+```
+
+---
+
+### pk.InvalidEntry
+
+<a href="http://imgur.com/AsP2M49"><img src="http://i.imgur.com/AsP2M49.gif" title="InvalidEntry" /></a>
+
+The pk.InvalidEntry can be given a list of strings and shows red text if the text in the Entry is in the list.
+
+```python
+invalidEntry = pk.InvalidEntry(parent, invalid_list=["foo", "bar", "baz"])
+invalidEntry.pack()
+```
+
+---
+
+### pk.ListBook
+
+<a href="http://imgur.com/ijjKaBJ"><img src="http://i.imgur.com/ijjKaBJ.gif" title="ListBook" /></a>
+
+The pk.ListBook allows navigation through given frames with a Listbox.
+
+```python
+listBook = pk.ListBook(parent)
+listBook.pack()
 ```
