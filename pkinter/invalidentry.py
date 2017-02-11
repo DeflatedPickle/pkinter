@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "InvalidEntry"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
@@ -18,13 +18,16 @@ class InvalidEntry(ttk.Entry):
     invalidEntry = InvalidEntry(parent, invalid_list=[list])
     invalidEntry.pack()
 
+            -----PARAMETERS-----
+    invalid_list = The list of invalid strings.
+
             -----CONTENTS-----
     ---VARIABLES---
     invalid_list = The list of invalid strings.
     invalid      = If the text is valid or not.
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     check()    = Checks the text in the Entry.
@@ -36,18 +39,18 @@ class InvalidEntry(ttk.Entry):
         self.invalid = False
 
         self.style = ttk.Style()
-        self.style.configure("Valid.TEntry")
-        self.configure(style="Valid.TEntry")
+        self.style.configure("Invalid.TEntry")
+        self.configure(style="Invalid.TEntry")
 
         self.bind("<KeyRelease>", self.check)
 
     def check(self, *args):
         if self.get() in self.invalid_list:
-            self.style.configure("Valid.TEntry", foreground="red")
+            self.style.configure("Invalid.TEntry", foreground="red")
             self.invalid = True
 
         elif self.get() not in self.invalid_list:
-            self.style.configure("Valid.TEntry", foreground="green")
+            self.style.configure("Invalid.TEntry", foreground="green")
             self.invalid = False
 
     def is_invalid(self):

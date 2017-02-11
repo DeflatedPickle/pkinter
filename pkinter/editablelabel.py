@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "EditableLabel"
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 __author__ = "DeflatedPickle"
 
 
@@ -14,32 +14,32 @@ class EditableLabel(ttk.Label):
     A label that you can edit the text of.
 
             -----USAGE-----
-    editableLabel = EditableLabel(parent, text=[string], doesresize=[boolean])
+    editableLabel = EditableLabel(parent, text=[string], does_resize=[boolean])
     editableLabel.pack()
+
+            -----PARAMETERS-----
+    text        = The text of the label starts with.
+    does_resize = Determines whether the entry resizes with to the text.
 
             -----CONTENTS-----
     ---VARIABLES---
-    text       = The text of the label starts with.
-    doesresize = Determines whether the entry resizes with to the text.
-    variable   = The text inside of the entry.
+    variable    = The text inside of the entry.
 
     ---WIDGETS---
-    Self
-    entry      = The entry.
+    self
+    entry       = The Entry widget.
 
     ---FUNCTIONS---
-    edit()     = Opens the entry.
-    confirm()  = Closes the entry.
-    resize()   = Resizes the entry to the text inside.
+    edit()      = Opens the entry.
+    confirm()   = Closes the entry.
+    resize()    = Resizes the entry to the text inside.
     """
-    def __init__(self, parent, text="Edit", doesresize=False, *args):
+    def __init__(self, parent, text="Edit", does_resize=False, *args):
         ttk.Label.__init__(self, parent, *args)
-        self.text = text
-        self.doesresize = doesresize
 
         self.variable = tk.StringVar()
         self.configure(textvariable=self.variable)
-        self.variable.set(self.text)
+        self.variable.set(text)
 
         self.entry = ttk.Entry(self, textvariable=self.variable)
 
@@ -48,7 +48,7 @@ class EditableLabel(ttk.Label):
         self.entry.bind("<FocusOut>", self.confirm)
         self.entry.bind("<Return>", self.confirm)
 
-        if self.doesresize:
+        if does_resize:
             self.entry.bind("<Key>", self.resize)
             self.resize()
 
@@ -70,6 +70,6 @@ class EditableLabel(ttk.Label):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    elabel = EditableLabel(root, doesresize=False)
+    elabel = EditableLabel(root, does_resize=False)
     elabel.pack(expand=True, padx=5, pady=5)
     root.mainloop()

@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ListBook"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
@@ -17,14 +17,17 @@ class ListBook(ttk.Frame):
     listBook = ListBook(parent)
     listBook.pack()
 
+            -----PARAMETERS-----
+    parent
+
             -----CONTENTS-----
     ---VARIABLES---
-    frame_list = The list of added frames.
+    frame_list = The list of added Frames.
 
     ---WIDGETS---
-    Self
+    self
     list_box   = The ListBox.
-    subframe   = The Frame that holds the shown Frame.
+    frame      = The Frame that holds the shown Frame.
 
     ---FUNCTIONS---
     select()   = Selects the Frame.
@@ -39,8 +42,8 @@ class ListBook(ttk.Frame):
         self.list_box.pack(side="left", fill="y")
         self.list_box.bind("<<ListboxSelect>>", self.select)
 
-        self.subframe = ttk.Frame(self)
-        self.subframe.pack(side="right", fill="both", expand=True)
+        self.frame = ttk.Frame(self)
+        self.frame.pack(side="right", fill="both", expand=True)
 
     def select(self, *args):
         for i in range(len(self.frame_list)):
@@ -49,6 +52,9 @@ class ListBook(ttk.Frame):
         self.frame_list[self.list_box.curselection()[0]].pack(fill="both", expand=True)
 
     def add(self, child=None, label=""):
+        """
+        Adds a new page to the ListBook.
+        """
         self.frame_list.append(child)
         self.list_box.insert("end", label)
 
@@ -63,12 +69,12 @@ if __name__ == "__main__":
     lbook = ListBook(root)
     lbook.pack(fill = "both", expand=True, padx=5, pady=5)
 
-    frame1 = ttk.Frame(lbook.subframe)
+    frame1 = ttk.Frame(lbook.frame)
     for i in range(3):
         ttk.Button(frame1, text=i).pack(side="left")
-    frame2 = ttk.Frame(lbook.subframe)
+    frame2 = ttk.Frame(lbook.frame)
     ttk.Checkbutton(frame2, text="Checkbutton").pack()
-    frame3 = ttk.Frame(lbook.subframe)
+    frame3 = ttk.Frame(lbook.frame)
     ttk.Label(frame3, text="Frame 3").pack(side="bottom")
 
     lbook.add(child=frame1, label="Frame1")

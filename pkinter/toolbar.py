@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Toolbar"
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __author__ = "DeflatedPickle"
 
 
@@ -21,12 +21,15 @@ class Toolbar(ttk.Frame):
     toolbar.add_radiobutton(text=[string], image=[string], value=[integer], side=[string])
     toolbar.add_separator()
 
+            -----PARAMETERS-----
+    parent
+
             -----CONTENTS-----
     ---VARIABLES---
     None
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     add_button()       = Adds a button to the toolbar.

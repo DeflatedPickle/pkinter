@@ -7,7 +7,7 @@ import os
 # link
 
 __title__ = "Hyperlink"
-__version__ = "1.2.2"
+__version__ = "1.2.3"
 __author__ = "DeflatedPickle"
 
 
@@ -22,14 +22,18 @@ class Hyperlink(ttk.Label):
     hyperlink = Hyperlink (parent, link = [string])
     hyperlink.pack ()
 
+            -----PARAMETERS-----
+    text               = The text shown on the Label.
+    link               = Holds the website to go to.
+
             -----CONTENTS-----
     ---VARIABLES---
     text               = The text shown on the Label.
     link               = Holds the website to go to.
-    font               = The font of the label.
+    font               = The font of the Label.
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     enter()           = Runs when the mouse enters the widget.

@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "BoundButton"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -20,24 +20,25 @@ class BoundButton(ttk.Button):
     boundButton = BoundButton(parent, text=[string], key=[string], command=[function])
     boundButton.pack()
 
-            -----CONTENTS-----
-    ---VARIABLES---
+            -----PARAMETERS-----
     text    = The text of the Button.
     key     = The key that will activate the Button.
     command = The function the button will run.
 
+            -----CONTENTS-----
+    ---VARIABLES---
+    None
+
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     None
     """
     def __init__(self, parent, text="", key="Return", command=None, *args):
         ttk.Button.__init__(self, parent, default="active", text=text, command=command, *args)
-        self.key = key
-        self.command = command
 
-        self.bind("<{}>".format(self.key), lambda *args: self.command())
+        self.bind("<{}>".format(key), lambda *args: command())
         self.focus()
 
 ##################################################
@@ -56,5 +57,5 @@ if __name__ == "__main__":
     bbutton.pack(expand=True, padx=5, pady=5)
     variable = tk.StringVar()
     variable.set("foo")
-    label = ttk.Label(root, textvariable=variable).pack(expand=True, padx=5,pady=5)
+    label = ttk.Label(root, textvariable=variable).pack(expand=True, padx=5, pady=5)
     root.mainloop()

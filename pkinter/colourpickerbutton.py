@@ -5,7 +5,7 @@ from tkinter.colorchooser import *
 # link
 
 __title__ = "ColourPickerButton"
-__version__ = "1.3.3"
+__version__ = "1.3.4"
 __author__ = "DeflatedPickle"
 
 
@@ -19,12 +19,15 @@ class ColourPickerButton(ttk.Button):
     colourPickerButton = ColourPickerButton(root, text=[string])
     colourPickerButton.pick()
 
+            -----PARAMETERS-----
+    text           = The text shown on the button.
+
             -----CONTENTS-----
     ---VARIABLES---
     text           = The text shown on the button.
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     pick_colour()  = Opens the colour picker window.

@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ValidEntry"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "DeflatedPickle"
 
 
@@ -18,13 +18,17 @@ class ValidEntry(ttk.Entry):
     validEntry = ValidEntry(parent, valid_list=[list])
     validEntry.pack()
 
+            -----PARAMETERS-----
+    parent
+    valid_list = The list of valid strings.
+
             -----CONTENTS-----
     ---VARIABLES---
     valid_list = The list of valid strings.
     valid      = If the text is valid or not.
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     check()    = Checks the text in the Entry.

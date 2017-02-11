@@ -18,13 +18,16 @@ class EntryText(ttk.Entry):
     entryText = EntryText(parent, text=[string])
     entryText.pack()
 
+            -----PARAMETERS-----
+    text     = The text shown in the Entry.
+
             -----CONTENTS-----
     ---VARIABLES---
-    text     = The text shown in the entry.
-    variable = The variable used for the text in the entry.
+    text     = The text shown in the Entry.
+    variable = The variable used for the text in the Entry.
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     check()  = Checks value of variable.

@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 
-# https://wxpython.org/Phoenix/docs/html/wx.CollapsiblePane.html
+# http://docs.wxwidgets.org/3.1/classwx_collapsible_pane.html
 
 __title__ = "CollapsiblePane"
-__version__ = "1.3.2"
+__version__ = "1.3.3"
 __author__ = "DeflatedPickle"
 
 
@@ -15,48 +15,53 @@ class CollapsiblePane(ttk.Frame):
     It can be toggled on or off, so widgets inside of it aren't always shown.
 
             -----USAGE-----
-    collapsiblePane = CollapsiblePane(parent, expandedtext=[string], collapsedtext=[string])
+    collapsiblePane = CollapsiblePane(parent, expanded_text=[string], collapsed_text=[string])
     collapsiblePane.pack()
-    button = Button(collapsiblePane.subframe).pack()
+    button = Button(collapsiblePane.frame).pack()
+
+            -----PARAMETERS-----
+    expanded_text   = The text shown on the button when the pane is open.
+    collapsed_text  = The text shown on the button when the pane is closed.
 
             -----CONTENTS-----
     ---VARIABLES---
-    expandedtext  = The text shown on the button when the pane is open.
-    collapsedtext = The text shown on the button when the pane is closed.
-    variable      = The variable used for the button.
+    expanded_text   = The text shown on the button when the pane is open.
+    collapsed_text  = The text shown on the button when the pane is closed.
+    variable        = The variable used for the button.
 
     ---WIDGETS---
-    Self
-    button        = The button that toggles the subframe.
-    subframe      = The frame that holds the widget.
+    self
+    button          = The button that toggles the frame.
+    frame           = The frame that holds the widget.
 
     ---FUNCTIONS---
-    activate()    = Checks value of variable and shows or hides the frame.
-    toggle()      = Switches the label frame to the opposite state.
+    activate()      = Checks value of variable and shows or hides the frame.
+    toggle()        = Switches the label frame to the opposite state.
     """
-    def __init__(self, parent, expandedtext="Expanded <<", collapsedtext="Collapsed >>", *args):
+    def __init__(self, parent, expanded_text="Expanded <<", collapsed_text="Collapsed >>", *args):
         ttk.Frame.__init__(self, parent, *args)
-        self.expandedtext = expandedtext
-        self.collapsedtext = collapsedtext
         self.columnconfigure(1, weight=1)
+        
+        self.expanded_text = expanded_text
+        self.collapsed_text = collapsed_text
 
         self.variable = tk.IntVar()
         self.button = ttk.Checkbutton(self, variable=self.variable, command=self.activate, style="TButton")
         self.button.grid(row=0, column=0)
         ttk.Separator(self, orient="horizontal").grid(row=0, column=1, sticky="we")
 
-        self.subframe = ttk.Frame(self)
+        self.frame = ttk.Frame(self)
 
         self.activate()
 
     def activate(self):
         if not self.variable.get():
-            self.subframe.grid_forget()
-            self.button.configure(text=self.expandedtext)
+            self.frame.grid_forget()
+            self.button.configure(text=self.expanded_text)
 
         elif self.variable.get():
-            self.subframe.grid(row=1, column=0, columnspan=2)
-            self.button.configure(text=self.collapsedtext)
+            self.frame.grid(row=1, column=0, columnspan=2)
+            self.button.configure(text=self.collapsed_text)
 
     def toggle(self):
         """
@@ -72,5 +77,5 @@ if __name__ == "__main__":
     cpane = CollapsiblePane(root)
     cpane.pack(expand=True, padx=5, pady=5)
     for i in range(3):
-        ttk.Button(cpane.subframe).pack(side="left")
+        ttk.Button(cpane.frame).pack(side="left")
     root.mainloop()

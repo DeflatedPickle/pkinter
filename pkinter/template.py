@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Template"
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __author__ = "DeflatedPickle"
 
 
@@ -17,12 +17,15 @@ class Template(ttk.Frame):
     template = Template(parent)
     template.pack()
 
+            -----PARAMETERS-----
+    parent
+
             -----CONTENTS-----
     ---VARIABLES---
     None
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     None

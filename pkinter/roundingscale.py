@@ -4,25 +4,29 @@ from tkinter import ttk
 # link
 
 __title__ = "RoundingScale"
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __author__ = "DeflatedPickle"
 
 
 class RoundingScale(ttk.Scale):
     """
             -----DESCRIPTION-----
-    A scale thats' value rounds when altered.
+    A Scale that's value rounds when altered.
 
             -----USAGE-----
     roundingScale = RoundingScale(parent, from_=[integer], to=[integer])
     roundingScale.pack()
+
+            -----PARAMETERS-----
+    from_    = The lowest value of the Scale.
+    to       = The highest value of the Scale.
 
             -----CONTENTS-----
     ---VARIABLES---
     value    = The scales value.
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
     round()  = Rounds the scales' value.

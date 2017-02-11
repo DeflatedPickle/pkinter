@@ -17,7 +17,8 @@ from .choicebook import *
 from .passwordentry import *
 from .invalidentry import *
 from .listbook import *
+from .accellabel import *
 
-__title__ = "Pkinter"
+__title__ = "pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.18.15"
+__version__ = "1.20.15"

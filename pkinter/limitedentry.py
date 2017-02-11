@@ -4,7 +4,7 @@ from tkinter import ttk
 # link
 
 __title__ = "LimitedEntry"
-__version__ = "1.1.2"
+__version__ = "1.2.3"
 __author__ = "DeflatedPickle"
 
 
@@ -14,22 +14,27 @@ class LimitedEntry(ttk.Entry):
     A TTK Entry with a character limit.
 
             -----USAGE-----
-    limitedEntry = LimitedEntry(parent, maxchars=[integer])
+    limitedEntry = LimitedEntry(parent, max_chars=[integer])
     limitedEntry.pack()
+
+            -----PARAMETERS-----
+    max_chars         = The maximum amount of characters in the Entry.
 
             -----CONTENTS-----
     ---VARIABLES---
-    maxchars = The maximum amount of characters in the Entry.
+    max_chars         = The maximum amount of characters in the Entry.
+    variable          = The text in the Entry.
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
-    check()  = Removes any characters over the maxchars.
+    check()           = Removes any characters over the max_chars.
+    characters_left() = Returns the amount of characters left.
     """
-    def __init__(self, parent, maxchars=10, *args):
+    def __init__(self, parent, max_chars=10, *args):
         ttk.Entry.__init__(self, parent, *args)
-        self.maxchars = maxchars
+        self.max_chars = max_chars
 
         self.variable = tk.StringVar()
 
@@ -39,14 +44,22 @@ class LimitedEntry(ttk.Entry):
         self.check()
 
     def check(self, *args):
-        if self.maxchars != 0:
-            if len(self.variable.get()) >= self.maxchars:
+        if self.max_chars != 0:
+            if len(self.variable.get()) > self.max_chars:
                 self.variable.set(self.variable.get()[:-1])
+
+    def characters_left(self):
+        return self.max_chars - len(self.variable.get())
 
 ##################################################
 
 if __name__ == "__main__":
     root = tk.Tk()
-    lentry = LimitedEntry(root, maxchars=10)
+    lentry = LimitedEntry(root, max_chars=10)
     lentry.pack(expand=True, padx=5, pady=5)
+    var = tk.IntVar()
+    var.set(lentry.characters_left())
+    lentry.bind("<KeyRelease>", lambda *args: var.set(lentry.characters_left()))
+    label = ttk.Label(textvariable=var)
+    label.pack(expand=True, padx=5, pady=5)
     root.mainloop()

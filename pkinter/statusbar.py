@@ -19,16 +19,19 @@ class Statusbar(ttk.Frame):
     statusbar.add_label(text=[string], textvariable=[string], image=[string], side=[string])
     statusbar.add_separator()
 
+            -----PARAMETERS-----
+    parent
+
             -----CONTENTS-----
     ---VARIABLES---
     None
 
     ---WIDGETS---
-    Self
+    self
 
     ---FUNCTIONS---
-    add_label()      = Adds a label to the statusbar.
-    add_separator()  = Adds a separator to the statusbar.
+    add_label()      = Adds a label to the Statusbar.
+    add_separator()  = Adds a separator to the Statusbar.
     """
     def __init__(self, parent, *args):
         ttk.Frame.__init__(self, parent, *args)
