@@ -18,7 +18,14 @@ from .passwordentry import *
 from .invalidentry import *
 from .listbook import *
 from .accellabel import *
+from .infobar import *
+from .lockbutton import *
+from .togglebutton import *
+from .scaleswitch import *
+from .buttonswitch import *
+from .filepicker import *
+from .directorypicker import *
 
 __title__ = "pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.20.15"
+__version__ = "1.27.18"

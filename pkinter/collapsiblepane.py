@@ -4,7 +4,7 @@ from tkinter import ttk
 # http://docs.wxwidgets.org/3.1/classwx_collapsible_pane.html
 
 __title__ = "CollapsiblePane"
-__version__ = "1.3.3"
+__version__ = "1.3.4"
 __author__ = "DeflatedPickle"
 
 
@@ -20,23 +20,23 @@ class CollapsiblePane(ttk.Frame):
     button = Button(collapsiblePane.frame).pack()
 
             -----PARAMETERS-----
-    expanded_text   = The text shown on the button when the pane is open.
-    collapsed_text  = The text shown on the button when the pane is closed.
+    expanded_text   = The text shown on the Button when the pane is open.
+    collapsed_text  = The text shown on the Button when the pane is closed.
 
             -----CONTENTS-----
     ---VARIABLES---
-    expanded_text   = The text shown on the button when the pane is open.
-    collapsed_text  = The text shown on the button when the pane is closed.
-    variable        = The variable used for the button.
+    expanded_text   = The text shown on the Button when the pane is open.
+    collapsed_text  = The text shown on the Button when the pane is closed.
+    variable        = The variable used for the Button.
 
     ---WIDGETS---
     self
-    button          = The button that toggles the frame.
-    frame           = The frame that holds the widget.
+    button          = The Button that toggles the Frame.
+    frame           = The Frame that holds the widget.
 
     ---FUNCTIONS---
-    activate()      = Checks value of variable and shows or hides the frame.
-    toggle()        = Switches the label frame to the opposite state.
+    activate()      = Checks the value of variable and shows or hides the Frame.
+    toggle()        = Switches the LabelFrame to the opposite state.
     """
     def __init__(self, parent, expanded_text="Expanded <<", collapsed_text="Collapsed >>", *args):
         ttk.Frame.__init__(self, parent, *args)
@@ -57,11 +57,11 @@ class CollapsiblePane(ttk.Frame):
     def activate(self):
         if not self.variable.get():
             self.frame.grid_forget()
-            self.button.configure(text=self.expanded_text)
+            self.button.configure(text=self.collapsed_text)
 
         elif self.variable.get():
             self.frame.grid(row=1, column=0, columnspan=2)
-            self.button.configure(text=self.collapsed_text)
+            self.button.configure(text=self.expanded_text)
 
     def toggle(self):
         """

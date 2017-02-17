@@ -11,7 +11,7 @@ __author__ = "DeflatedPickle"
 class AccelLabel(ttk.Frame):
     """
             -----DESCRIPTION-----
-    A label which displays an accelerator key on the right of the text.
+    A Label which displays an accelerator key on the right of the text.
 
             -----USAGE-----
     accelLabel = AccelLabel(parent, label=[string], accelerator=[string])

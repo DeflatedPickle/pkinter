@@ -1,4 +1,4 @@
-## Pkinter
+## pkinter
 A set of useful widgets for use with TkInter.
 
 [![PyPI](https://img.shields.io/pypi/v/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
@@ -7,6 +7,9 @@ A set of useful widgets for use with TkInter.
 [![PyPI](https://img.shields.io/pypi/dd/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
 [![PyPI](https://img.shields.io/pypi/dw/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
 [![PyPI](https://img.shields.io/pypi/dm/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
+
+**Warning**: These widgets are designed for Windows 8.1, there is a good chance they will look different and/or bad on other operating systems.
+If a widget does look bad or deviates from the native look on an operating system, feel free to send me an email with a screenshot of the widget and the name of the operating system you're using it on.
 
 ## Installing The Library
 
@@ -275,4 +278,76 @@ The pk.ListBook allows navigation through given frames with a Listbox.
 ```python
 listBook = pk.ListBook(parent)
 listBook.pack()
+```
+
+### pk.AccelLabel
+
+The pk.AccelLabel is used to show a command and the accelerator that can be used to execute that command.
+
+```python
+accelLabel = pk.AccelLabel(parent)
+accelLabel.pack()
+```
+
+### pk.InfoBar
+
+The pk.InfoBar is used to display a bit of information to the user, the bar can then be closed.
+
+```python
+infoBar = pk.InfoBar(parent)
+infoBar.pack()
+```
+
+### pk.LockButton
+
+The pk.LockButton is a Button that can be locked.
+
+```python
+lockButton = pk.LockButton(parent)
+lockButton.pack()
+```
+
+### pk.ToggleButton
+
+The pk.ToggleButton is a Button that can be toggled.
+
+```python
+toggleButton = pk.ToggleButton(parent)
+toggleButton.pack()
+```
+
+### pk.ScaleSwitch
+
+The pk.ScaleSwitch is a switch styled like a Scale. It can be used to switch it's variable to `True` or `False`.
+
+```python
+scaleSwitch = pk.ScaleSwitch(parent)
+scaleSwitch.pack()
+```
+
+### pk.ButtonSwitch
+
+The pk.ButtonSwitch is a switch, similar to the pk.ScaleSwitch, but it looks more like a real switch.
+
+```python
+buttonSwitch = pk.ButtonSwitch(parent)
+buttonSwitch.pack()
+```
+
+### pk.FilePicker
+
+The pk.FilePicker allows you to pick a file and have it's location shown in it's Entry.
+
+```python
+filePicker = pk.FilePicker(parent)
+filePicker.pack()
+```
+
+### pk.DirectoryPicker
+
+The pk.DirectoryPicker allows you to pick a directory and have it shown in it's Entry.
+
+```python
+directoryPicker = pk.DirectoryPicker(parent)
+directoryPicker.pack()
 ```

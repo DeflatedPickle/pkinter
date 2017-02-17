@@ -4,7 +4,7 @@ from tkinter import ttk
 # http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/ttk-LabelFrame.html
 
 __title__ = "ToggledLabelFrame"
-__version__ = "1.2.3"
+__version__ = "1.2.4"
 __author__ = "DeflatedPickle"
 
 
@@ -30,7 +30,7 @@ class ToggledLabelFrame(ttk.LabelFrame):
     ---VARIABLES---
     on_text       = The text displayed when the button is active.
     off_text      = The text displayed when the button is inactive.
-    variable      = The variable used for the button.
+    variable      = The variable used for the Button.
 
     ---WIDGETS---
     self
@@ -63,12 +63,12 @@ class ToggledLabelFrame(ttk.LabelFrame):
         if not self.variable.get():
             self.fill.pack()
             self.frame.forget()
-            self.button.configure(text=self.on_text)
+            self.button.configure(text=self.off_text)
 
         if self.variable.get():
             self.fill.forget()
             self.frame.pack(fill="both", expand=True)
-            self.button.configure(text=self.off_text)
+            self.button.configure(text=self.on_text)
 
     def toggle(self):
         """
