@@ -48,10 +48,16 @@ class FilePicker(ttk.Frame):
         self.button.pack(side="right")
 
     def browse(self):
+        """
+        Opens a file browser.
+        """
         file = filedialog.askopenfile(filetype=self.filetypes)
         self.variable.set(file.name)
 
     def get(self):
+        """
+        Returns the chosen file.
+        """
         return self.variable.get()
 
 ##################################################

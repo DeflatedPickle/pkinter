@@ -49,6 +49,9 @@ class LimitedEntry(ttk.Entry):
                 self.variable.set(self.variable.get()[:-1])
 
     def characters_left(self):
+        """
+        Returns the characters left available in the Entry.
+        """
         return self.max_chars - len(self.variable.get())
 
 ##################################################

@@ -36,6 +36,9 @@ class RoundingScale(ttk.Scale):
         self.value = self.get()
 
     def round(self, *args):
+        """
+        Rounds the Scale.
+        """
         self.value = self.get()
         if int(self.value) != self.value:
             self.set(round(self.value))

@@ -53,6 +53,9 @@ class LineNumbers(tk.Listbox):
         self.scroll_widget.configure(command=self.__scrollboth)
 
     def redraw(self, *args):
+        """
+        Redraws the lines for the widget.
+        """
         self.delete(0, "end")
 
         numbers = int(self.text_widget.index("end-1c").split(".")[0])

@@ -41,15 +41,27 @@ class Toolbar(ttk.Frame):
         ttk.Frame.__init__(self, parent, *args)
 
     def add_button(self, text="", image="", side="left"):
+        """
+        Adds a Button to the Toolbar.
+        """
         ttk.Button(self, text=text, image=image, style="Toolbutton").pack(side=side)
 
     def add_checkbutton(self, text="", image="", variable=None, side="left"):
+        """
+        Adds a CheckButton to the Toolbar.
+        """
         ttk.Checkbutton(self, text=text, image=image, variable=variable, style="Toolbutton").pack(side=side)
 
     def add_radiobutton(self, text="", image="", variable=None, value=None, side="left"):
+        """
+        Adds a RadioButton to the Toolbar.
+        """
         ttk.Radiobutton(self, text=text, image=image, variable=variable, value=value, style="Toolbutton").pack(side=side)
 
     def add_separator(self):
+        """
+        Adds a Separator to the Toolbar.
+        """
         ttk.Separator(self, orient="vertical").pack(side="left", fill="y", padx=3, pady=1)
 
 ##################################################

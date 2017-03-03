@@ -72,6 +72,9 @@ class PageView (ttk.Frame):
         self.next.grid(row=0, column=2)
 
     def back(self):
+        """
+        Moves the PageView backwards a page.
+        """
         if self.index.get() != 0:
             for i in range(len(self.frame_list)):
                 self.frame_list[i].pack_forget()
@@ -82,6 +85,9 @@ class PageView (ttk.Frame):
             self.work_out_pages()
 
     def next(self):
+        """
+        Moves the PageView forwards a page.
+        """
         if self.index.get() != len(self.frame_list) - 1:
             for i in range(len(self.frame_list)):
                 self.frame_list[i].pack_forget()

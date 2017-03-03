@@ -55,6 +55,9 @@ class ValidEntry(ttk.Entry):
             self.valid = False
 
     def is_valid(self):
+        """
+        Returns whether or not the text is valid.
+        """
         return self.valid
 
 ##################################################

@@ -46,10 +46,16 @@ class DirectoryPicker(ttk.Frame):
         self.button.pack(side="right")
 
     def browse(self):
+        """
+        Opens a directory browser.
+        """
         directory = filedialog.askdirectory()
         self.variable.set(directory)
 
     def get(self):
+        """
+        Returns the chosen directory.
+        """
         return self.variable.get()
 
 ##################################################

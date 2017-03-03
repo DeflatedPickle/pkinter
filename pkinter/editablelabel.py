@@ -55,15 +55,24 @@ class EditableLabel(ttk.Label):
         self.configure(width=self.entry.cget("width"))
 
     def edit(self, *args):
+        """
+        Allows the Label to be edited.
+        """
         self.entry.pack(fill="both")
         self.entry.focus_force()
         self.entry.icursor("end")
 
     def confirm(self, *args):
+        """
+        Stops the Label from being edited.
+        """
         self.entry.pack_forget()
         self.configure(width=self.entry.cget("width"))
 
     def resize(self, *args):
+        """
+        Resizes the Entry to the text inside.
+        """
         self.entry.configure(width=len(str(self.variable.get())) + 1)
 
 ##################################################
