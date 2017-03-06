@@ -4,7 +4,51 @@ import pkinter as pk
 
 root = tk.Tk()
 
-tlf = pk.ToggledLabelFrame(root)
+menu = tk.Menu(root, type="menubar")
+filemenu = tk.Menu(menu)
+filemenu.add_command(label="New")
+filemenu.add_command(label="Save")
+menu.add_cascade(label="File", menu=filemenu)
+helpmenu = tk.Menu(menu)
+helpmenu.add_checkbutton(label="About")
+helpmenu.add_separator()
+helpmenu.add_checkbutton(label="Changelog")
+menu.add_cascade(label="Help", menu=helpmenu)
+root.configure(menu=menu)
+
+##################################################
+
+toolbar = pk.Toolbar(root)
+toolbar.pack(side="top", fill="x")
+button = toolbar.add_button(text="Button")
+toolbar.add_separator()
+toolbar.add_checkbutton(text="CheckButton 1")
+toolbar.add_checkbutton(text="CheckButton 2")
+toolbar.add_separator()
+toolbar.add_radiobutton(text="RadioButton 1", value=0)
+toolbar.add_radiobutton(text="RadioButton 2", value=1)
+toolbar.add_radiobutton(text="RadioButton 3", value=2)
+toolbar.add_separator()
+
+##################################################
+
+statusbar = pk.Statusbar(root)
+statusbar.pack(side="bottom", fill="x")
+variable = tk.StringVar()
+statusbar.bind_widget(button, variable, "Button", "")
+statusbar.bind_menu(menu, variable, ["Open the File menu.", "Open the Help menu."])
+statusbar.bind_menu(filemenu, variable, ["Tear-off the menu.", "Create a new file.", "Save the current file."])
+statusbar.bind_menu(helpmenu, variable, ["Tear-off the menu.", "Open the About window.", "", "Open the Changelog."])
+statusbar.add_variable(textvariable=variable)
+
+##################################################
+
+frame = ttk.Frame(root)
+frame.pack(fill="both")
+
+##################################################
+
+tlf = pk.ToggledLabelFrame(frame)
 tlf.grid(row=0, column=0)
 
 ##################################################
@@ -12,37 +56,37 @@ tlf.grid(row=0, column=0)
 for i in range(5):
     ttk.Button(tlf.frame).pack()
 
-ls = pk.LabeledSeparator(root, text="LabeledSeparator")
+ls = pk.LabeledSeparator(frame, text="LabeledSeparator")
 ls.grid(row=0, column=1)
 
 ##################################################
 
-rs = pk.RoundingScale(root, from_=0, to=5)
+rs = pk.RoundingScale(frame, from_=0, to=5)
 rs.grid(row=0, column=2)
 
 ##################################################
 
-et = pk.EntryText(root, text="EntryText")
+et = pk.EntryText(frame, text="EntryText")
 et.grid(row=1, column=0)
 
 ##################################################
 
-le = pk.LimitedEntry(root)
+le = pk.LimitedEntry(frame)
 le.grid(row=1, column=1)
 
 ##################################################
 
-cpb = pk.ColourPickerButton(root)
+cpb = pk.ColourPickerButton(frame)
 cpb.grid(row=1, column=2)
 
 ##################################################
 
-el = pk.EditableLabel(root, text="EditableLabel")
+el = pk.EditableLabel(frame, text="EditableLabel")
 el.grid(row=2, column=0)
 
 ##################################################
 
-cp = pk.CollapsiblePane(root)
+cp = pk.CollapsiblePane(frame)
 cp.grid(row=2, column=1)
 
 for i in range(5):
@@ -50,12 +94,12 @@ for i in range(5):
 
 ##################################################
 
-hl = pk.Hyperlink(root, text="Hyperlink")
+hl = pk.Hyperlink(frame, text="Hyperlink")
 hl.grid(row=2, column=2)
 
 ##################################################
 
-pv = pk.PageView(root)
+pv = pk.PageView(frame)
 pv.grid(row=3, column=0)
 
 frame1 = ttk.Frame(pv.frame)
@@ -72,20 +116,21 @@ pv.add(child=frame3)
 
 ##################################################
 
+
 def function():
     print("Function")
 
-bb = pk.BoundButton(root, text="BoundButton", key="b", command=function)
+bb = pk.BoundButton(frame, text="BoundButton", key="b", command=function)
 bb.grid(row=3, column=1)
 
 ##################################################
 
-ve = pk.ValidEntry(root, valid_list=["validentry", "validEntry", "Validentry", "ValidEntry"])
+ve = pk.ValidEntry(frame, valid_list=["validentry", "validEntry", "Validentry", "ValidEntry"])
 ve.grid(row=3, column=2)
 
 ##################################################
 
-cb = pk.ChoiceBook(root)
+cb = pk.ChoiceBook(frame)
 cb.grid(row=4, column=0)
 
 frame1 = ttk.Frame(cb.frame)
@@ -102,17 +147,17 @@ cb.add(child=frame3, label="Frame3")
 
 ##################################################
 
-pe = pk.PasswordEntry(root, cover_character="*")
+pe = pk.PasswordEntry(frame, cover_character="*")
 pe.grid(row=4, column=1)
 
 ##################################################
 
-iv = pk.InvalidEntry(root, invalid_list=["invalidentry", "invalidEntry", "Invalidentry", "InvalidEntry"])
+iv = pk.InvalidEntry(frame, invalid_list=["invalidentry", "invalidEntry", "Invalidentry", "InvalidEntry"])
 iv.grid(row=4, column=2)
 
 ##################################################
 
-lb = pk.ListBook(root)
+lb = pk.ListBook(frame)
 lb.grid(row=5, column=0)
 
 frame1 = ttk.Frame(lb.frame)
@@ -129,42 +174,42 @@ lb.add(child=frame3, label="Frame3")
 
 ##################################################
 
-al = pk.AccelLabel(root, label_text="AccelLabel", accelerator_text="Ctrl+A")
+al = pk.AccelLabel(frame, label_text="AccelLabel", accelerator_text="Ctrl+A")
 al.grid(row=5, column=1)
 
 ##################################################
 
-ib = pk.InfoBar(root, title="InfoBar", info="Shows information.")
+ib = pk.InfoBar(frame, title="InfoBar", info="Shows information.")
 ib.grid(row=5, column=2)
 
 ##################################################
 
-lb = pk.LockButton(root)
+lb = pk.LockButton(frame)
 lb.grid(row=6, column=0)
 
 ##################################################
 
-tb = pk.ToggleButton(root)
+tb = pk.ToggleButton(frame)
 tb.grid(row=6, column=1)
 
 ##################################################
 
-ss = pk.ScaleSwitch(root)
+ss = pk.ScaleSwitch(frame)
 ss.grid(row=6, column=2)
 
 ##################################################
 
-bs = pk.ButtonSwitch(root)
+bs = pk.ButtonSwitch(frame)
 bs.grid(row=7, column=0)
 
 ##################################################
 
-fp = pk.FilePicker(root)
+fp = pk.FilePicker(frame)
 fp.grid(row=7, column=1)
 
 ##################################################
 
-dp = pk.DirectoryPicker(root)
+dp = pk.DirectoryPicker(frame)
 dp.grid(row=7, column=2)
 
 ##################################################

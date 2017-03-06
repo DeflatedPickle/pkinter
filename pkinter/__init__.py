@@ -28,4 +28,4 @@ from .directorypicker import *
 
 __title__ = "pkinter"
 __author__ = "DeflatedPickle"
-__version__ = "1.27.20"
+__version__ = "1.28.20"

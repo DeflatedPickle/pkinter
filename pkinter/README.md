@@ -4,6 +4,7 @@
 - EmbeddedWindow
 - Ribbon
 - StickyWindow
+- RotatingButton
 
 #### [wxWidgets](http://docs.wxwidgets.org/3.1/page_screenshots.html)
 - [CheckListBox](http://docs.wxwidgets.org/3.1/classwx_check_list_box.html)
