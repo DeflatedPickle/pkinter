@@ -35,23 +35,25 @@ class ValidEntry(ttk.Entry):
     is_valid() = Returns the variable "valid".
     """
     def __init__(self, parent, valid_list=[], *args):
+        style = ttk.Style()
+        style.configure("Valid.TEntry", foreground="green")
+        style.configure("Invalid.TEntry", foreground="red")
+
         ttk.Entry.__init__(self, parent, *args)
         self.valid_list = valid_list
         self.valid = False
 
-        self.style = ttk.Style()
-        self.style.configure("Valid.TEntry")
         self.configure(style="Valid.TEntry")
 
         self.bind("<KeyRelease>", self.check)
 
     def check(self, *args):
         if self.get() in self.valid_list:
-            self.style.configure("Valid.TEntry", foreground="green")
+            self.configure(style="Valid.TEntry")
             self.valid = True
 
-        elif self.get() not in self.valid_list:
-            self.style.configure("Valid.TEntry", foreground="red")
+        else:
+            self.configure(style="Invalid.TEntry")
             self.valid = False
 
     def is_valid(self):
@@ -66,5 +68,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     ventry = ValidEntry(root, valid_list=["hello", "bye"])
     ventry.pack(expand=True, padx=5, pady=5)
-    button = ttk.Button(root, text="Check", command=lambda: print(ventry.is_valid())).pack(expand=True, padx=5, pady=5)
+    ventry2 = ValidEntry(root, valid_list=["hello", "see"])
+    ventry2.pack(expand=True, padx=5, pady=5)
+    button = ttk.Button(root, text="Check", command=lambda: print(ventry.is_valid(), ventry2.is_valid())).pack(expand=True, padx=5, pady=5)
     root.mainloop()
