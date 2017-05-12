@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -59,9 +63,7 @@ class ChoiceBook(ttk.Frame):
         self.page_list[self.label_list.index(self.variable.get())].pack(fill="both", expand=True)
 
     def add(self, child=None, label=""):
-        """
-        Adds a new page to the ChoiceBook.
-        """
+        """Adds a new page to the ChoiceBook."""
         self.page_list.append(child)
         self.label_list.append(label)
         self.variable.set(self.label_list[0])

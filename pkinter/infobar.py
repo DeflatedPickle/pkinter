@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -59,9 +63,7 @@ class InfoBar(ttk.Frame):
         self.close_button.grid(row=0, column=2)
 
     def close(self):
-        """
-        Closes the InfoBar.
-        """
+        """Closes the InfoBar."""
         self.forget()
 
 ##################################################

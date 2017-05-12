@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -36,9 +40,7 @@ class RoundingScale(ttk.Scale):
         self.value = self.get()
 
     def round(self, *args):
-        """
-        Rounds the Scale.
-        """
+        """Rounds the Scale."""
         self.value = self.get()
         if int(self.value) != self.value:
             self.set(round(self.value))

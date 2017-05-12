@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -53,30 +57,22 @@ class ToggleButton(ttk.Checkbutton):
             self.configure(text=self.text_off)
 
     def toggle(self):
-        """
-        Switches the LabelFrame to the opposite state.
-        """
+        """Switches the LabelFrame to the opposite state."""
         self.variable.set(not self.variable.get())
         self.activate()
 
     def on(self):
-        """
-        Turns the Button on.
-        """
+        """Turns the Button on."""
         self.variable.set(True)
         self.activate()
 
     def off(self):
-        """
-        Turns the Button off.
-        """
+        """Turns the Button off."""
         self.variable.set(False)
         self.activate()
 
     def get_state(self):
-        """
-        Gets the state of the Button.
-        """
+        """Gets the state of the Button."""
         if not self.variable.get():
             return False
 

@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -58,9 +62,7 @@ class ButtonSwitch(ttk.Frame):
         self.switch()
 
     def switch(self, *args):
-        """
-        Switches the state of the Switch.
-        """
+        """Switches the state of the Switch."""
         self.button_variable.set(not self.button_variable.get())
         self.label_variable.set(not self.label_variable.get())
 
@@ -74,9 +76,7 @@ class ButtonSwitch(ttk.Frame):
         self.label.grid(row=0, column=self.label_variable.get(), padx=1, pady=1, sticky="nesw")
 
     def get_state(self):
-        """
-        Gets the state of the Switch.
-        """
+        """Gets the state of the Switch."""
         return self.button_variable.get()
 
 ##################################################

@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
@@ -46,16 +50,12 @@ class DirectoryPicker(ttk.Frame):
         self.button.pack(side="right")
 
     def browse(self):
-        """
-        Opens a directory browser.
-        """
+        """Opens a directory browser."""
         directory = filedialog.askdirectory()
         self.variable.set(directory)
 
     def get(self):
-        """
-        Returns the chosen directory.
-        """
+        """Returns the chosen directory."""
         return self.variable.get()
 
 ##################################################

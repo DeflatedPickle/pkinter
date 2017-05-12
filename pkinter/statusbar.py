@@ -1,10 +1,14 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
 # link
 
 __title__ = "Statusbar"
-__version__ = "1.3.2"
+__version__ = "1.3.3"
 __author__ = "DeflatedPickle"
 
 
@@ -42,29 +46,41 @@ class Statusbar(ttk.Frame):
         self.parent = parent
 
     def add_label(self, text="", image="", side="left"):
-        """
-        Adds a Label to the Statusbar.
-        """
-        ttk.Label(self, text=text, image=image).pack(side=side)
+        """Adds a Label to the Statusbar."""
+        widget = ttk.Label(self, text=text, image=image)
+        widget.pack(side=side)
+
+        return widget
 
     def add_variable(self, textvariable=None, side="left"):
-        """
-        Adds a Label controlled by a variable to the Statusbar.
-        """
-        ttk.Label(self, textvariable=textvariable).pack(side=side)
+        """Adds a Label controlled by a variable to the Statusbar."""
+        widget = ttk.Label(self, textvariable=textvariable)
+        widget.pack(side=side)
+
+        return widget
+
+    def add_sizegrip(self, side="right", anchor="s"):
+        """Adds a SizeGrip to the Statusbar."""
+        widget = ttk.Sizegrip(self)
+        widget.pack(side=side, anchor=anchor)
+
+        return widget
+
+    def add_separator(self):
+        """Adds a Separator to the Statusbar."""
+        widget = ttk.Separator(self, orient="vertical")
+        widget.pack(side="left", fill="y", padx=3, pady=1)
+
+        return widget
 
     def bind_widget(self, widget, variable, enter_text, leave_text):
-        """
-        Binds a widget to change the text of a variable.
-        """
+        """Binds a widget to change the text of a variable."""
         widget.bind("<Enter>", lambda *args: variable.set(enter_text), "+")
         widget.bind("<Leave>", lambda *args: variable.set(leave_text), "+")
 
     def bind_menu(self, menu, variable, options=[]):
-        """
-        Binds a menu to change the text of a variable.
-        """
-        menu.bind("<<MenuSelect>>", lambda event: self.menu_select(event, variable=variable, options=options))
+        """Binds a menu to change the text of a variable."""
+        menu.bind("<<MenuSelect>>", lambda event: self.menu_select(event, variable=variable, options=options), "+")
 
     def menu_select(self, event, variable, options):
         index = self.parent.call(event.widget, "index", "active")
@@ -75,18 +91,6 @@ class Statusbar(ttk.Frame):
                 pass
         else:
             variable.set("")
-
-    def add_sizegrip(self, side="right", anchor="s"):
-        """
-        Adds a SizeGrip to the Statusbar.
-        """
-        ttk.Sizegrip(self).pack(side=side, anchor=anchor)
-
-    def add_separator(self):
-        """
-        Adds a Separator to the Statusbar.
-        """
-        ttk.Separator(self, orient="vertical").pack(side="left", fill="y", padx=3, pady=1)
 
 ##################################################
 

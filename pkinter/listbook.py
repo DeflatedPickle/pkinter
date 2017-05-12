@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -52,9 +56,7 @@ class ListBook(ttk.Frame):
         self.frame_list[self.list_box.curselection()[0]].pack(fill="both", expand=True)
 
     def add(self, child=None, label=""):
-        """
-        Adds a new page to the ListBook.
-        """
+        """Adds a new page to the ListBook."""
         self.frame_list.append(child)
         self.list_box.insert("end", label)
 

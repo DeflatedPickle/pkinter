@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -72,9 +76,7 @@ class PageView (ttk.Frame):
         self.next.grid(row=0, column=2)
 
     def back(self):
-        """
-        Moves the PageView backwards a page.
-        """
+        """Moves the PageView backwards a page."""
         if self.index.get() != 0:
             for i in range(len(self.frame_list)):
                 self.frame_list[i].pack_forget()
@@ -85,9 +87,7 @@ class PageView (ttk.Frame):
             self.work_out_pages()
 
     def next(self):
-        """
-        Moves the PageView forwards a page.
-        """
+        """Moves the PageView forwards a page."""
         if self.index.get() != len(self.frame_list) - 1:
             for i in range(len(self.frame_list)):
                 self.frame_list[i].pack_forget()
@@ -98,9 +98,7 @@ class PageView (ttk.Frame):
             self.work_out_pages()
 
     def add(self, child=None):
-        """
-        Adds a new page to the PageView.
-        """
+        """Adds a new page to the PageView."""
         self.frame_list.append(child)
         self.frame_list[self.index.get()].pack(fill="both", expand=True)
         self.total_pages = str(len(self.frame_list))

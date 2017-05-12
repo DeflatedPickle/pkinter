@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -71,9 +75,7 @@ class ToggledLabelFrame(ttk.LabelFrame):
             self.button.configure(text=self.on_text)
 
     def toggle(self):
-        """
-        Switches the LabelFrame to the opposite state.
-        """
+        """Switches the LabelFrame to the opposite state."""
         self.variable.set(not self.variable.get())
         self.activate()
 

@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -50,30 +54,22 @@ class ScaleSwitch(ttk.Scale):
             self.variable.set(False)
 
     def toggle(self):
-        """
-        Switches the LabelFrame to the opposite state.
-        """
+        """Switches the LabelFrame to the opposite state."""
         self.variable.set(not self.variable.get())
         self.activate()
 
     def on(self):
-        """
-        Turns the Switch on.
-        """
+        """Turns the Switch on."""
         self.variable.set(True)
         self.activate()
 
     def off(self):
-        """
-        Turns the Switch off.
-        """
+        """Turns the Switch off."""
         self.variable.set(False)
         self.activate()
 
     def get_state(self):
-        """
-        Gets the state of the Switch.
-        """
+        """Gets the state of the Switch."""
         return self.variable.get()
 
 ##################################################

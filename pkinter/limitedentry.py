@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -49,9 +53,7 @@ class LimitedEntry(ttk.Entry):
                 self.variable.set(self.variable.get()[:-1])
 
     def characters_left(self):
-        """
-        Returns the characters left available in the Entry.
-        """
+        """Returns the characters left available in the Entry."""
         return self.max_chars - len(self.variable.get())
 
 ##################################################

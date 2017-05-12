@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -63,9 +67,7 @@ class PasswordEntry(ttk.Entry):
             pass
 
     def get_text(self):
-        """
-        Gets the actual text of the Entry.
-        """
+        """Gets the actual text of the Entry."""
         return "".join(self.entry_text)
 
 ##################################################

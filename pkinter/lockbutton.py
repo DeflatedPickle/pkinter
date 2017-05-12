@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -63,44 +67,32 @@ class LockButton(ttk.Checkbutton):
             self.configure(text=self.lock_text, image=self.lock_image)
 
     def give_permissions(self):
-        """
-        Gives the user permissions to use the Button.
-        """
+        """Gives the user permissions to use the Button."""
         self.activate()
         self.configure(state="enabled")
 
     def remove_permissions(self):
-        """
-        Removes the users permissions to use the Button.
-        """
+        """Removes the users permissions to use the Button."""
         self.activate()
         self.configure(state="disabled")
 
     def toggle(self):
-        """
-        Switches the LabelFrame to the opposite state.
-        """
+        """Switches the LabelFrame to the opposite state."""
         self.variable.set(not self.variable.get())
         self.activate()
 
     def lock(self):
-        """
-        Locks the Button.
-        """
+        """Locks the Button."""
         self.variable.set(True)
         self.activate()
 
     def unlock(self):
-        """
-        Unlocks the Button.
-        """
+        """Unlocks the Button."""
         self.variable.set(False)
         self.activate()
 
     def get_state(self):
-        """
-        Gets the state of the Button.
-        """
+        """Gets the state of the Button."""
         if not self.variable.get():
             return "Locked"
 

@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter.colorchooser import *
@@ -48,16 +52,12 @@ class ColourPickerButton(ttk.Button):
         ttk.Style().configure("ColourButton.TButton", background=colour[1])
 
     def reset(self):
-        """
-        Resets the button.
-        """
+        """Resets the button."""
         self.configure(text=self.text)
         ttk.Style().configure("ColourButton.TButton", background=ttk.Style().lookup("TButton", "background"))
 
     def get(self):
-        """
-        Gets the text of the button.
-        """
+        """Gets the text of the button."""
         return self["text"]
 
 ##################################################

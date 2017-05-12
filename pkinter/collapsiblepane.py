@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -64,9 +68,7 @@ class CollapsiblePane(ttk.Frame):
             self.button.configure(text=self.expanded_text)
 
     def toggle(self):
-        """
-        Switches the label frame to the opposite state.
-        """
+        """Switches the label frame to the opposite state."""
         self.variable.set(not self.variable.get())
         self.activate()
 

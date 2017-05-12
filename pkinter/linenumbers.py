@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""""""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -37,7 +41,7 @@ class LineNumbers(tk.Listbox):
     ---FUNCTIONS---
     redraw()          = Works out how many lines there are.
     __scrollboth()    = Scrolls both the Text widget and LineNumbers.
-    __updatescroll()  =
+    __updatescroll()  = Moves the text_widget and scroll_widget to the top.
     """
     def __init__(self, parent, text_widget=None, scroll_widget=None, width=5, *args):
         tk.Listbox.__init__(self, parent, activestyle="none", highlightcolor="SystemButtonFace", width=width, *args)
@@ -53,9 +57,7 @@ class LineNumbers(tk.Listbox):
         self.scroll_widget.configure(command=self.__scrollboth)
 
     def redraw(self, *args):
-        """
-        Redraws the lines for the widget.
-        """
+        """Redraws the lines for the widget."""
         self.delete(0, "end")
 
         numbers = int(self.text_widget.index("end-1c").split(".")[0])
