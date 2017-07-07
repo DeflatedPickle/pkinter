@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Toolbar"
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __author__ = "DeflatedPickle"
 
 
@@ -44,23 +44,23 @@ class Toolbar(ttk.Frame):
     def __init__(self, parent, *args):
         ttk.Frame.__init__(self, parent, *args)
 
-    def add_button(self, text="", image="", side="left"):
+    def add_button(self, text="", image="", command=None, side="left"):
         """Adds a Button to the Toolbar."""
-        widget = ttk.Button(self, text=text, image=image, style="Toolbutton")
+        widget = ttk.Button(self, text=text, image=image, command=command, style="Toolbutton")
         widget.pack(side=side)
 
         return widget
 
-    def add_checkbutton(self, text="", image="", variable=None, side="left"):
+    def add_checkbutton(self, text="", image="", variable=None, command=None, side="left"):
         """Adds a CheckButton to the Toolbar."""
-        widget = ttk.Checkbutton(self, text=text, image=image, variable=variable, style="Toolbutton")
+        widget = ttk.Checkbutton(self, text=text, image=image, variable=variable, command=command, style="Toolbutton")
         widget.pack(side=side)
 
         return widget
 
-    def add_radiobutton(self, text="", image="", variable=None, value=None, side="left"):
+    def add_radiobutton(self, text="", image="", variable=None, value=None, command=None, side="left"):
         """Adds a RadioButton to the Toolbar."""
-        widget = ttk.Radiobutton(self, text=text, image=image, variable=variable, value=value, style="Toolbutton")
+        widget = ttk.Radiobutton(self, text=text, image=image, variable=variable, value=value, command=command, style="Toolbutton")
         widget.pack(side=side)
 
         return widget
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     tbar = Toolbar(root)
     tbar.pack(expand=True, fill="x", padx=5, pady=5)
-    tbar.add_button(text="A Button")
+    tbar.add_button(text="A Button", command=lambda: print("User pressed the button."))
     variable1 = tk.IntVar()
     variable2 = tk.IntVar()
     tbar.add_checkbutton(text="Check", variable=variable1)
