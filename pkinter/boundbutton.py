@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "BoundButton"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "DeflatedPickle"
 
 
@@ -25,12 +25,19 @@ class BoundButton(ttk.Button):
     boundButton.pack()
 
             -----PARAMETERS-----
+    parent  = The parent of the widget.
     text    = The text of the Button.
     key     = The key that will activate the Button.
     command = The function the button will run.
 
             -----CONTENTS-----
     ---VARIABLES---
+    parent  = The parent of the widget.
+    _text    = The text of the Button.
+    _key     = The key that will activate the Button.
+    _command = The function the button will run.
+
+    ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
@@ -41,15 +48,19 @@ class BoundButton(ttk.Button):
     """
     def __init__(self, parent, text="", key="Return", command=None, *args):
         ttk.Button.__init__(self, parent, default="active", text=text, command=command, *args)
+        self.parent = parent
 
-        self.bind("<{}>".format(key), lambda *args: command())
+        self._text = text
+        self._key = key
+        self._command = command
+
+        self.bind("<{}>".format(key), command)
         self.focus()
 
 ##################################################
 
 if __name__ == "__main__":
-
-    def function():
+    def function(event):
         if variable.get() == "foo":
             variable.set("bar")
 

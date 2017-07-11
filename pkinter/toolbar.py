@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Toolbar"
-__version__ = "1.1.4"
+__version__ = "1.1.5"
 __author__ = "DeflatedPickle"
 
 
@@ -26,23 +26,27 @@ class Toolbar(ttk.Frame):
     toolbar.add_separator()
 
             -----PARAMETERS-----
-    parent
+    parent            = The parent of the widget.
 
             -----CONTENTS-----
     ---VARIABLES---
+    parent            = The parent of the widget.
+
+    ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
     self
 
     ---FUNCTIONS---
-    add_button()       = Adds a button to the toolbar.
-    add_checkbutton()  = Adds a checkbutton to the toolbar.
-    add_radiobutton()  = Adds a radiobutton to the toolbar.
-    add_separator()    = Adds a separator to the toolbar.
+    add_button()      = Adds a button to the toolbar.
+    add_checkbutton() = Adds a checkbutton to the toolbar.
+    add_radiobutton() = Adds a radiobutton to the toolbar.
+    add_separator()   = Adds a separator to the toolbar.
     """
     def __init__(self, parent, *args):
         ttk.Frame.__init__(self, parent, *args)
+        self.parent = parent
 
     def add_button(self, text="", image="", command=None, side="left"):
         """Adds a Button to the Toolbar."""
@@ -65,10 +69,10 @@ class Toolbar(ttk.Frame):
 
         return widget
 
-    def add_separator(self):
+    def add_separator(self, side="left"):
         """Adds a Separator to the Toolbar."""
         widget = ttk.Separator(self, orient="vertical")
-        widget.pack(side="left", fill="y", padx=3, pady=1)
+        widget.pack(side=side, fill="y", padx=3, pady=1)
 
         return widget
 

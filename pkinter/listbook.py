@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ListBook"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -22,54 +22,59 @@ class ListBook(ttk.Frame):
     listBook.pack()
 
             -----PARAMETERS-----
-    parent
+    parent      = The parent of the widget.
 
             -----CONTENTS-----
     ---VARIABLES---
-    frame_list = The list of added Frames.
+    parent      = The parent of the widget.
+    _frame_list = The list of added Frames.
+
+    ---TKINTER VARIABLES---
+    None
 
     ---WIDGETS---
     self
-    list_box   = The ListBox.
-    frame      = The Frame that holds the shown Frame.
+    _list_box   = The ListBox.
+    frame       = The Frame that holds the shown Frame.
 
     ---FUNCTIONS---
-    select()   = Selects the Frame.
-    add()      = Adds a new Frame.
+    _select()   = Selects the Frame.
+    add()       = Adds a new Frame.
     """
     def __init__(self, parent, *args):
         ttk.Frame.__init__(self, parent, *args)
+        self.parent = parent
 
-        self.frame_list = []
+        self._frame_list = []
 
-        self.list_box = tk.Listbox(self)
-        self.list_box.pack(side="left", fill="y")
-        self.list_box.bind("<<ListboxSelect>>", self.select)
+        self._list_box = tk.Listbox(self)
+        self._list_box.pack(side="left", fill="y")
+        self._list_box.bind("<<ListboxSelect>>", self._select)
 
         self.frame = ttk.Frame(self)
         self.frame.pack(side="right", fill="both", expand=True)
 
-    def select(self, *args):
-        for i in range(len(self.frame_list)):
-            self.frame_list[i].pack_forget()
+    def _select(self, event=None):
+        for i in range(len(self._frame_list)):
+            self._frame_list[i].pack_forget()
 
-        self.frame_list[self.list_box.curselection()[0]].pack(fill="both", expand=True)
+        self._frame_list[self._list_box.curselection()[0]].pack(fill="both", expand=True)
 
     def add(self, child=None, label=""):
         """Adds a new page to the ListBook."""
-        self.frame_list.append(child)
-        self.list_box.insert("end", label)
+        self._frame_list.append(child)
+        self._list_box.insert("end", label)
 
-        self.list_box.focus()
-        self.list_box.selection_set(0)
-        self.select()
+        self._list_box.focus()
+        self._list_box.selection_set(0)
+        self._select()
 
 ##################################################
 
 if __name__ == "__main__":
     root = tk.Tk()
     lbook = ListBook(root)
-    lbook.pack(fill = "both", expand=True, padx=5, pady=5)
+    lbook.pack(fill="both", expand=True, padx=5, pady=5)
 
     frame1 = ttk.Frame(lbook.frame)
     for i in range(3):

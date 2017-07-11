@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "LineNumbers"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "DeflatedPickle"
 
 
@@ -26,53 +26,61 @@ class LineNumbers(tk.Listbox):
     text.pack(side="right", fill="both")
 
             -----PARAMETERS-----
+    parent             = The parent of the widget.
     text_widget        = The linked Text widget.
     scroll_widget      = The linked vertical Scrollbar.
     width              = The width of the LineNumbers.
 
             -----CONTENTS-----
     ---VARIABLES---
-    text_widget        = The linked Text widget.
-    scroll_widget      = The linked vertical Scrollbar.
+    parent             = The parent of the widget.
+    _text_widget       = The linked Text widget.
+    _scroll_widget     = The linked vertical Scrollbar.
+    _width             = The width of the LineNumbers.
+
+    ---TKINTER VARIABLES---
+    None
 
     ---WIDGETS---
     self
 
     ---FUNCTIONS---
     redraw()          = Works out how many lines there are.
-    __scrollboth()    = Scrolls both the Text widget and LineNumbers.
-    __updatescroll()  = Moves the text_widget and scroll_widget to the top.
+    _scrollboth()    = Scrolls both the Text widget and LineNumbers.
+    _updatescroll()  = Moves the text_widget and scroll_widget to the top.
     """
     def __init__(self, parent, text_widget=None, scroll_widget=None, width=5, *args):
         tk.Listbox.__init__(self, parent, activestyle="none", highlightcolor="SystemButtonFace", width=width, *args)
-        self.text_widget = text_widget
-        self.scroll_widget = scroll_widget
+        self.parent = parent
+        self._text_widget = text_widget
+        self._scroll_widget = scroll_widget
+        self._width = width
 
-        self.text_widget.bind("<<Change>>", self.redraw)
-        self.text_widget.bind("<Configure>", self.redraw)
-        self.text_widget.bind("<KeyRelease>", self.redraw)
+        self._text_widget.bind("<<Change>>", self._redraw, "+")
+        self._text_widget.bind("<Configure>", self._redraw, "+")
+        self._text_widget.bind("<KeyRelease>", self._redraw, "+")
 
-        self.text_widget.configure(yscrollcommand=self.__updatescroll)
-        self.configure(yscrollcommand=self.__updatescroll)
-        self.scroll_widget.configure(command=self.__scrollboth)
+        self._text_widget.configure(yscrollcommand=self._updatescroll)
+        self.configure(yscrollcommand=self._updatescroll)
+        self._scroll_widget.configure(command=self._scrollboth)
 
-    def redraw(self, *args):
+    def _redraw(self, event=None):
         """Redraws the lines for the widget."""
         self.delete(0, "end")
 
-        numbers = int(self.text_widget.index("end-1c").split(".")[0])
+        numbers = int(self._text_widget.index("end-1c").split(".")[0])
 
         for i in range(numbers):
             self.insert("end", str(i + 1))
 
-    def __scrollboth(self, action, position, type=None):
-        self.text_widget.yview_moveto(position)
+    def _scrollboth(self, action, position, type=None):
+        self._text_widget.yview_moveto(position)
         self.yview_moveto(position)
 
-    def __updatescroll(self, first, last, type=None):
-        self.text_widget.yview_moveto(first)
+    def _updatescroll(self, first, last, type=None):
+        self._text_widget.yview_moveto(first)
         self.yview_moveto(first)
-        self.scroll_widget.set(first, last)
+        self._scroll_widget.set(first, last)
 
 ##################################################
 

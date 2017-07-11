@@ -23,42 +23,51 @@ class FilePicker(ttk.Frame):
     filePicker.pack()
 
             -----PARAMETERS-----
-    parent
-    filetypes = The types of files the user can select.
+    parent     = The parent of the widget.
+    filetypes  = The types of files the user can select.
+    directory  = The directory the window will open at.
 
             -----CONTENTS-----
     ---VARIABLES---
-    variable  = Holds the picked file.
+    parent     = The parent of the widget.
+    _filetypes = The types of files the user can select.
+    _directory = The directory the window will open at.
+
+    ---TKINTER VARIABLES---
+    _variable  = Holds the picked file.
 
     ---WIDGETS---
     self
-    entry     = The Entry used to show the picked file.
-    button    = The Button that lets the user pick a file.
+    _entry     = The Entry used to show the picked file.
+    _button    = The Button that lets the user pick a file.
 
     ---FUNCTIONS---
-    browse()  = Opens the file browser.
-    get()     = Returns the value of variable.
+    _browse()  = Opens the file browser.
+    get()      = Returns the value of variable.
     """
-    def __init__(self, parent, filetypes=(("All Files", "*.*"), ("", "")), *args):
+    def __init__(self, parent, filetypes=(("All Files", "*.*"), ("", "")), directory="", *args):
         ttk.Frame.__init__(self, parent, *args)
-        self.filetypes = filetypes
+        self.parent = parent
+        self._filetypes = filetypes
+        self._directory = directory
 
-        self.variable = tk.StringVar()
+        self._variable = tk.StringVar()
 
-        self.entry = ttk.Entry(self, textvariable=self.variable)
-        self.entry.pack(side="left", fill="x", expand=True)
+        self._entry = ttk.Entry(self, textvariable=self._variable)
+        self._entry.pack(side="left", fill="x", expand=True)
 
-        self.button = ttk.Button(self, text="Browse", command=self.browse)
-        self.button.pack(side="right")
+        self._button = ttk.Button(self, text="Browse", command=self._browse)
+        self._button.pack(side="right")
 
-    def browse(self):
+    def _browse(self):
         """Opens a file browser."""
-        file = filedialog.askopenfile(filetype=self.filetypes)
-        self.variable.set(file.name)
+        file = filedialog.askopenfile(filetype=self._filetypes, initialdir=self._directory)
+        self._variable.set(file.name)
+        file.close()
 
     def get(self):
         """Returns the chosen file."""
-        return self.variable.get()
+        return self._variable.get()
 
 ##################################################
 

@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "EditableLabel"
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __author__ = "DeflatedPickle"
 
 
@@ -22,56 +22,68 @@ class EditableLabel(ttk.Label):
     editableLabel.pack()
 
             -----PARAMETERS-----
-    text        = The text of the label starts with.
-    does_resize = Determines whether the entry resizes with to the text.
+    parent      = The parent of the widget.
+    text        = The text of the Label starts with.
+    does_resize = Determines whether the Entry resizes with to the text.
 
             -----CONTENTS-----
     ---VARIABLES---
-    variable    = The text inside of the entry.
+    parent      = The parent of the widget.
+    _text       = The text of the Label starts with.
+
+    ---TKINTER VARIABLES---
+    _variable   = The text inside of the Entry.
 
     ---WIDGETS---
     self
-    entry       = The Entry widget.
+    _entry      = The Entry widget.
 
     ---FUNCTIONS---
-    edit()      = Opens the entry.
-    confirm()   = Closes the entry.
-    resize()    = Resizes the entry to the text inside.
+    _edit()     = Opens the Entry.
+    _confirm()  = Closes the Entry.
+    _resize()   = Resizes the Entry to the text inside.
+    get()       = Returns the text of the Label.
     """
     def __init__(self, parent, text="Edit", does_resize=False, *args):
         ttk.Label.__init__(self, parent, *args)
+        self.parent = parent
+        self._text = text
 
-        self.variable = tk.StringVar()
-        self.configure(textvariable=self.variable)
-        self.variable.set(text)
+        self._variable = tk.StringVar()
+        self.configure(textvariable=self._variable)
+        self._variable.set(self._text)
 
-        self.entry = ttk.Entry(self, textvariable=self.variable)
+        self._entry = ttk.Entry(self, textvariable=self._variable)
 
-        self.bind("<Double-Button-1>", self.edit)
-        self.bind("<Enter>", self.configure(cursor="hand2"))
-        self.entry.bind("<FocusOut>", self.confirm)
-        self.entry.bind("<Return>", self.confirm)
+        self.bind("<Double-Button-1>", self._edit, "+")
+        self.bind("<Enter>", lambda: self.configure(cursor="hand2"), "+")
+        self._entry.bind("<FocusOut>", self._confirm, "+")
+        self._entry.bind("<Return>", self._confirm, "+")
 
         if does_resize:
-            self.entry.bind("<Key>", self.resize)
-            self.resize()
+            self._entry.bind("<Key>", self._resize)
+            self._resize()
 
-        self.configure(width=self.entry.cget("width"))
+        self.configure(width=self._entry.cget("width"))
 
-    def edit(self, *args):
+    def _edit(self, event=None):
         """Allows the Label to be edited."""
-        self.entry.pack(fill="both")
-        self.entry.focus_force()
-        self.entry.icursor("end")
+        self._entry.pack(fill="both")
+        self._entry.focus_set()
+        self._entry.icursor("end")
 
-    def confirm(self, *args):
+    def _confirm(self, event=None):
         """Stops the Label from being edited."""
-        self.entry.pack_forget()
-        self.configure(width=self.entry.cget("width"))
+        self._entry.pack_forget()
+        self.configure(width=self._entry.cget("width"))
 
-    def resize(self, *args):
+    def _resize(self, event=None):
         """Resizes the Entry to the text inside."""
-        self.entry.configure(width=len(str(self.variable.get())) + 1)
+        self._entry.configure(width=len(str(self._variable.get())) + 1)
+
+    def get(self):
+        """Returns the text of the Label."""
+        return self._variable.get()
 
 ##################################################
 

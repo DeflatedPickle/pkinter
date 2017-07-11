@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ValidEntry"
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 __author__ = "DeflatedPickle"
 
 
@@ -23,46 +23,50 @@ class ValidEntry(ttk.Entry):
     validEntry.pack()
 
             -----PARAMETERS-----
-    parent
-    valid_list = The list of valid strings.
+    parent      = The parent of the widget.
+    valid_list  = The list of valid strings.
 
             -----CONTENTS-----
     ---VARIABLES---
-    valid_list = The list of valid strings.
-    valid      = If the text is valid or not.
+    parent      = The parent of the widget.
+    _valid_list = The list of valid strings.
+    _valid      = If the text is valid or not.
+
+    ---TKINTER VARIABLES---
+    None
 
     ---WIDGETS---
     self
 
     ---FUNCTIONS---
-    check()    = Checks the text in the Entry.
-    is_valid() = Returns the variable "valid".
+    _check()    = Checks the text in the Entry.
+    is_valid()  = Returns the variable "valid".
     """
     def __init__(self, parent, valid_list=[], *args):
         ttk.Entry.__init__(self, parent, *args)
-        self.valid_list = valid_list
-        self.valid = False
+        self.parent = parent
+        self._valid_list = valid_list
+        self._valid = False
 
-        self.style = ttk.Style()
-        self.style.configure("Valid.TEntry", foreground="green")
-        self.style.configure("NotValid.TEntry", foreground="red")
+        ttk.Style().configure("Valid.TEntry", foreground="green")
+        ttk.Style().configure("NotValid.TEntry", foreground="red")
 
         self.configure(style="Valid.TEntry")
-        self.bind("<KeyRelease>", self.check)
+        self.bind("<KeyRelease>", self._check, "+")
 
-    def check(self, *args):
+    def _check(self, *args):
         """Checks the text in the Entry."""
-        if self.get() in self.valid_list:
+        if self.get() in self._valid_list:
             self.configure(style="Valid.TEntry")
-            self.valid = True
+            self._valid = True
 
-        elif self.get() not in self.valid_list:
+        elif self.get() not in self._valid_list:
             self.configure(style="NotValid.TEntry")
-            self.valid = False
+            self._valid = False
 
     def is_valid(self):
         """Returns whether or not the text is valid."""
-        return self.valid
+        return self._valid
 
 ##################################################
 

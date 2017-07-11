@@ -9,7 +9,7 @@ from tkinter.colorchooser import *
 # link
 
 __title__ = "ColourPickerButton"
-__version__ = "1.3.4"
+__version__ = "1.3.5"
 __author__ = "DeflatedPickle"
 
 
@@ -24,36 +24,42 @@ class ColourPickerButton(ttk.Button):
     colourPickerButton.pick()
 
             -----PARAMETERS-----
+    parent         = The parent of the widget.
     text           = The text shown on the button.
 
             -----CONTENTS-----
     ---VARIABLES---
-    text           = The text shown on the button.
+    parent         = The parent of the widget.
+    _text          = The text shown on the button.
+
+    ---TKINTER VARIABLES---
+    None
 
     ---WIDGETS---
     self
 
     ---FUNCTIONS---
-    pick_colour()  = Opens the colour picker window.
+    _pick_colour() = Opens the colour picker window.
     reset()        = Resets the button.
     get()          = Gets the text of the button.
     """
     def __init__(self, parent, text="Pick A Colour", *args):
-        ttk.Button.__init__(self, parent, text=text, command=self.pick_colour, *args)
-        self.text = text
+        ttk.Button.__init__(self, parent, text=text, command=self._pick_colour, *args)
+        self.parent = parent
+        self._text = text
 
         ttk.Style().configure("ColourButton.TButton")
 
         self.configure(style="ColourButton.TButton")
 
-    def pick_colour(self):
+    def _pick_colour(self):
         colour = askcolor()
         self.configure(text=colour[1])
         ttk.Style().configure("ColourButton.TButton", background=colour[1])
 
     def reset(self):
         """Resets the button."""
-        self.configure(text=self.text)
+        self.configure(text=self._text)
         ttk.Style().configure("ColourButton.TButton", background=ttk.Style().lookup("TButton", "background"))
 
     def get(self):

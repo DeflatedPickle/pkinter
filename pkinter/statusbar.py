@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Statusbar"
-__version__ = "1.3.3"
+__version__ = "1.3.4"
 __author__ = "DeflatedPickle"
 
 
@@ -24,11 +24,14 @@ class Statusbar(ttk.Frame):
     statusbar.add_separator()
 
             -----PARAMETERS-----
-    parent
+    parent           = The parent of the widget.
 
             -----CONTENTS-----
     ---VARIABLES---
-    parent
+    parent           = The parent of the widget.
+
+    ---TKINTER VARIABLES---
+    None
 
     ---WIDGETS---
     self
@@ -40,6 +43,7 @@ class Statusbar(ttk.Frame):
     bind_menu()      = Binds a menu to change the value of an added variable.
     add_sizegrip()   = Adds a SizeGrip to the Statusbar.
     add_separator()  = Adds a Separator to the Statusbar.
+    _menu_select()   = Finds the selected item in a menu and sets a variable to the correct text.
     """
     def __init__(self, parent, *args):
         ttk.Frame.__init__(self, parent, *args)
@@ -52,9 +56,9 @@ class Statusbar(ttk.Frame):
 
         return widget
 
-    def add_variable(self, textvariable=None, side="left"):
+    def add_variable(self, variable=None, side="left"):
         """Adds a Label controlled by a variable to the Statusbar."""
-        widget = ttk.Label(self, textvariable=textvariable)
+        widget = ttk.Label(self, textvariable=variable)
         widget.pack(side=side)
 
         return widget
@@ -66,10 +70,10 @@ class Statusbar(ttk.Frame):
 
         return widget
 
-    def add_separator(self):
+    def add_separator(self, side="left"):
         """Adds a Separator to the Statusbar."""
         widget = ttk.Separator(self, orient="vertical")
-        widget.pack(side="left", fill="y", padx=3, pady=1)
+        widget.pack(side=side, fill="y", padx=3, pady=1)
 
         return widget
 
@@ -80,9 +84,9 @@ class Statusbar(ttk.Frame):
 
     def bind_menu(self, menu, variable, options=[]):
         """Binds a menu to change the text of a variable."""
-        menu.bind("<<MenuSelect>>", lambda event: self.menu_select(event, variable=variable, options=options), "+")
+        menu.bind("<<MenuSelect>>", lambda event: self._menu_select(event, variable=variable, options=options), "+")
 
-    def menu_select(self, event, variable, options):
+    def _menu_select(self, event, variable, options):
         index = self.parent.call(event.widget, "index", "active")
         if index != "none":
             try:

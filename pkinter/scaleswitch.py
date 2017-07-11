@@ -8,7 +8,7 @@ from tkinter import ttk
 # https://developer.gnome.org/gtk3/stable/GtkSwitch.html
 
 __title__ = "ScaleSwitch"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
@@ -22,55 +22,59 @@ class ScaleSwitch(ttk.Scale):
     switch.pack()
 
             -----PARAMETERS-----
-    parent
+    parent      = The parent of the widget.
 
             -----CONTENTS-----
     ---VARIABLES---
-    variable    = The variable used for the widget.
+    parent      = The parent of the widget.
+
+    ---TKINTER VARIABLES---
+    _variable   = The variable used for the widget.
 
     ---WIDGETS---
     self
 
     ---FUNCTIONS---
-    activate()  = Checks value of variable toggles the Switch.
+    _activate() = Checks value of variable toggles the Switch.
     toggle()    = Switches the Switch to the opposite state.
-    on()        = Changes the Button to the on state.
-    off()       = Changes the Button to the off state.
+    turn_on()   = Changes the Switch to the on state.
+    turn_off()  = Changes the Switch to the off state.
     get_state() = Returns the state of the Switch.
     """
     def __init__(self, parent, *args):
         ttk.Scale.__init__(self, parent, from_=0, to=1, *args)
+        self.parent = parent
 
-        self.variable = tk.DoubleVar()
-        self.configure(variable=self.variable)
+        self._variable = tk.DoubleVar()
+        self.configure(variable=self._variable)
 
-        self.bind("<ButtonRelease-1>", self.activate)
+        self.bind("<ButtonRelease-1>", self._activate, "+")
 
-    def activate(self, *args):
-        if self.variable.get() >= 0.5:
-            self.variable.set(True)
+    def _activate(self, event=None):
+        if self._variable.get() >= 0.5:
+            self._variable.set(True)
 
         else:
-            self.variable.set(False)
+            self._variable.set(False)
 
     def toggle(self):
         """Switches the LabelFrame to the opposite state."""
-        self.variable.set(not self.variable.get())
-        self.activate()
+        self._variable.set(not self._variable.get())
+        self._activate()
 
-    def on(self):
+    def turn_on(self):
         """Turns the Switch on."""
-        self.variable.set(True)
-        self.activate()
+        self._variable.set(True)
+        self._activate()
 
-    def off(self):
+    def turn_off(self):
         """Turns the Switch off."""
-        self.variable.set(False)
-        self.activate()
+        self._variable.set(False)
+        self._activate()
 
     def get_state(self):
         """Gets the state of the Switch."""
-        return self.variable.get()
+        return self._variable.get()
 
 ##################################################
 

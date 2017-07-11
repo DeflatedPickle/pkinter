@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name="pkinter",
-      version="1.30.1",
+      version="1.31.0",
       description="A set of useful widgets for use with TkInter.",
       author="DeflatedPickle",
       author_email="DeflatedPickle@gmail.com",

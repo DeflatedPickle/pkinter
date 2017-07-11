@@ -22,39 +22,44 @@ class LimitedEntry(ttk.Entry):
     limitedEntry.pack()
 
             -----PARAMETERS-----
+    parent            = The parent of the widget.
     max_chars         = The maximum amount of characters in the Entry.
 
             -----CONTENTS-----
     ---VARIABLES---
-    max_chars         = The maximum amount of characters in the Entry.
-    variable          = The text in the Entry.
+    parent            = The parent of the widget.
+    _max_chars        = The maximum amount of characters in the Entry.
+
+    ---TKINTER VARIABLES---
+    _variable         = The text in the Entry.
 
     ---WIDGETS---
     self
 
     ---FUNCTIONS---
-    check()           = Removes any characters over the max_chars.
+    _check()          = Removes any characters over the max_chars.
     characters_left() = Returns the amount of characters left.
     """
     def __init__(self, parent, max_chars=10, *args):
         ttk.Entry.__init__(self, parent, *args)
-        self.max_chars = max_chars
+        self.parent = parent
+        self._max_chars = max_chars
 
-        self.variable = tk.StringVar()
+        self._variable = tk.StringVar()
 
-        self.configure(textvariable=self.variable)
-        self.bind("<Key>", self.check)
+        self.configure(textvariable=self._variable)
+        self.bind("<Key>", self._check, "+")
 
-        self.check()
+        self._check()
 
-    def check(self, *args):
-        if self.max_chars != 0:
-            if len(self.variable.get()) > self.max_chars:
-                self.variable.set(self.variable.get()[:-1])
+    def _check(self, event=None):
+        if self._max_chars != 0:
+            if len(self._variable.get()) > self._max_chars:
+                self._variable.set(self._variable.get()[:-1])
 
     def characters_left(self):
         """Returns the characters left available in the Entry."""
-        return self.max_chars - len(self.variable.get())
+        return self._max_chars - len(self._variable.get())
 
 ##################################################
 

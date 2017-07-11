@@ -23,38 +23,53 @@ class LabeledSeparator(ttk.Frame):
     labeledSeparator.pack(fill="x")
 
             -----PARAMETERS-----
-    text       = The text shown on the label.
-    orient     = The orientation of the separator.
-    text_align = The alignment of the label.
-    padding    = The padding around the label.
+    parent      = The parent of the widget.
+    text        = The text shown on the label.
+    orient      = The orientation of the separator.
+    text_align  = The alignment of the label.
+    padding     = The padding around the label.
 
             -----CONTENTS-----
     ---VARIABLES---
+    parent      = The parent of the widget.
+    _text       = The text shown on the label.
+    _orient     = The orientation of the separator.
+    _text_align = The alignment of the label.
+    _padding    = The padding around the label.
+
+    ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
     self
-    separator  = The separator.
-    label      = The label shown on top of the separator.
+    _separator   = The separator.
+    _label       = The label shown on top of the separator.
 
     ---FUNCTIONS---
     None
     """
     def __init__(self, parent, text="", orient="horizontal", text_align="", padding=5, *args):
         ttk.Frame.__init__(self, parent, *args)
+        self.parent = parent
+        self._text = text
+        self._orient = orient
+        self._text_align = text_align
+        self._padding = padding
 
-        self.separator = ttk.Separator(self, orient=orient)
-        self.label = ttk.Label(self, text=text)
+        self._separator = ttk.Separator(self, orient=self._orient)
+        self._label = ttk.Label(self, text=self._text)
 
-        if orient == "horizontal":
+        if self._orient == "horizontal":
             self.grid_columnconfigure(0, weight=1)
-            self.separator.grid(row=0, column=0, sticky="we")
-            self.label.grid(row=0, column=0, sticky=text_align, padx=padding)
 
-        elif orient == "vertical":
+            self._separator.grid(row=0, column=0, sticky="we")
+            self._label.grid(row=0, column=0, sticky=self._text_align, padx=self._padding)
+
+        elif self._orient == "vertical":
             self.grid_rowconfigure(0, weight=1)
-            self.separator.grid(row=0, column=0, sticky="ns")
-            self.label.grid(row=0, column=0, sticky=text_align, pady=padding)
+
+            self._separator.grid(row=0, column=0, sticky="ns")
+            self._label.grid(row=0, column=0, sticky=self._text_align, pady=self._padding)
 
 ##################################################
 

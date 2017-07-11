@@ -10,7 +10,7 @@ import os
 # link
 
 __title__ = "Hyperlink"
-__version__ = "1.2.3"
+__version__ = "1.2.4"
 __author__ = "DeflatedPickle"
 
 
@@ -26,59 +26,66 @@ class Hyperlink(ttk.Label):
     hyperlink.pack ()
 
             -----PARAMETERS-----
+    parent             = The parent of the widget.
     text               = The text shown on the Label.
     link               = Holds the website to go to.
 
             -----CONTENTS-----
     ---VARIABLES---
-    text               = The text shown on the Label.
-    link               = Holds the website to go to.
-    font               = The font of the Label.
+    parent             = The parent of the widget.
+    _text               = The text shown on the Label.
+    _link               = Holds the website to go to.
+    _font               = The font of the Label.
+
+    ---TKINTER VARIABLES---
+    None
 
     ---WIDGETS---
     self
 
     ---FUNCTIONS---
-    enter()           = Runs when the mouse enters the widget.
-    leave()           = Runs when the mouse leaves the widget.
-    button()          = Runs when the user clicks the widget.
-    button_released() = Runs when the user stops clicking on the widget.
+    _enter()           = Runs when the mouse enters the widget.
+    _leave()           = Runs when the mouse leaves the widget.
+    _button()          = Runs when the user clicks the widget.
+    _button_released() = Runs when the user stops clicking on the widget.
     """
     def __init__(self, parent, text="", link="https://github.com/DeflatedPickle/pkinter", *args):
         ttk.Label.__init__(self, parent, foreground="blue", cursor="arrow", *args)
-        self.text = text
-        self.link = link
-        self.font = font.Font(self, self.cget("font"))
-        self.configure(font=self.font)
+        self.parent = parent
+        self._text = text
+        self._link = link
 
-        if self.text == "":
-            self.configure(text=self.link)
+        self._font = font.Font(self, self.cget("font"))
+        self.configure(font=self._font)
+
+        if self._text == "":
+            self.configure(text=self._link)
 
         else:
-            self.configure(text=self.text)
+            self.configure(text=self._text)
 
-        self.bind("<Enter>", self.enter)
-        self.bind("<Leave>", self.leave)
-        self.bind("<Button-1>", self.button)
-        self.bind("<ButtonRelease-1>", self.button_released)
+        self.bind("<Enter>", self._enter, "+")
+        self.bind("<Leave>", self._leave, "+")
+        self.bind("<Button-1>", self._button, "+")
+        self.bind("<ButtonRelease-1>", self._button_released, "+")
 
-    def enter(self, *args):
+    def _enter(self, event=None):
         self.configure(foreground="dodgerblue", cursor="hand2")
-        self.font.configure(underline=True)
+        self._font.configure(underline=True)
 
-    def leave(self, *args):
+    def _leave(self, event=None):
         self.configure(foreground="blue", cursor="arrow")
-        self.font.configure(underline=False)
+        self._font.configure(underline=False)
 
-    def button(self, *args):
+    def _button(self, event=None):
         self.configure(foreground="medium blue", cursor="arrow")
-        self.font.configure(underline=True)
+        self._font.configure(underline=True)
 
-    def button_released(self, *args):
+    def _button_released(self, event=None):
         self.configure(foreground="dodgerblue", cursor="arrow")
-        self.font.configure(underline=False)
-        # webbrowser.open_new_tab(self.link)
-        os.startfile(self.link)
+        self._font.configure(underline=False)
+        # webbrowser.open_new_tab(self._link)
+        os.startfile(self._link)
 
 ##################################################
 

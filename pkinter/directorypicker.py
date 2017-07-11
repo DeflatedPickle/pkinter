@@ -9,7 +9,7 @@ from tkinter import filedialog
 # http://docs.wxwidgets.org/3.1/classwx_dir_picker_ctrl.html
 
 __title__ = "DirectoryPicker"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
@@ -23,40 +23,47 @@ class DirectoryPicker(ttk.Frame):
     directoryPicker.pack()
 
             -----PARAMETERS-----
-    parent
+    parent    = The parent of the widget.
+    directory = The directory the window will open at.
 
             -----CONTENTS-----
     ---VARIABLES---
-    variable = Holds the picked directory.
+    parent     = The parent of the widget.
+    _directory = The directory the window will open at.
+
+    ---TKINTER VARIABLES---
+    _variable  = Holds the picked directory.
 
     ---WIDGETS---
     self
-    entry    = The Entry used to show the picked directory.
-    button   = The Button that lets the user pick a directory.
+    _entry     = The Entry used to show the picked directory.
+    _button    = The Button that lets the user pick a directory.
 
     ---FUNCTIONS---
-    browse() = Opens the directory browser.
-    get()    = Returns the value of variable.
+    _browse()  = Opens the directory browser.
+    get()      = Returns the value of variable.
     """
-    def __init__(self, parent, *args):
+    def __init__(self, parent, directory="", *args):
         ttk.Frame.__init__(self, parent, *args)
+        self.parent = parent
+        self._directory = directory
 
-        self.variable = tk.StringVar()
+        self._variable = tk.StringVar()
 
-        self.entry = ttk.Entry(self, textvariable=self.variable)
-        self.entry.pack(side="left", fill="x", expand=True)
+        self._entry = ttk.Entry(self, textvariable=self._variable)
+        self._entry.pack(side="left", fill="x", expand=True)
 
-        self.button = ttk.Button(self, text="Browse", command=self.browse)
-        self.button.pack(side="right")
+        self._button = ttk.Button(self, text="Browse", command=self._browse)
+        self._button.pack(side="right")
 
-    def browse(self):
+    def _browse(self):
         """Opens a directory browser."""
-        directory = filedialog.askdirectory()
-        self.variable.set(directory)
+        directory = filedialog.askdirectory(initialdir=self._directory)
+        self._variable.set(directory)
 
     def get(self):
         """Returns the chosen directory."""
-        return self.variable.get()
+        return self._variable.get()
 
 ##################################################
 

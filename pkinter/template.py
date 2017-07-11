@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Template"
-__version__ = "1.1.4"
+__version__ = "1.1.5"
 __author__ = "DeflatedPickle"
 
 
@@ -22,10 +22,13 @@ class Template(ttk.Frame):
     template.pack()
 
             -----PARAMETERS-----
-    parent
+    parent = The parent of the widget.
 
             -----CONTENTS-----
     ---VARIABLES---
+    parent = The parent of the widget.
+
+    ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
@@ -36,6 +39,7 @@ class Template(ttk.Frame):
     """
     def __init__(self, parent, *args):
         ttk.Frame.__init__(self, parent, *args)
+        self.parent = parent
 
 ##################################################
 

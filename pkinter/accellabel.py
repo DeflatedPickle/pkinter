@@ -8,7 +8,7 @@ from tkinter import ttk
 # https://developer.gnome.org/gtk3/stable/GtkAccelLabel.html
 
 __title__ = "AccelLabel"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
@@ -22,30 +22,42 @@ class AccelLabel(ttk.Frame):
     accelLabel.pack()
 
             -----PARAMETERS-----
-    label_text       = The text used for the Label.
-    accelerator_text = The text used for the accelerator Label.
-    separator        = Whether or not the Separator is shown.
+    parent            = The parent of the widget.
+    label_text        = The text used for the Label.
+    accelerator_text  = The text used for the accelerator Label.
+    has_separator     = Whether or not the Separator is shown.
 
             -----CONTENTS-----
     ---VARIABLES---
+    parent            = The parent of the widget.
+    _label_text       = The text used for the Label.
+    _accelerator_text = The text used for the accelerator Label.
+    _has_separator    = Whether or not the Separator is shown.
+
+    ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
     self
-    label            = The Label widget.
-    accelerator      = The accelerator Label widget.
+    _label            = The Label widget.
+    _accelerator      = The accelerator Label widget.
 
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, label_text="", accelerator_text="", separator=False, *args):
+    def __init__(self, parent, label_text="", accelerator_text="", has_separator=False, *args):
         ttk.Frame.__init__(self, parent, *args)
+        self.parent = parent
 
-        self.label = ttk.Label(self, text=label_text).pack(side="left", fill="x")
-        self.accelerator = ttk.Label(self, text=accelerator_text).pack(side="right")
+        self._label_text = label_text
+        self._accelerator_text = accelerator_text
+        self._has_separator = has_separator
 
-        if separator:
-            self.separator = ttk.Separator(self, orient="vertical").pack(side="right", fill="y")
+        self._label = ttk.Label(self, text=self._label_text).pack(side="left", fill="x")
+        self._accelerator = ttk.Label(self, text=self._accelerator_text).pack(side="right")
+
+        if self._has_separator:
+            self._separator = ttk.Separator(self, orient="vertical").pack(side="right", fill="y")
 
 ##################################################
 

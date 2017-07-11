@@ -8,7 +8,7 @@ from tkinter import ttk
 # http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/ttk-LabelFrame.html
 
 __title__ = "ToggledLabelFrame"
-__version__ = "1.2.4"
+__version__ = "1.2.5"
 __author__ = "DeflatedPickle"
 
 
@@ -24,60 +24,68 @@ class ToggledLabelFrame(ttk.LabelFrame):
     button = Button(toggledFrame.frame).pack()
 
             -----PARAMETERS-----
-    parent
-    on_text       = The text displayed when the button is active.
-    off_text      = The text displayed when the button is inactive.
-    default_state = The state the widget starts on.
-    state         = The state of the button.
+    parent         = The parent of the widget.
+    on_text        = The text displayed when the button is active.
+    off_text       = The text displayed when the button is inactive.
+    default_state  = The state the widget starts on.
+    state          = The state of the button.
 
             -----CONTENTS-----
     ---VARIABLES---
-    on_text       = The text displayed when the button is active.
-    off_text      = The text displayed when the button is inactive.
-    variable      = The variable used for the Button.
+    parent         = The parent of the widget.
+    _on_text       = The text displayed when the button is active.
+    _off_text      = The text displayed when the button is inactive.
+    _default_state = The state the widget starts on.
+    _state         = The state of the button.
+
+    ---TKINTER VARIABLES---
+    variable       = The variable used for the Button.
 
     ---WIDGETS---
     self
-    fill          = A placeholder.
-    button        = The button that toggles the frame.
-    frame         = The frame which holds widgets.
+    _fill          = A placeholder.
+    _button        = The button that toggles the frame.
+    _frame         = The frame which holds widgets.
 
     ---FUNCTIONS---
-    activate()    = Checks value of variable and shows or hides the frame.
-    toggle()      = Switches the label frame to the opposite state.
+    _activate()    = Checks value of variable and shows or hides the frame.
+    toggle()       = Switches the label frame to the opposite state.
     """
     def __init__(self, parent, on_text="Active", off_text="Inactive", default_state=False, state="enabled", *args):
         ttk.LabelFrame.__init__(self, parent, labelanchor="n", *args)
-        self.on_text = on_text
-        self.off_text = off_text
+        self.parent = parent
+        self._on_text = on_text
+        self._off_text = off_text
+        self._default_state = default_state
+        self._state = state
 
-        self.fill = tk.Frame(self, height=5)
+        self._fill = tk.Frame(self, height=5)
 
-        self.variable = tk.IntVar()
-        self.variable.set(default_state)
+        self._variable = tk.IntVar()
+        self._variable.set(default_state)
 
-        self.button = ttk.Checkbutton(self, width=11, state=state, variable=self.variable, command=self.activate, style="TButton")
-        self.configure(labelwidget=self.button)
+        self._button = ttk.Checkbutton(self, width=11, state=self._state, variable=self._variable, command=self._activate, style="TButton")
+        self.configure(labelwidget=self._button)
 
         self.frame = ttk.Frame(self)
 
-        self.activate()
+        self._activate()
 
-    def activate(self):
-        if not self.variable.get():
-            self.fill.pack()
+    def _activate(self):
+        if not self._variable.get():
+            self._fill.pack()
             self.frame.forget()
-            self.button.configure(text=self.off_text)
+            self._button.configure(text=self._off_text)
 
-        if self.variable.get():
-            self.fill.forget()
+        if self._variable.get():
+            self._fill.forget()
             self.frame.pack(fill="both", expand=True)
-            self.button.configure(text=self.on_text)
+            self._button.configure(text=self._on_text)
 
     def toggle(self):
         """Switches the LabelFrame to the opposite state."""
-        self.variable.set(not self.variable.get())
-        self.activate()
+        self._variable.set(not self._variable.get())
+        self._activate()
 
 ##################################################
 

@@ -45,7 +45,7 @@ statusbar.bind_widget(radiobutton3, variable, "A Third Radiobutton", "")
 statusbar.bind_menu(menu, variable, ["Open the File menu.", "Open the Help menu."])
 statusbar.bind_menu(filemenu, variable, ["Tear-off the menu.", "Create a new file.", "Save the current file."])
 statusbar.bind_menu(helpmenu, variable, ["Tear-off the menu.", "Open the About window.", "", "Open the Changelog."])
-statusbar.add_variable(textvariable=variable)
+statusbar.add_variable(variable=variable)
 
 ##################################################
 
@@ -123,10 +123,10 @@ pv.add(child=frame3)
 ##################################################
 
 
-def function():
+def func():
     print("Function")
 
-bb = pk.BoundButton(frame, text="BoundButton", key="b", command=function)
+bb = pk.BoundButton(frame, text="BoundButton", key="b", command=func)
 bb.grid(row=3, column=1)
 
 ##################################################

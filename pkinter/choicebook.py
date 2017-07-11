@@ -8,7 +8,7 @@ from tkinter import ttk
 # http://docs.wxwidgets.org/3.1/classwx_choicebook.html
 
 __title__ = "ChoiceBook"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -25,51 +25,58 @@ class ChoiceBook(ttk.Frame):
     choiceBook.add(child=frame, label="Frame")
 
             -----PARAMETERS-----
-    combobox_position = The position of the Combobox.
+    combobox_position  = The position of the Combobox.
 
             -----CONTENTS-----
     ---VARIABLES---
-    page_list         = A list of the pages.
-    label_list        = A list of the labels.
-    variable          = The current page of the widget.
+    parent             = The parent of the widget.
+    _combobox_position = The position of the Combobox.
+    _page_list         = A list of the pages.
+    _label_list        = A list of the labels.
+
+    ---TKINTER VARIABLES---
+    _variable          = The current page of the widget.
 
     ---WIDGETS---
     self
-    combobox          = The Combobox used to change page.
-    frame             = Holds the currently shown Frame.
+    _combobox          = The Combobox used to change page.
+    frame              = Holds the currently shown Frame.
 
     ---FUNCTIONS---
-    change_page()     = Changes the page to the selected one.
-    add()             = Adds a new page to the widget.
+    _change_page()     = Changes the page to the selected one.
+    add()              = Adds a new page to the widget.
     """
     def __init__(self, parent, combobox_position="top", *args):
         ttk.Frame.__init__(self, parent, *args)
+        self.parent = parent
+        self._combobox_position = combobox_position
 
-        self.page_list = []
-        self.label_list = []
+        self._page_list = []
+        self._label_list = []
 
-        self.variable = tk.StringVar()
-        self.combobox = ttk.Combobox(self, state="readonly", textvariable=self.variable)
-        self.combobox.pack(side=combobox_position, fill="x")
-        self.combobox.bind("<<ComboboxSelected>>", self.change_page)
+        self._variable = tk.StringVar()
+
+        self._combobox = ttk.Combobox(self, state="readonly", textvariable=self._variable)
+        self._combobox.pack(side=combobox_position, fill="x")
+        self._combobox.bind("<<ComboboxSelected>>", self._change_page, "+")
 
         self.frame = ttk.Frame(self)
         self.frame.pack(fill="both", expand=True)
 
-    def change_page(self, *args):
-        for i in range(len(self.page_list)):
-            self.page_list[i].pack_forget()
+    def _change_page(self, event=None):
+        for i in range(len(self._page_list)):
+            self._page_list[i].pack_forget()
 
-        self.page_list[self.label_list.index(self.variable.get())].pack(fill="both", expand=True)
+        self._page_list[self._label_list.index(self._variable.get())].pack(fill="both", expand=True)
 
     def add(self, child=None, label=""):
         """Adds a new page to the ChoiceBook."""
-        self.page_list.append(child)
-        self.label_list.append(label)
-        self.variable.set(self.label_list[0])
-        self.combobox.configure(values=self.label_list)
+        self._page_list.append(child)
+        self._label_list.append(label)
+        self._variable.set(self._label_list[0])
+        self._combobox.configure(values=self._label_list)
 
-        self.change_page()
+        self._change_page()
 
 ##################################################
 
