@@ -11,7 +11,7 @@ from idlelib.ToolTip import ToolTipBase
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn742393(v=vs.85).aspx
 
 __title__ = "Ribbon"
-__version__ = "1.5.0"
+__version__ = "1.6.0"
 __author__ = "DeflatedPickle"
 
 
@@ -107,12 +107,15 @@ class Group(ttk.Frame):
                 self._button.grid_remove()
 
     def add_button(self, text="", tooltip_title="", tooltip: bool=True, tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", important=False):
-        self.add_widget(text, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "button", important)
+        self.add_widget(text, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "button", important=important)
 
     def add_menubutton(self, text="", tooltip: bool=True, tooltip_title="", tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", important=False):
-        self.add_widget(text, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "menubutton", important)
+        self.add_widget(text, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "menubutton", important=important)
 
-    def add_widget(self, text="", tooltip: bool=True, tooltip_title="", tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", type_: str="", important=False):  # important will make the button bigger than others (not implemented).
+    def add_combobox(self, type_=""):
+        self.add_widget(type_="combobox" + ("::" + type_ if type_ else ""), important=True)
+
+    def add_widget(self, text="", tooltip: bool=True, tooltip_title="", tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", type_: str="", combobox_type="", important=False):  # important will make the button bigger than others (not implemented).
         widget = None
 
         if type_ == "button":
@@ -127,8 +130,17 @@ class Group(ttk.Frame):
             elif not important:
                 widget.configure(style="Ribbon.TMenubutton")
 
+        elif "combobox" in type_:
+            widget = ttk.Combobox(self.frame)
+
+            if "font" in type_:
+                widget.configure(values=font.families())
+
+            elif "size" in type_:
+                widget.configure(width=3, values=[number for number in range(1, 50)])
+
         if important:
-            widget.pack(side="left", fill="y", expand=True)
+            widget.pack(side="left", fill="y" if "combobox" not in type_ else "x", expand=True)
 
         else:
             widget.pack(side="top", fill="x", expand=True)
@@ -245,6 +257,8 @@ if __name__ == "__main__":
     clipboard.add_button(text="Format Painter")
 
     tab_font = r.add_group(home, text="Font", has_button=True)
+    tab_font.add_combobox(type_="font")
+    tab_font.add_combobox(type_="size")
 
     drawing = r.add_group(home, text="Drawing", has_button=True)
     drawing.add_menubutton(text="Arrange", important=True)
