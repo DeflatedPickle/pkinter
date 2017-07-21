@@ -11,7 +11,7 @@ from idlelib.ToolTip import ToolTipBase
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn742393(v=vs.85).aspx
 
 __title__ = "Ribbon"
-__version__ = "1.6.0"
+__version__ = "1.8.1"
 __author__ = "DeflatedPickle"
 
 
@@ -60,23 +60,31 @@ class Ribbon(ttk.Frame):
 
         return frame
 
-    def add_group(self, parent: tk.Widget, text: str="", has_button: bool=False, side: str="left"):
-        group = Group(parent, text=text, has_button=has_button, empty_labels=self._empty_labels)
+    def add_group(self, parent: tk.Widget, text: str="", rows: int=1, has_button: bool=False, side: str="left"):
+        group = Group(parent, text=text, rows=rows, has_button=has_button, empty_labels=self._empty_labels)
         group.pack(side=side, fill="both", expand=True, padx=1, pady=1)
 
         return group
 
 
 class Group(ttk.Frame):
-    def __init__(self, parent, text: str="", has_button: bool=False, empty_labels: bool=False, *args, **kwargs):
+    def __init__(self, parent, text: str="", rows: int=1, has_button: bool=False, empty_labels: bool=False, *args, **kwargs):
         ttk.Frame.__init__(self, parent, style="TLabelframe", *args, **kwargs)
         self.parent = parent
+        self._rows = rows
         self._has_button = has_button
+        self._empty_labels = empty_labels
 
         self._widgets = []
+        self._dictionary_rows = {}
 
-        self.frame = tk.Frame(self)
-        self.frame.pack(side="top", fill="both", expand=True, padx=1, pady=1)
+        # TODO: Add dynamic placing of widgets instead of specified rows.
+
+        for frame in range(self._rows):
+            current_frame = tk.Frame(self)
+            current_frame.pack(side="top", fill="both", expand=True, padx=5, pady=1)
+
+            self._dictionary_rows[frame] = current_frame
 
         ttk.Style().configure("Group.TLabel", background="light gray")
 
@@ -91,7 +99,8 @@ class Group(ttk.Frame):
             self._button = LabelButton(self._frame_bottom, text="\u2198", width=2)
             # self._button.grid(row=0, column=1)
 
-        self._check_widgets()
+        if not self._empty_labels:
+            self._check_widgets()
 
     def _check_widgets(self):
         if len(self._widgets) > 1:
@@ -106,23 +115,42 @@ class Group(ttk.Frame):
             if self._has_button:
                 self._button.grid_remove()
 
-    def add_button(self, text="", tooltip_title="", tooltip: bool=True, tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", important=False):
-        self.add_widget(text, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "button", important=important)
+    def add_button(self, text="", row: int=0, tooltip_title="", tooltip: bool=True, tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", important=False):
+        self._add_widget(text, row, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "button", important=important)
 
-    def add_menubutton(self, text="", tooltip: bool=True, tooltip_title="", tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", important=False):
-        self.add_widget(text, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "menubutton", important=important)
+    def add_menubutton(self, text="", row: int=0, tooltip: bool=True, tooltip_title="", tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", important=False):
+        self._add_widget(text, row, tooltip, tooltip_title, tooltip_description, tooltip_image, tooltip_bind, image, "menubutton", important=important)
 
-    def add_combobox(self, type_=""):
-        self.add_widget(type_="combobox" + ("::" + type_ if type_ else ""), important=True)
+    def add_combobox(self, row: int=0, tooltip: bool=False, type_=""):
+        self._add_widget(row=row, tooltip=tooltip, type_="combobox" + ("::" + type_ if type_ else ""), important=True)
 
-    def add_widget(self, text="", tooltip: bool=True, tooltip_title="", tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", type_: str="", combobox_type="", important=False):  # important will make the button bigger than others (not implemented).
+    def add_buttonbar(self, row: int=0, side="left"):
+        widget = ButtonBar(self._dictionary_rows[row])
+        widget.pack(side=side, fill="x", padx=1)
+
+        self._widgets.append(widget)
+
+        if not self._empty_labels:
+            self._check_widgets()
+
+        return widget
+
+    def add_gallery(self, row: int=0):
+        widget = Gallery(self._dictionary_rows[row])
+        widget.pack(side="left", fill="both", expand=True)
+
+        self._widgets.append(widget)
+
+        return widget
+
+    def _add_widget(self, text="", row: int=0, tooltip: bool=True, tooltip_title="", tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", type_: str="", combobox_type="", important=False):  # important will make the button bigger than others (not implemented).
         widget = None
 
         if type_ == "button":
-            widget = ttk.Button(self.frame, text=text, image=image, style="Toolbutton")
+            widget = ttk.Button(self._dictionary_rows[row], text=text, image=image, style="Toolbutton")
 
         elif type_ == "menubutton":
-            widget = ttk.Menubutton(self.frame, text=text, image=image)
+            widget = ttk.Menubutton(self._dictionary_rows[row], text=text, image=image)
 
             if important:
                 widget.configure(style="RibbonImportant.TMenubutton")
@@ -131,7 +159,7 @@ class Group(ttk.Frame):
                 widget.configure(style="Ribbon.TMenubutton")
 
         elif "combobox" in type_:
-            widget = ttk.Combobox(self.frame)
+            widget = ttk.Combobox(self._dictionary_rows[row])
 
             if "font" in type_:
                 widget.configure(values=font.families())
@@ -149,37 +177,61 @@ class Group(ttk.Frame):
             EnhancedToolTip(widget, tooltip_title, tooltip_description, tooltip_image, tooltip_bind)
 
         self._widgets.append(widget)
-        self._check_widgets()
+
+        if not self._empty_labels:
+            self._check_widgets()
 
         return widget
 
 
-class LabelButton(ttk.Label):
-    def __init__(self, parent, command=None, *args, **kwargs):
-        ttk.Label.__init__(self, parent, anchor="center", style="LabelButtonEnter.TLabel", *args, **kwargs)
-        self.parent = parent
-        self._command = command
-
-        ttk.Style().configure("LabelButtonEnter.TLabel", background="light gray")
-        ttk.Style().configure("LabelButtonButtonPress.TLabel", background="gray")
-
-        self.bind("<ButtonPress-1>", self._button_press)
-        self.bind("<ButtonRelease-1>", self._button_release)
-
-    def _button_press(self, event=None):
-        self.configure(style="LabelButtonButtonPress.TLabel")
-
-        if self._command is not None:
-            self._command()
-
-    def _button_release(self, event=None):
-        self.configure(style="LabelButtonEnter.TLabel")
-
-
 class Gallery(ttk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        ttk.Frame.__init__(self, parent, *args, **kwargs)
+    def __init__(self, parent, item_width: int=15, wrap_after: int=3, wrap_width: int=295, *args, **kwargs):
+        ttk.Frame.__init__(self, parent, style="TLabelframe", *args, **kwargs)
         self.parent = parent
+        self._item_width = item_width
+        self._wrap_after = wrap_after
+        self._wrap_width = wrap_width
+
+        self._current_row = 0
+        self._current_column = 0
+        self._current_width = 0
+
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+
+        self._frame = ttk.Frame(self, width=self._wrap_width)
+        self._frame.grid(row=0, rowspan=3, column=0, sticky="nesw", padx=1, pady=1)
+        self._frame.rowconfigure(0, weight=1)
+        self._frame.grid_propagate(False)
+        self._frame.update_idletasks()
+
+        self._button_up = ttk.Button(self, width=1, text="\u2191")
+        self._button_up.grid(row=0, column=1)
+
+        self._button_down = ttk.Button(self, width=1, text="\u2193")
+        self._button_down.grid(row=1, column=1)
+
+        self._button_show = ttk.Button(self, width=1, text="\u21A1")
+        self._button_show.grid(row=2, column=1)
+
+    def _check_width(self):
+        self._frame.update_idletasks()
+
+        if self._current_width + 98 > self._frame.winfo_width():
+            self._current_column = 0
+            self._current_row += 1
+            self._current_width = 0
+
+    def add_item(self, text: str="", image: str=""):
+        widget = ttk.Radiobutton(self._frame, text=text, image=image, width=self._item_width, style="Toolbutton")
+        widget.grid(row=self._current_row, column=self._current_column, sticky="nesw")
+        widget.update_idletasks()
+
+        self._current_column += 1
+        self._current_width += widget.winfo_width()
+        self._check_width()
+
+        return widget
 
 
 class EnhancedToolTip(ToolTipBase):
@@ -208,7 +260,6 @@ class EnhancedToolTip(ToolTipBase):
         ToolTipBase.showtip(self)
         self.tipwindow.update()
 
-        self.tipwindow.configure(background="lavender")
         self.tipwindow.geometry("{}x{}".format(self.tipwindow.winfo_width() + 50, self.tipwindow.winfo_height()))
 
     def showcontents(self):
@@ -240,6 +291,72 @@ class EnhancedToolTip(ToolTipBase):
         bind = ttk.Label(frame_bottom, text=self._bind, style="ToolTip.TLabel")
         bind.pack(side="right", fill="x", expand=True)
 
+
+class DialogBox(tk.Toplevel):
+    def __init__(self, parent):
+        tk.Toplevel.__init__(self, parent)
+        self.parent = parent
+
+
+class LabelButton(ttk.Label):
+    def __init__(self, parent, command=None, *args, **kwargs):
+        ttk.Label.__init__(self, parent, anchor="center", style="LabelButtonEnter.TLabel", *args, **kwargs)
+        self.parent = parent
+        self._command = command
+
+        ttk.Style().configure("LabelButtonEnter.TLabel", background="light gray")
+        ttk.Style().configure("LabelButtonButtonPress.TLabel", background="gray")
+
+        self.bind("<ButtonPress-1>", self._button_press)
+        self.bind("<ButtonRelease-1>", self._button_release)
+
+    def _button_press(self, event=None):
+        self.configure(style="LabelButtonButtonPress.TLabel")
+
+        if self._command is not None:
+            self._command()
+
+    def _button_release(self, event=None):
+        self.configure(style="LabelButtonEnter.TLabel")
+
+
+class ButtonBar(ttk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        ttk.Frame.__init__(self, parent, style="TLabelframe", *args, **kwargs)
+        self.parent = parent
+
+        self.frame = ttk.Frame(self)
+        self.frame.pack(fill="both", expand=True, padx=1, pady=1)
+
+    def add_button(self, text="", image=""):
+        self._add_widget(text, image, type_="button")
+
+    def add_checkbutton(self, text="", image="", variable: tk.Variable=None):
+        self._add_widget(text, image, variable=variable, type_="checkbutton")
+
+    def add_radiobutton(self, text="", image="", variable: tk.Variable=None, value: int=0):
+        self._add_widget(text, image, variable=variable, value=value, type_="radiobutton")
+
+    def add_menubutton(self, text="", image=""):
+        self._add_widget(text, image, type_="menubutton")
+
+    def _add_widget(self, text="", image="", variable: tk.Variable=None, value: int=0, type_=""):
+        widget = None
+
+        if type_ == "button":
+            widget = ttk.Button(self.frame, text=text, image=image, style="Toolbutton")
+
+        elif type_ == "checkbutton":
+            widget = ttk.Checkbutton(self.frame, text=text, image=image, variable=variable, style="Toolbutton")
+
+        elif type_ == "radiobutton":
+            widget = ttk.Radiobutton(self.frame, text=text, image=image, variable=variable, value=value, style="Toolbutton")
+
+        elif type_ == "menubutton":
+            widget = ttk.Menubutton(self.frame, text=text, image=image, style="Ribbon.TMenubutton")
+
+        widget.pack(side="left", fill="y", expand=True)
+
 ##################################################
 
 if __name__ == "__main__":
@@ -256,16 +373,66 @@ if __name__ == "__main__":
     clipboard.add_button(text="Copy")
     clipboard.add_button(text="Format Painter")
 
-    tab_font = r.add_group(home, text="Font", has_button=True)
+    tab_font = r.add_group(home, text="Font", rows=3, has_button=True)
     tab_font.add_combobox(type_="font")
     tab_font.add_combobox(type_="size")
 
-    drawing = r.add_group(home, text="Drawing", has_button=True)
-    drawing.add_menubutton(text="Arrange", important=True)
-    drawing.add_menubutton(text="Quick Styles", important=True)
-    drawing.add_menubutton(text="Shape Fill")
-    drawing.add_menubutton(text="Shape Outline")
-    drawing.add_menubutton(text="Shape Effects")
+    fontbar = tab_font.add_buttonbar(row=1)
+    fontbar.add_checkbutton(text="B")
+    fontbar.add_checkbutton(text="I")
+    fontbar.add_menubutton(text="U")
+    fontbar.add_checkbutton(text="O")
+    variable_string = tk.BooleanVar()
+    fontbar.add_radiobutton(text="S", variable=variable_string, value=0)
+    fontbar.add_radiobutton(text="S", variable=variable_string, value=1)
+
+    tab_font.add_buttonbar(row=1).add_button(text="Clear")
+
+    colourbar = tab_font.add_buttonbar(row=2)
+    colourbar.add_menubutton(text="A")
+    colourbar.add_menubutton(text="A")
+    colourbar.add_menubutton(text="Aa")
+
+    sizebar = tab_font.add_buttonbar(row=2)
+    sizebar.add_menubutton(text="A")
+    sizebar.add_menubutton(text="a")
+
+    paragraph = r.add_group(home, text="Paragraph", has_button=True, rows=3)
+
+    listbar = paragraph.add_buttonbar()
+    listbar.add_menubutton(text="-")
+    listbar.add_menubutton(text="1")
+    listbar.add_menubutton(text="-/1")
+
+    dentbar = paragraph.add_buttonbar()
+    dentbar.add_button(text="I")
+    dentbar.add_button(text="D")
+
+    justifybar = paragraph.add_buttonbar(row=1)
+    variable_justify = tk.IntVar()
+    justifybar.add_radiobutton(text="=  ", variable=variable_justify, value=0)
+    justifybar.add_radiobutton(text=" = ", variable=variable_justify, value=1)
+    justifybar.add_radiobutton(text="  =", variable=variable_justify, value=2)
+    justifybar.add_radiobutton(text=" = ", variable=variable_justify, value=3)
+
+    paragraph.add_buttonbar(row=1).add_menubutton(text="|=")
+
+    borderbar = paragraph.add_buttonbar(row=2)
+    borderbar.add_menubutton(text="Colour")
+    borderbar.add_menubutton(text="Style")
+
+    paragraph.add_buttonbar(row=2).add_menubutton(text="AZ|")
+    paragraph.add_buttonbar(row=2).add_menubutton(text="\u00B6")
+
+    styles = r.add_group(home, text="Styles", has_button=True)
+
+    stylegallery = styles.add_gallery()
+    stylegallery.add_item(text="Style 1")
+    stylegallery.add_item(text="Style 2")
+    stylegallery.add_item(text="Style 3")
+    stylegallery.add_item(text="Style 4")
+
+    styles.add_menubutton(text="Change Styles", important=True)
 
     editing = r.add_group(home, text="Editing")
     editing.add_button(text="Find", tooltip_title="Find", tooltip_description="Find a string of text.", tooltip_bind="Ctrl+F")
