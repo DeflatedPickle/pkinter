@@ -11,7 +11,7 @@ from idlelib.ToolTip import ToolTipBase
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn742393(v=vs.85).aspx
 
 __title__ = "Ribbon"
-__version__ = "1.8.1"
+__version__ = "1.9.0"
 __author__ = "DeflatedPickle"
 
 
@@ -60,25 +60,26 @@ class Ribbon(ttk.Frame):
 
         return frame
 
-    def add_group(self, parent: tk.Widget, text: str="", rows: int=1, has_button: bool=False, side: str="left"):
-        group = Group(parent, text=text, rows=rows, has_button=has_button, empty_labels=self._empty_labels)
+    def add_group(self, parent: tk.Widget, text: str="", rows: int=1, dialog_window=None, side: str="left"):
+        group = Group(parent, text=text, rows=rows, dialog_window=dialog_window, empty_labels=self._empty_labels)
         group.pack(side=side, fill="both", expand=True, padx=1, pady=1)
 
         return group
 
 
 class Group(ttk.Frame):
-    def __init__(self, parent, text: str="", rows: int=1, has_button: bool=False, empty_labels: bool=False, *args, **kwargs):
+    def __init__(self, parent, text: str="", rows: int=1, dialog_window=None, empty_labels: bool=False, *args, **kwargs):
         ttk.Frame.__init__(self, parent, style="TLabelframe", *args, **kwargs)
         self.parent = parent
         self._rows = rows
-        self._has_button = has_button
+        self._dialog_window = dialog_window
         self._empty_labels = empty_labels
 
         self._widgets = []
         self._dictionary_rows = {}
 
         # TODO: Add dynamic placing of widgets instead of specified rows.
+        # TODO: Make groups turn into a Menubutton when the whole Group can't be shown.
 
         for frame in range(self._rows):
             current_frame = tk.Frame(self)
@@ -95,9 +96,11 @@ class Group(ttk.Frame):
         self._label = ttk.Label(self._frame_bottom, text=text, anchor="center", style="Group.TLabel")
         # self._label.grid(row=0, column=0, sticky="ew")
 
-        if self._has_button:
-            self._button = LabelButton(self._frame_bottom, text="\u2198", width=2)
+        if self._dialog_window:
+            self._button = LabelButton(self._frame_bottom, text="\u2198", command=self._dialog_window.show_window, width=2)
             # self._button.grid(row=0, column=1)
+
+            self._dialog_window.parent = self._button
 
         if not self._empty_labels:
             self._check_widgets()
@@ -106,13 +109,13 @@ class Group(ttk.Frame):
         if len(self._widgets) > 1:
             self._label.grid(row=0, column=0, sticky="ew")
 
-            if self._has_button:
+            if self._dialog_window:
                 self._button.grid(row=0, column=1)
 
         elif len(self._widgets) == 1:
             self._label.grid_remove()
 
-            if self._has_button:
+            if self._dialog_window:
                 self._button.grid_remove()
 
     def add_button(self, text="", row: int=0, tooltip_title="", tooltip: bool=True, tooltip_description="", tooltip_image: tk.Image=None, tooltip_bind="", image="", important=False):
@@ -185,10 +188,11 @@ class Group(ttk.Frame):
 
 
 class Gallery(ttk.Frame):
-    def __init__(self, parent, item_width: int=15, wrap_after: int=3, wrap_width: int=295, *args, **kwargs):
+    def __init__(self, parent, item_width: int=15, show_rows: int=1, wrap_after: int=3, wrap_width: int=295, *args, **kwargs):
         ttk.Frame.__init__(self, parent, style="TLabelframe", *args, **kwargs)
         self.parent = parent
         self._item_width = item_width
+        self._show_rows = show_rows
         self._wrap_after = wrap_after
         self._wrap_width = wrap_width
 
@@ -292,10 +296,33 @@ class EnhancedToolTip(ToolTipBase):
         bind.pack(side="right", fill="x", expand=True)
 
 
-class DialogBox(tk.Toplevel):
-    def __init__(self, parent):
-        tk.Toplevel.__init__(self, parent)
-        self.parent = parent
+class DialogBox(object):
+    def __init__(self):
+        self.parent = None
+
+        self.window = None
+
+    def show_window(self, event=None):
+        if self.window:
+            return
+
+        self.window = window = tk.Toplevel(self.parent)
+        window.focus_set()
+        window.overrideredirect(True)
+        window.geometry("+{}+{}".format(self.parent.winfo_rootx(), self.parent.winfo_rooty() + self.parent.winfo_height() + 1))
+        window.bind("<FocusOut>", self.hide_window)
+
+        self.show_contents()
+
+    def show_contents(self):
+        pass
+
+    def hide_window(self, event=None):
+        window = self.window
+        self.window = None
+
+        if window:
+            window.destroy()
 
 
 class LabelButton(ttk.Label):
@@ -367,13 +394,17 @@ if __name__ == "__main__":
 
     home = r.add_tab(text="Home")
 
-    clipboard = r.add_group(home, text="Clipboard", has_button=True)
+    clipboard_window = DialogBox()
+
+    clipboard = r.add_group(home, text="Clipboard", dialog_window=clipboard_window)
     clipboard.add_menubutton(text="Paste", important=True)
     clipboard.add_button(text="Cut")
     clipboard.add_button(text="Copy")
     clipboard.add_button(text="Format Painter")
 
-    tab_font = r.add_group(home, text="Font", rows=3, has_button=True)
+    font_window = DialogBox()
+
+    tab_font = r.add_group(home, text="Font", dialog_window=font_window, rows=3)
     tab_font.add_combobox(type_="font")
     tab_font.add_combobox(type_="size")
 
@@ -397,7 +428,9 @@ if __name__ == "__main__":
     sizebar.add_menubutton(text="A")
     sizebar.add_menubutton(text="a")
 
-    paragraph = r.add_group(home, text="Paragraph", has_button=True, rows=3)
+    paragraph_window = DialogBox()
+
+    paragraph = r.add_group(home, text="Paragraph", dialog_window=paragraph_window, rows=3)
 
     listbar = paragraph.add_buttonbar()
     listbar.add_menubutton(text="-")
@@ -424,7 +457,9 @@ if __name__ == "__main__":
     paragraph.add_buttonbar(row=2).add_menubutton(text="AZ|")
     paragraph.add_buttonbar(row=2).add_menubutton(text="\u00B6")
 
-    styles = r.add_group(home, text="Styles", has_button=True)
+    styles_window = DialogBox()
+
+    styles = r.add_group(home, text="Styles", dialog_window=styles_window)
 
     stylegallery = styles.add_gallery()
     stylegallery.add_item(text="Style 1")
