@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ScrolledFrame"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -47,13 +47,13 @@ class ScrolledFrame(ttk.Frame):
         self._xscrollcommand = xscrollcommand
         self._yscrollcommand = yscrollcommand
 
-        self._canvas = tk.Canvas(self, borderwidth=0, background="pink", highlightthickness=0, xscrollcommand=self._xscrollcommand, yscrollcommand=self._yscrollcommand)
+        self._canvas = tk.Canvas(self, width=0, height=0, borderwidth=0, background="pink", highlightthickness=0, xscrollcommand=self._xscrollcommand, yscrollcommand=self._yscrollcommand)
         self._canvas.pack(fill="both", expand=True)
 
         self._canvas.xview_moveto(0)
         self._canvas.yview_moveto(0)
 
-        self.frame = ttk.Frame(self._canvas)
+        self.frame = ttk.Frame(self._canvas, width=0, height=0)
         self._frame_id = self._canvas.create_window(0, 0, window=self.frame, anchor="nw")
 
         self.frame.bind("<Configure>", self._configure_frame)

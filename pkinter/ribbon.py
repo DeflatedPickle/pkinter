@@ -219,7 +219,7 @@ class Gallery(ttk.Frame):
         # self._frame.frame.grid_propagate(False)
 
         self._scroll.configure(command=self._frame.yview)
-        self._scroll.grid(row=0, column=1, sticky="nesw")
+        # self._scroll.grid(row=0, column=1, sticky="nesw")
 
         self._button_up = ttk.Button(self, width=1, text="\u2191")
         self._button_up.grid(row=1, column=1)
@@ -476,10 +476,9 @@ if __name__ == "__main__":
     variable_style = tk.IntVar()
 
     stylegallery = styles.add_gallery()
-    stylegallery.add_item(text="Style 1", variable=variable_style, value=0)
-    stylegallery.add_item(text="Style 2", variable=variable_style, value=1)
-    stylegallery.add_item(text="Style 3", variable=variable_style, value=2)
-    stylegallery.add_item(text="Style 4", variable=variable_style, value=3)
+
+    for i in range(10):
+        stylegallery.add_item(text="Style {}".format(i), variable=variable_style, value=i)
 
     styles.add_menubutton(text="Change Styles", important=True)
 
