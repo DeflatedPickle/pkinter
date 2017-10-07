@@ -7,11 +7,13 @@ from tkinter import font
 from tkinter import ttk
 from idlelib.ToolTip import ToolTipBase
 
+from pkinter.scrolledframe import ScrolledFrame
+
 # https://en.wikipedia.org/wiki/Ribbon_(computing)
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn742393(v=vs.85).aspx
 
 __title__ = "Ribbon"
-__version__ = "1.9.0"
+__version__ = "1.10.0"
 __author__ = "DeflatedPickle"
 
 
@@ -203,20 +205,30 @@ class Gallery(ttk.Frame):
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
 
-        self._frame = ttk.Frame(self, width=self._wrap_width)
-        self._frame.grid(row=0, rowspan=3, column=0, sticky="nesw", padx=1, pady=1)
-        self._frame.rowconfigure(0, weight=1)
-        self._frame.grid_propagate(False)
-        self._frame.update_idletasks()
+        # self._frame = ttk.Frame(self, width=self._wrap_width)
+        # self._frame.grid(row=0, rowspan=3, column=0, sticky="nesw", padx=1, pady=1)
+        # self._frame.rowconfigure(0, weight=1)
+        # self._frame.grid_propagate(False)
+        # self._frame.update_idletasks()
+
+        self._scroll = ttk.Scrollbar(self, orient="vertical")
+
+        self._frame = ScrolledFrame(self, yscrollcommand=self._scroll.set)
+        self._frame.grid(row=0, rowspan=4, column=0, sticky="nesw", padx=1, pady=1)
+        self._frame.frame.rowconfigure(0, weight=1)
+        # self._frame.frame.grid_propagate(False)
+
+        self._scroll.configure(command=self._frame.yview)
+        self._scroll.grid(row=0, column=1, sticky="nesw")
 
         self._button_up = ttk.Button(self, width=1, text="\u2191")
-        self._button_up.grid(row=0, column=1)
+        self._button_up.grid(row=1, column=1)
 
         self._button_down = ttk.Button(self, width=1, text="\u2193")
-        self._button_down.grid(row=1, column=1)
+        self._button_down.grid(row=2, column=1)
 
         self._button_show = ttk.Button(self, width=1, text="\u21A1")
-        self._button_show.grid(row=2, column=1)
+        self._button_show.grid(row=3, column=1)
 
     def _check_width(self):
         self._frame.update_idletasks()
@@ -226,8 +238,8 @@ class Gallery(ttk.Frame):
             self._current_row += 1
             self._current_width = 0
 
-    def add_item(self, text: str="", image: str=""):
-        widget = ttk.Radiobutton(self._frame, text=text, image=image, width=self._item_width, style="Toolbutton")
+    def add_item(self, text: str="", image: str="", variable: tk.IntVar=None, value: int=0):
+        widget = ttk.Radiobutton(self._frame.frame, text=text, image=image, width=self._item_width, variable=variable, value=value, style="Toolbutton")
         widget.grid(row=self._current_row, column=self._current_column, sticky="nesw")
         widget.update_idletasks()
 
@@ -461,11 +473,13 @@ if __name__ == "__main__":
 
     styles = r.add_group(home, text="Styles", dialog_window=styles_window)
 
+    variable_style = tk.IntVar()
+
     stylegallery = styles.add_gallery()
-    stylegallery.add_item(text="Style 1")
-    stylegallery.add_item(text="Style 2")
-    stylegallery.add_item(text="Style 3")
-    stylegallery.add_item(text="Style 4")
+    stylegallery.add_item(text="Style 1", variable=variable_style, value=0)
+    stylegallery.add_item(text="Style 2", variable=variable_style, value=1)
+    stylegallery.add_item(text="Style 3", variable=variable_style, value=2)
+    stylegallery.add_item(text="Style 4", variable=variable_style, value=3)
 
     styles.add_menubutton(text="Change Styles", important=True)
 
