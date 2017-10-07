@@ -15,11 +15,11 @@ __author__ = "DeflatedPickle"
 class ScrolledFrame(ttk.Frame):
     """
             -----DESCRIPTION-----
-    A template for new widgets.
+    A scroll-able frame.
 
             -----USAGE-----
-    template = Template(parent)
-    template.pack()
+    sframe = ScrolledFrame(parent)
+    sframe.pack()
 
             -----PARAMETERS-----
     parent = The parent of the widget.
@@ -27,17 +27,21 @@ class ScrolledFrame(ttk.Frame):
             -----CONTENTS-----
     ---VARIABLES---
     parent = The parent of the widget.
+    _xscrollcommand = The horizontal scroll command.
+    _yscrollcommand = The vertical scroll command.
 
     ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
     self
+    _canvas = The Canvas that the Frame is placed into.
+    frame = The Frame that widgets should be placed into.
 
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, xscrollcommand, yscrollcommand, *args):
+    def __init__(self, parent, xscrollcommand=None, yscrollcommand=None, *args):
         ttk.Frame.__init__(self, parent, *args)
         self.parent = parent
         self._xscrollcommand = xscrollcommand
@@ -53,7 +57,7 @@ class ScrolledFrame(ttk.Frame):
         self._frame_id = self._canvas.create_window(0, 0, window=self.frame, anchor="nw")
 
         self.frame.bind("<Configure>", self._configure_frame)
-        self._canvas.bind("<Configure>", self._configure_canvas)
+        # self._canvas.bind("<Configure>", self._configure_canvas)
 
         self.configure = self._canvas.configure
         self.xview = self._canvas.xview
@@ -71,12 +75,10 @@ class ScrolledFrame(ttk.Frame):
 
     def _configure_canvas(self, event=None):
         if self.frame.winfo_reqwidth() != self._canvas.winfo_width():
-            pass
-            # self._canvas.itemconfigure(self._frame_id, width=self._canvas.winfo_width())
+            self._canvas.itemconfigure(self._frame_id, width=self._canvas.winfo_width())
 
         if self.frame.winfo_reqheight() != self._canvas.winfo_height():
-            pass
-            # self._canvas.itemconfigure(self._frame_id, height=self._canvas.winfo_height())
+            self._canvas.itemconfigure(self._frame_id, height=self._canvas.winfo_height())
 
 ##################################################
 
