@@ -18,7 +18,7 @@ __author__ = "DeflatedPickle"
 class Ribbon(ttk.Frame):
     """
             -----DESCRIPTION-----
-    A template for new widgets.
+    A Ribbon widget much like the Office Ribbons.
 
             -----USAGE-----
     ribbon = Ribbon(parent)
