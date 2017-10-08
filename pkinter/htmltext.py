@@ -3,7 +3,7 @@
 """"""
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import font
 from html.parser import HTMLParser
 
 # link
@@ -42,9 +42,12 @@ class HTMLText(tk.Text):
         tk.Text.__init__(self, parent, *args)
         self.parent = parent
 
+        self._font = font.Font(font=self.cget("font"))
+
         self.tag_configure("tag", elide=True)
         self.tag_configure("comment", elide=True)
-        self.tag_configure("h1", background="blue")
+
+        self.tag_configure("h1", font=self.font_with_change(self._font, ("size", 15)))
 
         self._parser = HTMLHandler(self)
 
@@ -60,8 +63,16 @@ class HTMLText(tk.Text):
         self._actual = finished
         tk.Text.insert(self, index, finished, *args)
 
+    def get_actual(self):
+        return self._actual
+
     def parse(self):
         self._parser.feed(self.get(1.0, "end"))
+
+    @staticmethod
+    def font_with_change(font_, change):
+        font_[change[0]] = change[1]
+        return font_
 
 
 class HTMLHandler(HTMLParser):
@@ -77,8 +88,6 @@ class HTMLHandler(HTMLParser):
         self._start = self._text.search("<{}>".format(tag), "end") + "+{}c".format(len(tag) + 2)
         # self._text.tag_add("tag", self._text.search("<{}>".format(tag), 1.0))
         self.apply_tag(tag, "<{}>", "tag")
-        if tag == "h1":
-            pass
 
     def handle_endtag(self, tag):
         print("Found End:", "</{}>".format(tag))
@@ -102,7 +111,6 @@ class HTMLHandler(HTMLParser):
         else:
             start = self._start
             end = self._end
-            print(start, end)
 
         self._text.tag_add(tag, start, end)
 
