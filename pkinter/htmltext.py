@@ -9,7 +9,7 @@ from html.parser import HTMLParser
 # link
 
 __title__ = "Template"
-__version__ = "1.5.0"
+__version__ = "1.5.1"
 __author__ = "DeflatedPickle"
 
 
@@ -41,6 +41,7 @@ class HTMLText(tk.Text):
     def __init__(self, parent, *args):
         tk.Text.__init__(self, parent, *args)
         self.parent = parent
+        self.configure(state="disabled")
 
         self.title = ""
 
@@ -82,6 +83,7 @@ class HTMLText(tk.Text):
         self._actual = ""
 
     def insert(self, index, chars, *args):
+        self.configure(state="normal")
         lines = []
         for line in chars.splitlines():
             if line.lstrip() != "":
@@ -90,6 +92,7 @@ class HTMLText(tk.Text):
 
         self._actual = finished
         tk.Text.insert(self, index, finished, *args)
+        self.configure(state="disabled")
 
     def get_actual(self):
         return self._actual
@@ -121,7 +124,7 @@ class HTMLHandler(HTMLParser):
             self._text.title = self._text.get(self._start, self._end)
 
         elif tag in ["h1", "h2", "h3", "h4", "h5", "h6"]:
-            self.apply_tag("", "", tag, data=True)
+            self._text.tag_add(tag, self._start, self._end)
 
     def handle_comment(self, data):
         print("Found Comment:", "<!--{}-->".format(data))
