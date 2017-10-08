@@ -9,7 +9,7 @@ from html.parser import HTMLParser
 # link
 
 __title__ = "Template"
-__version__ = "1.3.0"
+__version__ = "1.4.1"
 __author__ = "DeflatedPickle"
 
 
@@ -44,10 +44,35 @@ class HTMLText(tk.Text):
 
         self._font = font.Font(font=self.cget("font"))
 
+        # TODO: Clean this up - make it shorter.
+        self._h1 = font.Font(font=self.cget("font"))
+        self._h1.configure(size=32)
+
+        self._h2 = font.Font(font=self.cget("font"))
+        self._h2.configure(size=24)
+
+        self._h3 = font.Font(font=self.cget("font"))
+        self._h3.configure(size=19)
+
+        self._h4 = font.Font(font=self.cget("font"))
+        self._h4.configure(size=16)
+
+        self._h5 = font.Font(font=self.cget("font"))
+        self._h5.configure(size=14)
+
+        self._h6 = font.Font(font=self.cget("font"))
+        self._h6.configure(size=13)
+        ###########################
+
         self.tag_configure("tag", elide=True)
         self.tag_configure("comment", elide=True)
 
-        self.tag_configure("h1", font=self.font_with_change(self._font, ("size", 15)))
+        self.tag_configure("h1", font=self._h1)
+        self.tag_configure("h2", font=self._h2)
+        self.tag_configure("h3", font=self._h3)
+        self.tag_configure("h4", font=self._h4)
+        self.tag_configure("h5", font=self._h5)
+        self.tag_configure("h6", font=self._h6)
 
         self._parser = HTMLHandler(self)
 
@@ -69,11 +94,6 @@ class HTMLText(tk.Text):
     def parse(self):
         self._parser.feed(self.get(1.0, "end"))
 
-    @staticmethod
-    def font_with_change(font_, change):
-        font_[change[0]] = change[1]
-        return font_
-
 
 class HTMLHandler(HTMLParser):
     def __init__(self, text: tk.Text):
@@ -94,8 +114,8 @@ class HTMLHandler(HTMLParser):
         self._end = self._text.search("</{}>".format(tag), "end")
         # self._text.tag_add("tag", self._text.search("</{}>".format(tag), 1.0))
         self.apply_tag(tag, "</{}>", "tag")
-        if tag == "h1":
-            self.apply_tag("", "", "h1", data=True)
+        if tag in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+            self.apply_tag("", "", tag, data=True)
 
     def handle_comment(self, data):
         print("Found Comment:", "<!--{}-->".format(data))
@@ -129,6 +149,11 @@ if __name__ == "__main__":
 
     <body>
         <h1>Parse me!</h1>
+        <h2>Another heading!</h2>
+        <h3>Another heading!</h3>
+        <h4>Another heading!</h4>
+        <h5>Another heading!</h5>
+        <h6>Another heading!</h6>
     </body>
 </html>""")
     htext.parse()
