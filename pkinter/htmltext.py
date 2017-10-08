@@ -9,7 +9,7 @@ from html.parser import HTMLParser
 # link
 
 __title__ = "Template"
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 __author__ = "DeflatedPickle"
 
 
@@ -43,17 +43,22 @@ class HTMLText(tk.Text):
         self.parent = parent
 
         self.tag_configure("tag", elide=True)
+        self.tag_configure("comment", elide=True)
         self.tag_configure("h1", background="blue")
 
         self._parser = HTMLHandler(self)
+
+        self._actual = ""
 
     def insert(self, index, chars, *args):
         lines = []
         for line in chars.splitlines():
             if line.lstrip() != "":
                 lines.append(line.lstrip())
+        finished = "\n".join(lines)
 
-        tk.Text.insert(self, index, "\n".join(lines), *args)
+        self._actual = finished
+        tk.Text.insert(self, index, finished, *args)
 
     def parse(self):
         self._parser.feed(self.get(1.0, "end"))
@@ -65,22 +70,39 @@ class HTMLHandler(HTMLParser):
         self._text = text
 
         self._start = 0
+        self._end = 0
 
     def handle_starttag(self, tag, attrs):
         print("Found Start:", "<{}>".format(tag))
+        self._start = self._text.search("<{}>".format(tag), "end") + "+{}c".format(len(tag) + 2)
         # self._text.tag_add("tag", self._text.search("<{}>".format(tag), 1.0))
         self.apply_tag(tag, "<{}>", "tag")
+        if tag == "h1":
+            pass
 
     def handle_endtag(self, tag):
         print("Found End:", "</{}>".format(tag))
+        self._end = self._text.search("</{}>".format(tag), "end")
         # self._text.tag_add("tag", self._text.search("</{}>".format(tag), 1.0))
         self.apply_tag(tag, "</{}>", "tag")
+        if tag == "h1":
+            self.apply_tag("", "", "h1", data=True)
 
-    ###
+    def handle_comment(self, data):
+        print("Found Comment:", "<!--{}-->".format(data))
+        # self.apply_tag(data, "<!--{}-->", "comment")
 
-    def apply_tag(self, type_, search, tag):
-        start = self._text.search(search.format(type_), "end")
-        end = self._text.search(search.format(type_), "end") + "+{}c".format(len(type_) + (2 if search == "<{}>" else 3 if search == "</{}>" else 0))
+    ##########
+
+    def apply_tag(self, type_, search, tag, data=False):
+        if not data:
+            start = self._text.search(search.format(type_), "end")
+            end = self._text.search(search.format(type_), "end") + "+{}c".format(len(type_) + (2 if search == "<{}>" else 3 if search == "</{}>" else 7 if search == "<!--{}-->" else 0))
+
+        else:
+            start = self._start
+            end = self._end
+            print(start, end)
 
         self._text.tag_add(tag, start, end)
 
