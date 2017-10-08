@@ -9,7 +9,7 @@ from html.parser import HTMLParser
 # link
 
 __title__ = "Template"
-__version__ = "1.0.0"
+__version__ = "1.2.0"
 __author__ = "DeflatedPickle"
 
 
@@ -46,6 +46,14 @@ class HTMLText(tk.Text):
         self.tag_configure("h1", background="blue")
 
         self._parser = HTMLHandler(self)
+
+    def insert(self, index, chars, *args):
+        lines = []
+        for line in chars.splitlines():
+            if line.lstrip() != "":
+                lines.append(line.lstrip())
+
+        tk.Text.insert(self, index, "\n".join(lines), *args)
 
     def parse(self):
         self._parser.feed(self.get(1.0, "end"))
