@@ -9,7 +9,7 @@ from html.parser import HTMLParser
 # link
 
 __title__ = "Template"
-__version__ = "1.4.1"
+__version__ = "1.5.0"
 __author__ = "DeflatedPickle"
 
 
@@ -42,7 +42,10 @@ class HTMLText(tk.Text):
         tk.Text.__init__(self, parent, *args)
         self.parent = parent
 
-        self._font = font.Font(font=self.cget("font"))
+        self.title = ""
+
+        self._master = font.Font(font=self.cget("font"))
+        self.configure(font=self._master)
 
         # TODO: Clean this up - make it shorter.
         self._h1 = font.Font(font=self.cget("font"))
@@ -96,7 +99,7 @@ class HTMLText(tk.Text):
 
 
 class HTMLHandler(HTMLParser):
-    def __init__(self, text: tk.Text):
+    def __init__(self, text: HTMLText):
         HTMLParser.__init__(self)
         self._text = text
 
@@ -107,14 +110,17 @@ class HTMLHandler(HTMLParser):
         print("Found Start:", "<{}>".format(tag))
         self._start = self._text.search("<{}>".format(tag), "end") + "+{}c".format(len(tag) + 2)
         # self._text.tag_add("tag", self._text.search("<{}>".format(tag), 1.0))
-        self.apply_tag(tag, "<{}>", "tag")
+        # self.apply_tag(tag, "<{}>", "tag")
 
     def handle_endtag(self, tag):
         print("Found End:", "</{}>".format(tag))
         self._end = self._text.search("</{}>".format(tag), "end")
         # self._text.tag_add("tag", self._text.search("</{}>".format(tag), 1.0))
-        self.apply_tag(tag, "</{}>", "tag")
-        if tag in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        # self.apply_tag(tag, "</{}>", "tag")
+        if tag == "title":
+            self._text.title = self._text.get(self._start, self._end)
+
+        elif tag in ["h1", "h2", "h3", "h4", "h5", "h6"]:
             self.apply_tag("", "", tag, data=True)
 
     def handle_comment(self, data):
