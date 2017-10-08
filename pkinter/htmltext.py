@@ -42,6 +42,41 @@ class HTMLText(tk.Text):
         tk.Text.__init__(self, parent, *args)
         self.parent = parent
 
+        self.tag_configure("tag", elide=True)
+        self.tag_configure("h1", background="blue")
+
+        self._parser = HTMLHandler(self)
+
+    def parse(self):
+        self._parser.feed(self.get(1.0, "end"))
+
+
+class HTMLHandler(HTMLParser):
+    def __init__(self, text: tk.Text):
+        HTMLParser.__init__(self)
+        self._text = text
+
+        self._start = 0
+
+    def handle_starttag(self, tag, attrs):
+        print("Found Start:", "<{}>".format(tag))
+        # self._text.tag_add("tag", self._text.search("<{}>".format(tag), 1.0))
+        self.apply_tag(tag, "<{}>", "tag")
+
+    def handle_endtag(self, tag):
+        print("Found End:", "</{}>".format(tag))
+        # self._text.tag_add("tag", self._text.search("</{}>".format(tag), 1.0))
+        self.apply_tag(tag, "</{}>", "tag")
+
+    ###
+
+    def apply_tag(self, type_, search, tag):
+        start = self._text.search(search.format(type_), "end")
+        end = self._text.search(search.format(type_), "end") + "+{}c".format(len(type_) + (2 if search == "<{}>" else 3 if search == "</{}>" else 0))
+
+        self._text.tag_add(tag, start, end)
+
+
 ##################################################
 
 if __name__ == "__main__":
@@ -52,9 +87,12 @@ if __name__ == "__main__":
         <title>Test</title>
     </head>
 
+    <!-- Ignore Me -->
+
     <body>
         <h1>Parse me!</h1>
     </body>
 </html>""")
+    htext.parse()
     htext.pack(expand=True, padx=5, pady=5)
     root.mainloop()
