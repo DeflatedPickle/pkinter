@@ -56,35 +56,39 @@ class HTMLText(tk.Text):
 
         self.resize_list = []
 
-        self._master = font.Font(font=self.cget("font"))
-        self._master_actual = font.nametofont(self.cget("font")).actual()
-        self.configure(font=self._master)
+        self._sans_serif = font.Font(font="Arial", size=10)
+        self._serif = font.Font(font="TimesNewRoman", size=10)
+        self._mono = font.Font(font="Courier", size=10)
+        
+        self.configure(font=self._sans_serif)
 
         ###########################
-        self._h1 = font.Font(family=self._master_actual["family"], size=32)
-        self._h2 = font.Font(family=self._master_actual["family"], size=24)
-        self._h3 = font.Font(family=self._master_actual["family"], size=19)
-        self._h4 = font.Font(family=self._master_actual["family"], size=16)
-        self._h5 = font.Font(family=self._master_actual["family"], size=14)
-        self._h6 = font.Font(family=self._master_actual["family"], size=13)
+        self._tag = font.Font(family=self._mono.actual()["family"], size=10)
 
-        self._p = font.Font(family=self._master_actual["family"], size=10)
-        self._pre = font.Font(family=self._master_actual["family"], size=10)
+        self._h1 = font.Font(family=self._sans_serif.actual()["family"], size=32, weight="bold")
+        self._h2 = font.Font(family=self._sans_serif.actual()["family"], size=24, weight="bold")
+        self._h3 = font.Font(family=self._sans_serif.actual()["family"], size=19, weight="bold")
+        self._h4 = font.Font(family=self._sans_serif.actual()["family"], size=16, weight="bold")
+        self._h5 = font.Font(family=self._sans_serif.actual()["family"], size=14, weight="bold")
+        self._h6 = font.Font(family=self._sans_serif.actual()["family"], size=13, weight="bold")
 
-        self._b = font.Font(family=self._master_actual["family"], size=10, weight="bold")
-        self._strong = font.Font(family=self._master_actual["family"], size=10, weight="bold")
-        self._i = font.Font(family=self._master_actual["family"], size=10, slant="italic")
-        self._em = font.Font(family=self._master_actual["family"], size=10, slant="italic")
-        self._mark = font.Font(family=self._master_actual["family"], size=10)
-        self._small = font.Font(family=self._master_actual["family"], size=8)
-        self._del = font.Font(family=self._master_actual["family"], size=10, overstrike=True)
-        self._ins = font.Font(family=self._master_actual["family"], size=10, underline=True)
-        self._sub = font.Font(family=self._master_actual["family"], size=8)
-        self._sup = font.Font(family=self._master_actual["family"], size=8)
+        self._p = font.Font(family=self._sans_serif.actual()["family"], size=10)
+        self._pre = font.Font(family=self._sans_serif.actual()["family"], size=10)
+
+        self._b = font.Font(family=self._sans_serif.actual()["family"], size=10, weight="bold")
+        self._strong = font.Font(family=self._sans_serif.actual()["family"], size=10, weight="bold")
+        self._i = font.Font(family=self._sans_serif.actual()["family"], size=10, slant="italic")
+        self._em = font.Font(family=self._sans_serif.actual()["family"], size=10, slant="italic")
+        self._mark = font.Font(family=self._sans_serif.actual()["family"], size=10)
+        self._small = font.Font(family=self._sans_serif.actual()["family"], size=8)
+        self._del = font.Font(family=self._sans_serif.actual()["family"], size=10, overstrike=True)
+        self._ins = font.Font(family=self._sans_serif.actual()["family"], size=10, underline=True)
+        self._sub = font.Font(family=self._sans_serif.actual()["family"], size=8)
+        self._sup = font.Font(family=self._sans_serif.actual()["family"], size=8)
         ###########################
 
-        self.tag_configure("tag", elide=True)
-        self.tag_configure("comment", elide=True)
+        self.tag_configure("tag", font=self._tag, elide=False)
+        self.tag_configure("comment", font=self._tag, elide=False)
 
         self.tag_configure("h1", font=self._h1)
         self.tag_configure("h2", font=self._h2)
@@ -151,9 +155,9 @@ class HTMLHandler(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         print("Found Start:", "<{}>".format(tag))
-        self._start = self._text.search("<{}>".format(tag), "end") + "+{}c".format(len(tag) + 2)
+        if tag != "br":
+            self._start = self._text.search("<{}>".format(tag), "end") + "+{}c".format(len(tag) + 2)
         # self._text.tag_add("tag", self._text.search("<{}>".format(tag), 1.0))
-        # self.apply_tag(tag, "<{}>", "tag")
 
         if tag == "hr":
             frame = ttk.Frame(self._text.master)
@@ -163,22 +167,26 @@ class HTMLHandler(HTMLParser):
             self._text.window_create(self._start, window=frame)
 
         elif tag == "br":
-            self._text.permissive_insert(self._start, "\n")
+            self._text.permissive_insert(self._text.search("<br>", self._start) + "+4c", "\n")
+
+        self.apply_tag(tag, "<{}>", "tag")
 
     def handle_endtag(self, tag):
         print("Found End:", "</{}>".format(tag))
         self._end = self._text.search("</{}>".format(tag), "end")
         # self._text.tag_add("tag", self._text.search("</{}>".format(tag), 1.0))
-        # self.apply_tag(tag, "</{}>", "tag")
+
         if tag == "title":
             self._text.title = self._text.get(self._start, self._end)
 
         elif tag in self._text.tag_list:
             self._text.tag_add(tag, self._start, self._end)
 
+        self.apply_tag(tag, "</{}>", "tag")
+
     def handle_comment(self, data):
         print("Found Comment:", "<!--{}-->".format(data))
-        # self.apply_tag(data, "<!--{}-->", "comment")
+        self.apply_tag(data, "<!--{}-->", "comment")
 
     ##########
 
