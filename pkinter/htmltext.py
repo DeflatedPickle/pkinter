@@ -3,13 +3,15 @@
 """"""
 
 import tkinter as tk
+from tkinter import ttk
 from tkinter import font
 from html.parser import HTMLParser
 
 # link
+# https://docs.python.org/3/library/html.parser.html
 
 __title__ = "Template"
-__version__ = "1.5.1"
+__version__ = "1.6.0"
 __author__ = "DeflatedPickle"
 
 
@@ -44,6 +46,8 @@ class HTMLText(tk.Text):
         self.configure(state="disabled")
 
         self.title = ""
+
+        self.resize_list = []
 
         self._master = font.Font(font=self.cget("font"))
         self.configure(font=self._master)
@@ -82,6 +86,8 @@ class HTMLText(tk.Text):
 
         self._actual = ""
 
+        self.bind("<Configure>", self.resize_widgets)
+
     def insert(self, index, chars, *args):
         self.configure(state="normal")
         lines = []
@@ -100,6 +106,10 @@ class HTMLText(tk.Text):
     def parse(self):
         self._parser.feed(self.get(1.0, "end"))
 
+    def resize_widgets(self, event=None):
+        for widget in self.resize_list:
+            widget.configure(width=self.winfo_width())
+
 
 class HTMLHandler(HTMLParser):
     def __init__(self, text: HTMLText):
@@ -114,6 +124,13 @@ class HTMLHandler(HTMLParser):
         self._start = self._text.search("<{}>".format(tag), "end") + "+{}c".format(len(tag) + 2)
         # self._text.tag_add("tag", self._text.search("<{}>".format(tag), 1.0))
         # self.apply_tag(tag, "<{}>", "tag")
+
+        if tag == "hr":
+            frame = ttk.Frame(self._text.master)
+            frame.pack_propagate(False)
+            ttk.Separator(frame).pack(fill="x")
+            self._text.resize_list.append(frame)
+            self._text.window_create(self._start, window=frame)
 
     def handle_endtag(self, tag):
         print("Found End:", "</{}>".format(tag))
@@ -163,8 +180,11 @@ if __name__ == "__main__":
         <h4>Another heading!</h4>
         <h5>Another heading!</h5>
         <h6>Another heading!</h6>
+        
+        <hr>
     </body>
 </html>""")
     htext.parse()
-    htext.pack(expand=True, padx=5, pady=5)
+    htext.pack(fill="x", expand=True, padx=5, pady=5)
+    root.title(htext.title)
     root.mainloop()
