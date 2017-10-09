@@ -68,6 +68,7 @@ class HTMLText(tk.Text):
         self._h5 = font.Font(family=self._master_actual["family"], size=14)
         self._h6 = font.Font(family=self._master_actual["family"], size=13)
 
+        self._b = font.Font(family=self._master_actual["family"], size=10, weight="bold")
         ###########################
 
         self.tag_configure("tag", elide=True)
@@ -82,6 +83,8 @@ class HTMLText(tk.Text):
 
         self.tag_configure("p")
         self.tag_configure("pre", background="light gray")
+
+        self.tag_configure("b", font=self._b)
 
         self._parser = HTMLHandler(self)
 
@@ -195,6 +198,8 @@ if __name__ == "__main__":
         <p>I am some<br>text.</p>
         
         <pre>I'm a bit of code</pre>
+        
+        <b>I'm bold.</b>
     </body>
 </html>""")
     htext.parse()
