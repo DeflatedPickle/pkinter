@@ -46,31 +46,28 @@ class HTMLText(tk.Text):
         self.parent = parent
         self.configure(state="disabled")
 
+        self._heading_list = [("h" + str(number + 1)) for number in range(0, 6)]
+        self._paragraph_list = ["p", "pre"]
+        self._formatting_lists = ["b", "strong", "i", "em", "mark", "small", "del", "ins", "sub", "sup"]
+
+        self.tag_list = self._heading_list + self._paragraph_list + self._formatting_lists
+
         self.title = ""
 
         self.resize_list = []
 
         self._master = font.Font(font=self.cget("font"))
+        self._master_actual = font.nametofont(self.cget("font")).actual()
         self.configure(font=self._master)
 
-        # TODO: Clean this up - make it shorter.
-        self._h1 = font.Font(font=self.cget("font"))
-        self._h1.configure(size=32)
+        ###########################
+        self._h1 = font.Font(family=self._master_actual["family"], size=32)
+        self._h2 = font.Font(family=self._master_actual["family"], size=24)
+        self._h3 = font.Font(family=self._master_actual["family"], size=19)
+        self._h4 = font.Font(family=self._master_actual["family"], size=16)
+        self._h5 = font.Font(family=self._master_actual["family"], size=14)
+        self._h6 = font.Font(family=self._master_actual["family"], size=13)
 
-        self._h2 = font.Font(font=self.cget("font"))
-        self._h2.configure(size=24)
-
-        self._h3 = font.Font(font=self.cget("font"))
-        self._h3.configure(size=19)
-
-        self._h4 = font.Font(font=self.cget("font"))
-        self._h4.configure(size=16)
-
-        self._h5 = font.Font(font=self.cget("font"))
-        self._h5.configure(size=14)
-
-        self._h6 = font.Font(font=self.cget("font"))
-        self._h6.configure(size=13)
         ###########################
 
         self.tag_configure("tag", elide=True)
@@ -152,7 +149,7 @@ class HTMLHandler(HTMLParser):
         if tag == "title":
             self._text.title = self._text.get(self._start, self._end)
 
-        elif tag in ["h1", "h2", "h3", "h4", "h5", "h6", "p", "pre"]:
+        elif tag in self._text.tag_list:
             self._text.tag_add(tag, self._start, self._end)
 
     def handle_comment(self, data):
@@ -201,6 +198,11 @@ if __name__ == "__main__":
     </body>
 </html>""")
     htext.parse()
-    htext.pack(fill="x", expand=True, padx=5, pady=5)
+    htext.pack(fill="x", side="left", expand=True, padx=[5, 0], pady=5)
+
+    scroll = ttk.Scrollbar(root, command=htext.yview)
+    scroll.pack(fill="y", side="right", padx=[0, 5], pady=5)
+    htext.configure(yscrollcommand=scroll.set)
+
     root.title(htext.title)
     root.mainloop()
