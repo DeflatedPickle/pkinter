@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.9.1"
+__version__ = "1.10.0"
 __author__ = "DeflatedPickle"
 
 
@@ -48,9 +48,10 @@ class HTMLText(tk.Text):
 
         self._heading_list = [("h" + str(number + 1)) for number in range(0, 6)]
         self._paragraph_list = ["p", "pre"]
-        self._formatting_lists = ["b", "strong", "i", "em", "mark", "small", "del", "ins", "sub", "sup"]
+        self._formatting_list = ["b", "strong", "i", "em", "mark", "small", "del", "ins", "sub", "sup"]
+        self._quote_cite_list = ["abbr", "address", "bdo", "blockquote", "cite", "q"]
 
-        self.tag_list = self._heading_list + self._paragraph_list + self._formatting_lists
+        self.tag_list = self._heading_list + self._paragraph_list + self._formatting_list + self._quote_cite_list
 
         self.title = ""
 
@@ -85,6 +86,8 @@ class HTMLText(tk.Text):
         self._ins = font.Font(family=self._sans_serif.actual()["family"], size=10, underline=True)
         self._sub = font.Font(family=self._sans_serif.actual()["family"], size=8)
         self._sup = font.Font(family=self._sans_serif.actual()["family"], size=8)
+
+        self._q = font.Font(family=self._sans_serif.actual()["family"], size=10)
         ###########################
 
         self.tag_configure("h1", font=self._h1)
@@ -107,6 +110,8 @@ class HTMLText(tk.Text):
         self.tag_configure("ins", font=self._ins)
         self.tag_configure("sub", font=self._sub, offset=-4)
         self.tag_configure("sup", font=self._sup, offset=4)
+
+        self.tag_configure("q", font=self._q)
 
         self.tag_configure("tag", font=self._tag, elide=False)
         self.tag_configure("comment", font=self._tag, elide=False)
@@ -169,6 +174,9 @@ class HTMLHandler(HTMLParser):
         elif tag == "br":
             self._text.permissive_insert(self._text.search("<br>", self._start) + "+4c", "\n")
 
+        elif tag == "q":
+            self._text.permissive_insert(self._text.search("<q>", self._start) + "+3c", "\"")
+
         self.apply_tag(tag, "<{}>", "tag")
 
     def handle_endtag(self, tag):
@@ -179,7 +187,10 @@ class HTMLHandler(HTMLParser):
         if tag == "title":
             self._text.title = self._text.get(self._start, self._end)
 
-        elif tag in self._text.tag_list:
+        elif tag == "q":
+            self._text.permissive_insert(self._text.search("</q>", self._start), "\"")
+
+        if tag in self._text.tag_list:
             self._text.tag_add(tag, self._start, self._end)
 
         self.apply_tag(tag, "</{}>", "tag")
@@ -233,10 +244,12 @@ if __name__ == "__main__":
         <ins>I'm inserted.</ins>
         I'm <sub>subscript.</sub>
         I'm <sup>superscript.</sup>
+        
+        <q>I'm a quote.</q>
     </body>
 </html>""")
     htext.parse()
-    htext.pack(fill="x", side="left", expand=True, padx=[5, 0], pady=5)
+    htext.pack(fill="both", side="left", expand=True, padx=[5, 0], pady=5)
 
     scroll = ttk.Scrollbar(root, command=htext.yview)
     scroll.pack(fill="y", side="right", padx=[0, 5], pady=5)
