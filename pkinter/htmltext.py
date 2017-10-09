@@ -56,9 +56,9 @@ class HTMLText(tk.Text):
 
         self.resize_list = []
 
-        self._sans_serif = font.Font(font="Arial", size=10)
-        self._serif = font.Font(font="TimesNewRoman", size=10)
-        self._mono = font.Font(font="Courier", size=10)
+        self._sans_serif = font.Font(family="Arial", size=10)
+        self._serif = font.Font(family="Times New Roman", size=10)
+        self._mono = font.Font(family="Courier", size=10)
         
         self.configure(font=self._sans_serif)
 
@@ -76,9 +76,9 @@ class HTMLText(tk.Text):
         self._pre = font.Font(family=self._sans_serif.actual()["family"], size=10)
 
         self._b = font.Font(family=self._sans_serif.actual()["family"], size=10, weight="bold")
-        self._strong = font.Font(family=self._sans_serif.actual()["family"], size=10, weight="bold")
+        self._strong = font.Font(family=self._serif.actual()["family"], size=10, weight="bold")
         self._i = font.Font(family=self._sans_serif.actual()["family"], size=10, slant="italic")
-        self._em = font.Font(family=self._sans_serif.actual()["family"], size=10, slant="italic")
+        self._em = font.Font(family=self._serif.actual()["family"], size=10, slant="italic")
         self._mark = font.Font(family=self._sans_serif.actual()["family"], size=10)
         self._small = font.Font(family=self._sans_serif.actual()["family"], size=8)
         self._del = font.Font(family=self._sans_serif.actual()["family"], size=10, overstrike=True)
@@ -86,9 +86,6 @@ class HTMLText(tk.Text):
         self._sub = font.Font(family=self._sans_serif.actual()["family"], size=8)
         self._sup = font.Font(family=self._sans_serif.actual()["family"], size=8)
         ###########################
-
-        self.tag_configure("tag", font=self._tag, elide=False)
-        self.tag_configure("comment", font=self._tag, elide=False)
 
         self.tag_configure("h1", font=self._h1)
         self.tag_configure("h2", font=self._h2)
@@ -110,6 +107,9 @@ class HTMLText(tk.Text):
         self.tag_configure("ins", font=self._ins)
         self.tag_configure("sub", font=self._sub, offset=-4)
         self.tag_configure("sup", font=self._sup, offset=4)
+
+        self.tag_configure("tag", font=self._tag, elide=False)
+        self.tag_configure("comment", font=self._tag, elide=False)
 
         self._parser = HTMLHandler(self)
 
@@ -190,14 +190,9 @@ class HTMLHandler(HTMLParser):
 
     ##########
 
-    def apply_tag(self, type_, search, tag, data=False):
-        if not data:
-            start = self._text.search(search.format(type_), "end")
-            end = self._text.search(search.format(type_), "end") + "+{}c".format(len(type_) + (2 if search == "<{}>" else 3 if search == "</{}>" else 7 if search == "<!--{}-->" else 0))
-
-        else:
-            start = self._start
-            end = self._end
+    def apply_tag(self, type_, search, tag):
+        start = self._text.search(search.format(type_), "end")
+        end = self._text.search(search.format(type_), "end") + "+{}c".format(len(type_) + (2 if search == "<{}>" else 3 if search == "</{}>" else 7 if search == "<!--{}-->" else 0))
 
         self._text.tag_add(tag, start, end)
 
