@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.9.0"
+__version__ = "1.9.1"
 __author__ = "DeflatedPickle"
 
 
@@ -68,8 +68,8 @@ class HTMLText(tk.Text):
         self._h5 = font.Font(family=self._master_actual["family"], size=14)
         self._h6 = font.Font(family=self._master_actual["family"], size=13)
 
-        self._p = font.Font(family=self._master_actual["family"])
-        self._pre = font.Font(family=self._master_actual["family"])
+        self._p = font.Font(family=self._master_actual["family"], size=10)
+        self._pre = font.Font(family=self._master_actual["family"], size=10)
 
         self._b = font.Font(family=self._master_actual["family"], size=10, weight="bold")
         self._strong = font.Font(family=self._master_actual["family"], size=10, weight="bold")
