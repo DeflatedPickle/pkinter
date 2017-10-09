@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.8.0"
+__version__ = "1.9.0"
 __author__ = "DeflatedPickle"
 
 
@@ -68,7 +68,19 @@ class HTMLText(tk.Text):
         self._h5 = font.Font(family=self._master_actual["family"], size=14)
         self._h6 = font.Font(family=self._master_actual["family"], size=13)
 
+        self._p = font.Font(family=self._master_actual["family"])
+        self._pre = font.Font(family=self._master_actual["family"])
+
         self._b = font.Font(family=self._master_actual["family"], size=10, weight="bold")
+        self._strong = font.Font(family=self._master_actual["family"], size=10, weight="bold")
+        self._i = font.Font(family=self._master_actual["family"], size=10, slant="italic")
+        self._em = font.Font(family=self._master_actual["family"], size=10, slant="italic")
+        self._mark = font.Font(family=self._master_actual["family"], size=10)
+        self._small = font.Font(family=self._master_actual["family"], size=8)
+        self._del = font.Font(family=self._master_actual["family"], size=10, overstrike=True)
+        self._ins = font.Font(family=self._master_actual["family"], size=10, underline=True)
+        self._sub = font.Font(family=self._master_actual["family"], size=8)
+        self._sup = font.Font(family=self._master_actual["family"], size=8)
         ###########################
 
         self.tag_configure("tag", elide=True)
@@ -81,10 +93,19 @@ class HTMLText(tk.Text):
         self.tag_configure("h5", font=self._h5)
         self.tag_configure("h6", font=self._h6)
 
-        self.tag_configure("p")
-        self.tag_configure("pre", background="light gray")
+        self.tag_configure("p", font=self._p)
+        self.tag_configure("pre", font=self._pre)
 
         self.tag_configure("b", font=self._b)
+        self.tag_configure("strong", font=self._strong)
+        self.tag_configure("i", font=self._i)
+        self.tag_configure("em", font=self._em)
+        self.tag_configure("mark", font=self._mark, background="yellow")
+        self.tag_configure("small", font=self._small)
+        self.tag_configure("del", font=self._del)
+        self.tag_configure("ins", font=self._ins)
+        self.tag_configure("sub", font=self._sub, offset=-4)
+        self.tag_configure("sup", font=self._sup, offset=4)
 
         self._parser = HTMLHandler(self)
 
@@ -200,6 +221,15 @@ if __name__ == "__main__":
         <pre>I'm a bit of code</pre>
         
         <b>I'm bold.</b>
+        <strong>I'm strong.</strong>
+        <i>I'm italic.</i>
+        <em>I'm emphasized.</em>
+        <mark>I'm marked.</mark>
+        <small>I'm small.</small>
+        <del>I'm deleted.</del>
+        <ins>I'm inserted.</ins>
+        I'm <sub>subscript.</sub>
+        I'm <sup>superscript.</sup>
     </body>
 </html>""")
     htext.parse()
