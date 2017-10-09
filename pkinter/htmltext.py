@@ -9,9 +9,10 @@ from html.parser import HTMLParser
 
 # link
 # https://docs.python.org/3/library/html.parser.html
+# https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.6.0"
+__version__ = "1.8.0"
 __author__ = "DeflatedPickle"
 
 
@@ -82,6 +83,9 @@ class HTMLText(tk.Text):
         self.tag_configure("h5", font=self._h5)
         self.tag_configure("h6", font=self._h6)
 
+        self.tag_configure("p")
+        self.tag_configure("pre", background="light gray")
+
         self._parser = HTMLHandler(self)
 
         self._actual = ""
@@ -98,6 +102,11 @@ class HTMLText(tk.Text):
 
         self._actual = finished
         tk.Text.insert(self, index, finished, *args)
+        self.configure(state="disabled")
+
+    def permissive_insert(self, index, chars, *args):
+        self.configure(state="normal")
+        tk.Text.insert(self, index, chars, *args)
         self.configure(state="disabled")
 
     def get_actual(self):
@@ -132,6 +141,9 @@ class HTMLHandler(HTMLParser):
             self._text.resize_list.append(frame)
             self._text.window_create(self._start, window=frame)
 
+        elif tag == "br":
+            self._text.permissive_insert(self._start, "\n")
+
     def handle_endtag(self, tag):
         print("Found End:", "</{}>".format(tag))
         self._end = self._text.search("</{}>".format(tag), "end")
@@ -140,7 +152,7 @@ class HTMLHandler(HTMLParser):
         if tag == "title":
             self._text.title = self._text.get(self._start, self._end)
 
-        elif tag in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        elif tag in ["h1", "h2", "h3", "h4", "h5", "h6", "p", "pre"]:
             self._text.tag_add(tag, self._start, self._end)
 
     def handle_comment(self, data):
@@ -174,14 +186,18 @@ if __name__ == "__main__":
     <!-- Ignore Me -->
 
     <body>
-        <h1>Parse me!</h1>
+        <h1>A heading!</h1>
         <h2>Another heading!</h2>
-        <h3>Another heading!</h3>
-        <h4>Another heading!</h4>
-        <h5>Another heading!</h5>
-        <h6>Another heading!</h6>
+        <h3>And another one!</h3>
+        <h4>And another one!</h4>
+        <h5>And another one!</h5>
+        <h6>And another one!</h6>
         
         <hr>
+        
+        <p>I am some<br>text.</p>
+        
+        <pre>I'm a bit of code</pre>
     </body>
 </html>""")
     htext.parse()
