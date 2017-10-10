@@ -153,6 +153,9 @@ class HTMLText(tk.Text):
         for widget in self.resize_list:
             widget.configure(width=self.winfo_width())
 
+    def delete_tags(self):
+        pass
+
 
 class HTMLHandler(HTMLParser):
     def __init__(self, text: HTMLText):
@@ -198,6 +201,7 @@ class HTMLHandler(HTMLParser):
 
         if tag == "title":
             self._text.title = self._text.get(self._start, self._end)
+            self._text.tag_add("tag", "{} linestart".format(self._start), "{} lineend".format(self._end))
 
         elif tag == "q":
             self._text.permissive_insert(self._text.search("</q>", self._start), "\"")
