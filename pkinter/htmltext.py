@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.10.0"
+__version__ = "1.11.0"
 __author__ = "DeflatedPickle"
 
 
@@ -87,6 +87,7 @@ class HTMLText(tk.Text):
         self._sub = font.Font(family=self._sans_serif.actual()["family"], size=8)
         self._sup = font.Font(family=self._sans_serif.actual()["family"], size=8)
 
+        self._abbr = font.Font(family=self._sans_serif.actual()["family"], size=10, underline=True)
         self._q = font.Font(family=self._sans_serif.actual()["family"], size=10)
         ###########################
 
@@ -111,6 +112,7 @@ class HTMLText(tk.Text):
         self.tag_configure("sub", font=self._sub, offset=-4)
         self.tag_configure("sup", font=self._sup, offset=4)
 
+        self.tag_configure("abbr", font=self._abbr)
         self.tag_configure("q", font=self._q)
 
         self.tag_configure("tag", font=self._tag, elide=False)
@@ -159,9 +161,12 @@ class HTMLHandler(HTMLParser):
         self._end = 0
 
     def handle_starttag(self, tag, attrs):
-        print("Found Start:", "<{}>".format(tag))
+        attributes = " ".join(["{}=\"{}\"".format(key, value) for key, value in attrs])
+        tag_with_attributes = tag + (" " if attrs else "") + attributes
+        print("Found Start:", "<{}{}>".format(tag, (" " if attrs else "") + attributes))
+
         if tag != "br":
-            self._start = self._text.search("<{}>".format(tag), "end") + "+{}c".format(len(tag) + 2)
+            self._start = self._text.search("<{}>".format(tag_with_attributes), "end") + "+{}c".format((len(tag) + 2) + len(attributes) + (1 if attrs else 0))
         # self._text.tag_add("tag", self._text.search("<{}>".format(tag), 1.0))
 
         if tag == "hr":
@@ -177,7 +182,7 @@ class HTMLHandler(HTMLParser):
         elif tag == "q":
             self._text.permissive_insert(self._text.search("<q>", self._start) + "+3c", "\"")
 
-        self.apply_tag(tag, "<{}>", "tag")
+        self.apply_tag(tag_with_attributes, "<{}>", "tag")
 
     def handle_endtag(self, tag):
         print("Found End:", "</{}>".format(tag))
@@ -203,9 +208,11 @@ class HTMLHandler(HTMLParser):
 
     def apply_tag(self, type_, search, tag):
         start = self._text.search(search.format(type_), "end")
-        end = self._text.search(search.format(type_), "end") + "+{}c".format(len(type_) + (2 if search == "<{}>" else 3 if search == "</{}>" else 7 if search == "<!--{}-->" else 0))
+        # end = self._text.search(search.format(type_), "end") + "+{}c".format(len(type_) + (2 if search == "<{}>" else 3 if search == "</{}>" else 7 if search == "<!--{}-->" else 0))
+        end = self._text.search(">", start) + "+1c"
 
         self._text.tag_add(tag, start, end)
+        print("Added Tag: {}".format(type_))
 
 
 ##################################################
@@ -245,7 +252,8 @@ if __name__ == "__main__":
         I'm <sub>subscript.</sub>
         I'm <sup>superscript.</sup>
         
-        <q>I'm a quote.</q>
+        I'm an <abbr title="Abbreviation">abbr</abbr>
+        I'm a <q>quote</q>.
     </body>
 </html>""")
     htext.parse()
