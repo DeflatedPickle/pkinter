@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.11.1"
+__version__ = "1.11.2"
 __author__ = "DeflatedPickle"
 
 
@@ -88,6 +88,7 @@ class HTMLText(tk.Text):
         self._sup = font.Font(family=self._sans_serif.actual()["family"], size=8)
 
         self._abbr = font.Font(family=self._sans_serif.actual()["family"], size=10, underline=True)
+        self._address = font.Font(family=self._sans_serif.actual()["family"], size=10, slant="italic")
         self._q = font.Font(family=self._sans_serif.actual()["family"], size=10)
         ###########################
 
@@ -113,6 +114,7 @@ class HTMLText(tk.Text):
         self.tag_configure("sup", font=self._sup, offset=4)
 
         self.tag_configure("abbr", font=self._abbr)
+        self.tag_configure("address", font=self._address)
         self.tag_configure("q", font=self._q)
 
         self.tag_configure("tag", font=self._tag, elide=False)
@@ -159,6 +161,7 @@ class HTMLHandler(HTMLParser):
 
         self._start = 0
         self._end = 0
+        self._break = 0
 
     def handle_starttag(self, tag, attrs):
         attributes = " ".join(["{}=\"{}\"".format(key, value) for key, value in attrs])
@@ -177,9 +180,11 @@ class HTMLHandler(HTMLParser):
             self._text.window_create(self._start, window=frame)
 
         elif tag == "br":
-            index = self._text.search("<br>", self._start) + "+4c"
+            if not self._break:
+                self._break = self._start
+            index = self._text.search("<br>", self._break) + "+4c"
             self._text.permissive_insert(index, "\n")
-            self._start = index
+            self._break = index
 
         elif tag == "q":
             self._text.permissive_insert(self._text.search("<q>", self._start) + "+3c", "\"")
