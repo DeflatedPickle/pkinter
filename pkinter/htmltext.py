@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.11.0"
+__version__ = "1.11.1"
 __author__ = "DeflatedPickle"
 
 
@@ -177,7 +177,9 @@ class HTMLHandler(HTMLParser):
             self._text.window_create(self._start, window=frame)
 
         elif tag == "br":
-            self._text.permissive_insert(self._text.search("<br>", self._start) + "+4c", "\n")
+            index = self._text.search("<br>", self._start) + "+4c"
+            self._text.permissive_insert(index, "\n")
+            self._start = index
 
         elif tag == "q":
             self._text.permissive_insert(self._text.search("<q>", self._start) + "+3c", "\"")
@@ -253,6 +255,11 @@ if __name__ == "__main__":
         I'm <sup>superscript.</sup>
         
         I'm an <abbr title="Abbreviation">abbr</abbr>
+        <address>
+        I'm<br>
+        an<br>
+        Address.
+        </address>
         I'm a <q>quote</q>.
     </body>
 </html>""")
