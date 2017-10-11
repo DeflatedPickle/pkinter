@@ -128,11 +128,7 @@ class HTMLText(tk.Text):
 
     def insert(self, index, chars, *args):
         self.configure(state="normal")
-        lines = []
-        for line in chars.splitlines():
-            if line.lstrip() != "":
-                lines.append(line.lstrip())
-        finished = "\n".join(lines)
+        finished = self._remove_whitespace(chars)
 
         self._actual = finished
         tk.Text.insert(self, index, finished, *args)
@@ -153,8 +149,31 @@ class HTMLText(tk.Text):
         for widget in self.resize_list:
             widget.configure(width=self.winfo_width())
 
+    @staticmethod
+    def _remove_whitespace(content):
+        lines = []
+        for line in content.splitlines():
+            if line.lstrip() != "":
+                lines.append(line.lstrip())
+        finished = "\n".join(lines)
+        # finished = [("\n" if item.startswith("</") else "") + item + ("\n" if item.endswith(">") and "<br>" not in item and not item.startswith("</") else "") for item in lines]
+
+        return "".join(finished)
+
     def delete_tags(self):
-        pass
+        # FIXME: Doesn't delete the ending tags.
+        self.configure(state="normal")
+        print("---------------")
+        tags = self.tag_ranges("tag") + self.tag_ranges("comment")
+        for index, tag in enumerate(tags):
+            if tags.index(tag) & 1:
+                # next(enumerate(tags), None)
+                continue
+            print("Current:", tag, "\nNext:", tags[index + 1])
+            print(self.get(tag, tags[index + 1]))
+            self.delete(tag, tags[index + 1])
+
+        self.configure(state="disabled")
 
 
 class HTMLHandler(HTMLParser):
@@ -210,6 +229,9 @@ class HTMLHandler(HTMLParser):
             self._text.tag_add(tag, self._start, self._end)
 
         self.apply_tag(tag, "</{}>", "tag")
+
+        # if tag == "html":
+        #     self._text.delete_tags()
 
     def handle_comment(self, data):
         print("Found Comment:", "<!--{}-->".format(data))
