@@ -12,7 +12,7 @@ from html.parser import HTMLParser
 # https://www.w3schools.com/html
 
 __title__ = "Template"
-__version__ = "1.11.2"
+__version__ = "1.12.0"
 __author__ = "DeflatedPickle"
 
 
@@ -89,6 +89,7 @@ class HTMLText(tk.Text):
 
         self._abbr = font.Font(family=self._sans_serif.actual()["family"], size=10, underline=True)
         self._address = font.Font(family=self._sans_serif.actual()["family"], size=10, slant="italic")
+        self._bdo = font.Font(family=self._sans_serif.actual()["family"], size=10)
         self._q = font.Font(family=self._sans_serif.actual()["family"], size=10)
         ###########################
 
@@ -115,6 +116,7 @@ class HTMLText(tk.Text):
 
         self.tag_configure("abbr", font=self._abbr)
         self.tag_configure("address", font=self._address)
+        self.tag_configure("bdo", font=self._bdo)
         self.tag_configure("q", font=self._q)
 
         self.tag_configure("tag", font=self._tag, elide=False)
@@ -137,6 +139,11 @@ class HTMLText(tk.Text):
     def permissive_insert(self, index, chars, *args):
         self.configure(state="normal")
         tk.Text.insert(self, index, chars, *args)
+        self.configure(state="disabled")
+
+    def delete(self, index1, index2=None):
+        self.configure(state="normal")
+        tk.Text.delete(self, index1, index2)
         self.configure(state="disabled")
 
     def get_actual(self):
@@ -185,6 +192,8 @@ class HTMLHandler(HTMLParser):
         self._end = 0
         self._break = 0
 
+        self._direction = False
+
     def handle_starttag(self, tag, attrs):
         attributes = " ".join(["{}=\"{}\"".format(key, value) for key, value in attrs])
         tag_with_attributes = tag + (" " if attrs else "") + attributes
@@ -211,6 +220,13 @@ class HTMLHandler(HTMLParser):
         elif tag == "q":
             self._text.permissive_insert(self._text.search("<q>", self._start) + "+3c", "\"")
 
+        elif tag == "bdo":
+            if attrs[0][1] == "ltr":
+                self._direction = False
+
+            elif attrs[0][1] == "rtl":
+                self._direction = True
+
         self.apply_tag(tag_with_attributes, "<{}>", "tag")
 
     def handle_endtag(self, tag):
@@ -224,6 +240,11 @@ class HTMLHandler(HTMLParser):
 
         elif tag == "q":
             self._text.permissive_insert(self._text.search("</q>", self._start), "\"")
+
+        elif tag == "bdo":
+            text = self._text.get(self._start, self._end)
+            self._text.delete(self._start, self._end)
+            self._text.permissive_insert(self._start, text if not self._direction else text[::-1])
 
         if tag in self._text.tag_list:
             self._text.tag_add(tag, self._start, self._end)
@@ -291,6 +312,7 @@ if __name__ == "__main__":
         an<br>
         Address.
         </address>
+        I'm written <bdo dir="rtl">right to left</bdo>.
         I'm a <q>quote</q>.
     </body>
 </html>""")
