@@ -8,6 +8,7 @@ from tkinter import font
 from html.parser import HTMLParser
 
 # link
+# http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/fonts.html
 # https://docs.python.org/3/library/html.parser.html
 # https://www.w3schools.com/html
 
@@ -50,8 +51,9 @@ class HTMLText(tk.Text):
         self._paragraph_list = ["p", "pre"]
         self._formatting_list = ["b", "strong", "i", "em", "mark", "small", "del", "ins", "sub", "sup"]
         self._quote_cite_list = ["abbr", "address", "bdo", "blockquote", "cite", "q"]
+        self._links_list = ["a"]
 
-        self.tag_list = self._heading_list + self._paragraph_list + self._formatting_list + self._quote_cite_list
+        self.tag_list = self._heading_list + self._paragraph_list + self._formatting_list + self._quote_cite_list + self._links_list
 
         self.title = ""
 
@@ -93,6 +95,8 @@ class HTMLText(tk.Text):
         self._blockquote = font.Font(family=self._sans_serif.actual()["family"], size=10)
         self._cite = font.Font(family=self._sans_serif.actual()["family"], size=10, slant="italic")
         self._q = font.Font(family=self._sans_serif.actual()["family"], size=10)
+
+        self._a = font.Font(family=self._sans_serif.actual()["family"], size=10, underline=True)
         ###########################
 
         self.tag_configure("h1", font=self._h1)
@@ -122,6 +126,12 @@ class HTMLText(tk.Text):
         self.tag_configure("blockquote", font=self._blockquote)  # FIXME: Add full support.
         self.tag_configure("cite", font=self._cite)
         self.tag_configure("q", font=self._q)
+
+        self.tag_configure("a", font=self._a, foreground="dodgerblue")  # FIXME: Add full support.
+        self.tag_bind("a", "<Enter>", lambda event=None: self.configure(cursor="hand2"), "+")
+        self.tag_bind("a", "<Leave>", lambda event=None: self.configure(cursor="arrow"), "+")
+        self.tag_bind("a", "<Button-1>", lambda event=None: self.tag_configure("a", foreground="red"), "+")
+        self.tag_bind("a", "<ButtonRelease-1>", lambda event=None: self.tag_configure("a", foreground="purple4"), "+")
 
         self.tag_configure("tag", font=self._tag, elide=False)
         self.tag_configure("comment", font=self._tag, elide=False)
@@ -322,9 +332,15 @@ if __name__ == "__main__":
         Address.
         </address>
         I'm written <bdo dir="rtl">right to left</bdo>.
-        <blockquote cite=""></blockquote>
+        <blockquote cite="">
+        I'm a
+        big block
+        quote.
+        </blockquote>
         <p><cite>Work title</cite> by Some Author</p>
         I'm a <q>quote</q>.
+        
+        <a>I'm a link.</a>
     </body>
 </html>""")
     htext.parse()
