@@ -60,7 +60,7 @@ class FileNavigator(ttk.Frame):
                           index="end",
                           iid=self._directory,
                           text=self._directory,
-                          tags=("Directory", "root"))
+                          tags=("Directory", "root", self._directory))
 
         for root, directories, files in os.walk(self._directory, topdown=True):
             # print("Root: {}".format(root))
@@ -72,7 +72,7 @@ class FileNavigator(ttk.Frame):
                                   index="end",
                                   iid=os.path.join(root, name),
                                   text=name,
-                                  tags="Directory")
+                                  tags=("Directory", "\\", os.path.join(root, name)))
 
             for name in files:
                 # print("File: {}".format(name))
@@ -81,14 +81,14 @@ class FileNavigator(ttk.Frame):
                                   index="end",
                                   iid=os.path.join(root, name),
                                   text=name,
-                                  tags=("File", os.path.splitext(name)[1]))
+                                  tags=("File", os.path.splitext(name)[1], os.path.join(root, name)))
 
 ##################################################
 
 if __name__ == "__main__":
     root = tk.Tk()
-    fnavigator = FileNavigator(root, "../")
+    fnavigator = FileNavigator(root, "..\\")
     fnavigator.pack(fill="y", expand=True, padx=5, pady=5)
-    fnavigator.bind("<<DirectoryOpen>>", lambda event: print("Directory."))
-    fnavigator.bind("<<FileOpen>>", lambda event: print("File."))
+    fnavigator.bind("<<DirectoryOpen>>", lambda event: print(fnavigator._tree.item(fnavigator._tree.focus())["tags"][2]))
+    fnavigator.bind("<<FileOpen>>", lambda event: print(fnavigator._tree.item(fnavigator._tree.focus())["tags"][2]))
     root.mainloop()
