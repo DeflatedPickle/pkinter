@@ -45,12 +45,14 @@ class FileNavigator(ttk.Treeview):
 
         self.refresh()
 
+        self.bind("<Double-Button-1>", lambda event: self.event_generate("<<{}Open>>".format(self.item(self.focus())["tags"][0])))
+
     def refresh(self):
         self.insert(parent="",
                     index="end",
                     iid=self._directory,
                     text=self._directory,
-                    tags="directory")
+                    tags=("Directory", "root"))
 
         for root, directories, files in os.walk(self._directory, topdown=True):
             # print("Root: {}".format(root))
@@ -62,7 +64,7 @@ class FileNavigator(ttk.Treeview):
                             index="end",
                             iid=os.path.join(root, name),
                             text=name,
-                            tags="directory")
+                            tags="Directory")
 
             for name in files:
                 # print("File: {}".format(name))
@@ -71,7 +73,7 @@ class FileNavigator(ttk.Treeview):
                             index="end",
                             iid=os.path.join(root, name),
                             text=name,
-                            tags=("file", os.path.splitext(name)[1]))
+                            tags=("File", os.path.splitext(name)[1]))
 
 ##################################################
 
@@ -79,4 +81,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     fnavigator = FileNavigator(root, "../")
     fnavigator.pack(fill="y", expand=True, padx=5, pady=5)
+    fnavigator.bind("<<DirectoryOpen>>", lambda event: print("Directory."))
+    fnavigator.bind("<<FileOpen>>", lambda event: print("File."))
     root.mainloop()
