@@ -9,7 +9,7 @@ import os
 # link
 
 __title__ = "FileNavigator"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -71,7 +71,7 @@ class FileNavigator(ttk.Treeview):
                             index="end",
                             iid=os.path.join(root, name),
                             text=name,
-                            tags="directory")
+                            tags=("file", os.path.splitext(name)[1]))
 
 ##################################################
 
