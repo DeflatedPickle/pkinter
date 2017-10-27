@@ -9,7 +9,7 @@ import os
 # link
 
 __title__ = "FileNavigator"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __author__ = "DeflatedPickle"
 
 
@@ -23,21 +23,23 @@ class FileNavigator(ttk.Frame):
     filenavigator.pack()
 
             -----PARAMETERS-----
-    parent = The parent of the widget.
+    parent     = The parent of the widget.
+    directory  = The directory to show.
 
             -----CONTENTS-----
     ---VARIABLES---
-    parent = The parent of the widget.
+    parent     = The parent of the widget.
+    _directory = The directory to show.
 
     ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
     self
-    _tree = The Treeview widget.
+    _tree      = The Treeview widget.
 
     ---FUNCTIONS---
-    None
+    refresh()  = Refreshes the Treeview.
     """
     def __init__(self, parent, directory, *args):
         ttk.Frame.__init__(self, parent, *args)
@@ -52,6 +54,8 @@ class FileNavigator(ttk.Frame):
         self._tree.bind("<Double-Button-1>", lambda event: self.event_generate("<<{}Open>>".format(self._tree.item(self._tree.focus())["tags"][0])))
 
     def refresh(self):
+        self._tree.delete(*self._tree.get_children())
+
         self._tree.insert(parent="",
                           index="end",
                           iid=self._directory,
