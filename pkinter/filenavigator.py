@@ -9,7 +9,7 @@ import os
 # link
 
 __title__ = "FileNavigator"
-__version__ = "1.1.5"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
@@ -39,7 +39,7 @@ class FileNavigator(ttk.Treeview):
     None
     """
     def __init__(self, parent, directory, *args):
-        ttk.Treeview.__init__(self, parent, *args)
+        ttk.Treeview.__init__(self, parent, show="tree", *args)
         self.parent = parent
         self._directory = directory
 
