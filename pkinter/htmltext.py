@@ -11,6 +11,7 @@ from html.parser import HTMLParser
 # http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/fonts.html
 # https://docs.python.org/3/library/html.parser.html
 # https://www.w3schools.com/html
+# https://www.w3schools.com/tags
 
 __title__ = "Template"
 __version__ = "1.13.0"
@@ -52,8 +53,9 @@ class HTMLText(tk.Text):
         self._formatting_list = ["b", "strong", "i", "em", "mark", "small", "del", "ins", "sub", "sup"]
         self._quote_cite_list = ["abbr", "address", "bdo", "blockquote", "cite", "q"]
         self._links_list = ["a"]
+        self._widget_list = ["hr", "button"]
 
-        self.tag_list = self._heading_list + self._paragraph_list + self._formatting_list + self._quote_cite_list + self._links_list
+        self.tag_list = self._heading_list + self._paragraph_list + self._formatting_list + self._quote_cite_list + self._links_list + self._widget_list
 
         self.title = ""
 
@@ -105,6 +107,9 @@ class HTMLText(tk.Text):
         self.tag_configure("h4", font=self._h4)
         self.tag_configure("h5", font=self._h5)
         self.tag_configure("h6", font=self._h6)
+
+        self.tag_configure("hr")
+        self.tag_configure("button")
 
         self.tag_configure("p", font=self._p)
         self.tag_configure("pre", font=self._pre)
@@ -202,13 +207,17 @@ class HTMLHandler(HTMLParser):
         HTMLParser.__init__(self)
         self._text = text
 
-        self._start = 0
-        self._end = 0
+        self._tag = ""
+        self._start = 1.0
+        self._end = 1.0
         self._break = 0
 
         self._direction = False
+        self._data = None
+        self._widget = None
 
     def handle_starttag(self, tag, attrs):
+        self._tag = tag
         attributes = " ".join(["{}=\"{}\"".format(key, value) for key, value in attrs])
         tag_with_attributes = tag + (" " if attrs else "") + attributes
         print("Found Start:", "<{}{}>".format(tag, (" " if attrs else "") + attributes))
@@ -221,6 +230,15 @@ class HTMLHandler(HTMLParser):
             frame = ttk.Frame(self._text.master)
             frame.pack_propagate(False)
             ttk.Separator(frame).pack(fill="x")
+
+            self._text.resize_list.append(frame)
+            self._text.window_create(self._start, window=frame)
+
+        elif tag == "button":
+            frame = ttk.Frame(self._text.master)
+            self._widget = ttk.Button(frame)
+            self._widget.pack(fill="both")
+
             self._text.resize_list.append(frame)
             self._text.window_create(self._start, window=frame)
 
@@ -277,6 +295,20 @@ class HTMLHandler(HTMLParser):
         print("Found Comment:", "<!--{}-->".format(data))
         self.apply_tag(data, "<!--{}-->", "comment")
 
+    def handle_data(self, data):
+        if not data.isspace():
+            print("Found Data: {}".format(data))
+
+        self._data = self._text.get(self._start, self._end)
+
+        if self._tag == "button":
+            self._widget.configure(text=self._data)
+
+        # if "<button>" in self._data:
+        #     self._widget.configure(text=self._data)
+
+        self._end = None
+
     ##########
 
     def apply_tag(self, type_, search, tag):
@@ -309,6 +341,7 @@ if __name__ == "__main__":
         <h6>And another one!</h6>
         
         <hr>
+        <button>Hello!</button>
         
         <p>I am some<br>text.</p>
         
