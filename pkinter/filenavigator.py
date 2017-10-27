@@ -9,11 +9,11 @@ import os
 # link
 
 __title__ = "FileNavigator"
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 __author__ = "DeflatedPickle"
 
 
-class FileNavigator(ttk.Treeview):
+class FileNavigator(ttk.Frame):
     """
             -----DESCRIPTION-----
     A template for new widgets.
@@ -34,25 +34,29 @@ class FileNavigator(ttk.Treeview):
 
     ---WIDGETS---
     self
+    _tree = The Treeview widget.
 
     ---FUNCTIONS---
     None
     """
     def __init__(self, parent, directory, *args):
-        ttk.Treeview.__init__(self, parent, show="tree", *args)
+        ttk.Frame.__init__(self, parent, *args)
         self.parent = parent
         self._directory = directory
 
+        self._tree = ttk.Treeview(self, show="tree")
+        self._tree.pack(fill="both", expand=True)
+
         self.refresh()
 
-        self.bind("<Double-Button-1>", lambda event: self.event_generate("<<{}Open>>".format(self.item(self.focus())["tags"][0])))
+        self._tree.bind("<Double-Button-1>", lambda event: self.event_generate("<<{}Open>>".format(self._tree.item(self._tree.focus())["tags"][0])))
 
     def refresh(self):
-        self.insert(parent="",
-                    index="end",
-                    iid=self._directory,
-                    text=self._directory,
-                    tags=("Directory", "root"))
+        self._tree.insert(parent="",
+                          index="end",
+                          iid=self._directory,
+                          text=self._directory,
+                          tags=("Directory", "root"))
 
         for root, directories, files in os.walk(self._directory, topdown=True):
             # print("Root: {}".format(root))
@@ -60,20 +64,20 @@ class FileNavigator(ttk.Treeview):
             for name in directories:
                 # print("Directory: {}".format(name))
 
-                self.insert(parent=root,
-                            index="end",
-                            iid=os.path.join(root, name),
-                            text=name,
-                            tags="Directory")
+                self._tree.insert(parent=root,
+                                  index="end",
+                                  iid=os.path.join(root, name),
+                                  text=name,
+                                  tags="Directory")
 
             for name in files:
                 # print("File: {}".format(name))
 
-                self.insert(parent=root,
-                            index="end",
-                            iid=os.path.join(root, name),
-                            text=name,
-                            tags=("File", os.path.splitext(name)[1]))
+                self._tree.insert(parent=root,
+                                  index="end",
+                                  iid=os.path.join(root, name),
+                                  text=name,
+                                  tags=("File", os.path.splitext(name)[1]))
 
 ##################################################
 
