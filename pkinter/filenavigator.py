@@ -9,7 +9,7 @@ import os
 # link
 
 __title__ = "FileNavigator"
-__version__ = "1.3.0"
+__version__ = "1.4.0"
 __author__ = "DeflatedPickle"
 
 
@@ -30,6 +30,7 @@ class FileNavigator(ttk.Frame):
     ---VARIABLES---
     parent         = The parent of the widget.
     _directory     = The directory to show.
+    images         = A dictionary of images to use.
     selected       = The selected item in the Treeview.
 
     ---TKINTER VARIABLES---
@@ -49,6 +50,9 @@ class FileNavigator(ttk.Frame):
         ttk.Frame.__init__(self, parent, *args)
         self.parent = parent
         self._directory = directory
+
+        self.images = {"Directory": tk.PhotoImage(),
+                       "File": tk.PhotoImage()}
 
         self.selected = None
 
@@ -80,6 +84,7 @@ class FileNavigator(ttk.Frame):
                           index="end",
                           iid=self._directory,
                           text=self._directory,
+                          image=self.images["Directory"],
                           tags=("Directory", "root", self._directory))
 
         for root, directories, files in os.walk(self._directory, topdown=True):
@@ -92,16 +97,19 @@ class FileNavigator(ttk.Frame):
                                   index="end",
                                   iid=os.path.join(root, name),
                                   text=name,
+                                  image=self.images["Directory"],
                                   tags=("Directory", "\\", os.path.join(root, name)))
 
             for name in files:
                 # print("File: {}".format(name))
+                extension = os.path.splitext(name)[1]
 
                 self._tree.insert(parent=root,
                                   index="end",
                                   iid=os.path.join(root, name),
                                   text=name,
-                                  tags=("File", os.path.splitext(name)[1], os.path.join(root, name)))
+                                  image=self.images.get(extension) if self.images.get(extension) else self.images["File"],
+                                  tags=("File", extension, os.path.join(root, name)))
 
 ##################################################
 
@@ -109,6 +117,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     fnavigator = FileNavigator(root, "..\\")
     fnavigator.pack(fill="y", expand=True, padx=5, pady=5)
+
     fnavigator.bind("<<DirectoryOpen>>", lambda event: print("Opened:", fnavigator.selected["tags"][2]))
     fnavigator.bind("<<FileOpen>>", lambda event: print("Opened:", fnavigator.selected["tags"][2]))
     fnavigator.bind("<<DirectoryClose>>", lambda event: print("Closed:", fnavigator.selected["tags"][2]))
