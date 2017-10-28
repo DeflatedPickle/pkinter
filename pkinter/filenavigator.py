@@ -9,7 +9,7 @@ import os
 # link
 
 __title__ = "FileNavigator"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __author__ = "DeflatedPickle"
 
 
@@ -30,6 +30,7 @@ class FileNavigator(ttk.Frame):
     ---VARIABLES---
     parent     = The parent of the widget.
     _directory = The directory to show.
+    selected   = The selected item in the Treeview.
 
     ---TKINTER VARIABLES---
     None
@@ -39,6 +40,7 @@ class FileNavigator(ttk.Frame):
     _tree      = The Treeview widget.
 
     ---FUNCTIONS---
+    _select()  = Sets the selected item
     refresh()  = Refreshes the Treeview.
     """
     def __init__(self, parent, directory, *args):
@@ -54,10 +56,10 @@ class FileNavigator(ttk.Frame):
         self.refresh()
 
         self._tree.bind("<Double-Button-1>", lambda event: self.event_generate("<<{}Open>>".format(self._tree.item(self._tree.focus())["tags"][0])))
-        self._tree.bind("<<TreeviewSelect>>", lambda event: self._select(self._tree.item(fnavigator._tree.focus()), event))
+        self._tree.bind("<<TreeviewSelect>>", self._select)
 
-    def _select(self, selected, event):
-        self.selected = selected
+    def _select(self, event):
+        self.selected = self._tree.item(fnavigator._tree.focus())
 
     def refresh(self):
         self._tree.delete(*self._tree.get_children())
