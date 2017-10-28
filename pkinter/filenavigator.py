@@ -9,7 +9,7 @@ import os
 # link
 
 __title__ = "FileNavigator"
-__version__ = "1.2.1"
+__version__ = "1.3.0"
 __author__ = "DeflatedPickle"
 
 
@@ -23,25 +23,27 @@ class FileNavigator(ttk.Frame):
     filenavigator.pack()
 
             -----PARAMETERS-----
-    parent     = The parent of the widget.
-    directory  = The directory to show.
+    parent         = The parent of the widget.
+    directory      = The directory to show.
 
             -----CONTENTS-----
     ---VARIABLES---
-    parent     = The parent of the widget.
-    _directory = The directory to show.
-    selected   = The selected item in the Treeview.
+    parent         = The parent of the widget.
+    _directory     = The directory to show.
+    selected       = The selected item in the Treeview.
 
     ---TKINTER VARIABLES---
     None
 
     ---WIDGETS---
     self
-    _tree      = The Treeview widget.
+    _tree          = The Treeview widget.
 
     ---FUNCTIONS---
-    _select()  = Sets the selected item
-    refresh()  = Refreshes the Treeview.
+    _select()      = Sets the selected item
+    _open_event()  =
+    _close_event() =
+    refresh()      = Refreshes the Treeview.
     """
     def __init__(self, parent, directory, *args):
         ttk.Frame.__init__(self, parent, *args)
@@ -53,13 +55,23 @@ class FileNavigator(ttk.Frame):
         self._tree = ttk.Treeview(self, show="tree")
         self._tree.pack(fill="both", expand=True)
 
+        self._tree.bind("<<TreeviewSelect>>", self._select, "+")
+        # self._tree.bind("<Double-Button-1>", self._open_event)
+        self._tree.bind("<<TreeviewOpen>>", self._open_event, "+")
+        self._tree.bind("<<TreeviewClose>>", self._close_event, "+")
+
         self.refresh()
 
-        self._tree.bind("<Double-Button-1>", lambda event: self.event_generate("<<{}Open>>".format(self._tree.item(self._tree.focus())["tags"][0])))
-        self._tree.bind("<<TreeviewSelect>>", self._select)
+    def _select(self, event=None):
+        self.selected = self._tree.item(self._tree.focus())
 
-    def _select(self, event):
-        self.selected = self._tree.item(fnavigator._tree.focus())
+    def _open_event(self, event=None):
+        self._select()
+        self.event_generate("<<{}Open>>".format(self._tree.item(self._tree.focus())["tags"][0]))
+
+    def _close_event(self, event=None):
+        self._select()
+        self.event_generate("<<{}Close>>".format(self._tree.item(self._tree.focus())["tags"][0]))
 
     def refresh(self):
         self._tree.delete(*self._tree.get_children())
@@ -97,6 +109,8 @@ if __name__ == "__main__":
     root = tk.Tk()
     fnavigator = FileNavigator(root, "..\\")
     fnavigator.pack(fill="y", expand=True, padx=5, pady=5)
-    fnavigator.bind("<<DirectoryOpen>>", lambda event: print(fnavigator.selected["tags"][2]))
-    fnavigator.bind("<<FileOpen>>", lambda event: print(fnavigator.selected["tags"][2]))
+    fnavigator.bind("<<DirectoryOpen>>", lambda event: print("Opened:", fnavigator.selected["tags"][2]))
+    fnavigator.bind("<<FileOpen>>", lambda event: print("Opened:", fnavigator.selected["tags"][2]))
+    fnavigator.bind("<<DirectoryClose>>", lambda event: print("Closed:", fnavigator.selected["tags"][2]))
+    fnavigator.bind("<<FileClose>>", lambda event: print("Closed:", fnavigator.selected["tags"][2]))
     root.mainloop()
