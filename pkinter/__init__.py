@@ -29,6 +29,8 @@ from .scaleswitch import ScaleSwitch
 from .buttonswitch import ButtonSwitch
 from .filepicker import FilePicker
 from .directorypicker import DirectoryPicker
+from .filenavigator import FileNavigator
+
 from .center import center_on_screen, center_on_parent
 
 __title__ = "pkinter"
@@ -38,7 +40,7 @@ __copyright__ = "Copyright (c) 2017 Dibbo"
 __credits__ = ["DeflatedPickle/Dibbo"]
 
 __license__ = "MIT"
-__version__ = "1.31.0"
+__version__ = "1.32.0"
 __maintainer__ = "DeflatedPickle/Dibbo"
 __email__ = "DeflatedPickle@gmail.com"
 __status__ = "Development"

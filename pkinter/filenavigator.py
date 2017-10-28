@@ -16,10 +16,10 @@ __author__ = "DeflatedPickle"
 class FileNavigator(ttk.Frame):
     """
             -----DESCRIPTION-----
-    A template for new widgets.
+    A Treeview that shows all contents of a directory.
 
             -----USAGE-----
-    filenavigator = FileNavigator(parent)
+    filenavigator = FileNavigator(parent, directory=[string])
     filenavigator.pack()
 
             -----PARAMETERS-----
