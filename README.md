@@ -8,8 +8,8 @@ A set of useful widgets for use with TkInter.
 [![PyPI](https://img.shields.io/pypi/dw/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
 [![PyPI](https://img.shields.io/pypi/dm/pkinter.svg)](https://pypi.python.org/pypi/pkinter)
 
-**Warning**: These widgets are designed for Windows 8.1, there is a good chance they will look different and/or bad on other operating systems.
-If a widget does look bad or deviates from the native look on an operating system, feel free to send me an email with a screenshot of the widget and the name of the operating system you're using it on.
+**Warning:** These widgets are designed for Windows 8.1, there is a good chance they will look different and/or bad on other operating systems.
+If a widget does look bad or deviates from the native look of an operating system, feel free to contact me with a screenshot of the widget and the name of the operating system you're using it on, and I will try to make it look better on that OS.
 
 ## Installing The Library
 
