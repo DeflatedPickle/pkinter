@@ -36,7 +36,7 @@ class ToasterBox(tk.Toplevel):
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, width=250, minus_width=5, minus_height=5, extra_height=40, popup_fit=5, popup_pause=500, popup_padding=5, popup_height=70, *args):
+    def __init__(self, parent, width=350, minus_width=5, minus_height=5, extra_height=40, popup_fit=5, popup_pause=500, popup_padding=5, popup_height=100, *args):
         tk.Toplevel.__init__(self, parent, *args)
         self.parent = parent
         self._width = width
@@ -79,7 +79,7 @@ class Popup(ttk.Frame):
         self.close.pack(anchor="ne")
 
     def remove(self, event=None):
-        pass
+        print(self.name)
 
 ##################################################
 
