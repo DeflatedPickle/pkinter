@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name="pkinter",
-      version="1.32.0",
+      version="1.33.0",
       description="A set of useful widgets for use with TkInter.",
       author="DeflatedPickle",
       author_email="DeflatedPickle@gmail.com",
@@ -12,6 +12,7 @@ setup(name="pkinter",
           "License :: OSI Approved :: MIT License",
           "Programming Language :: Python :: 3.4",
           "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6",
       ],
       keywords=["pkinter", "tkinter", "GUI", "widgets"],
       packages=["pkinter"])
