@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ToasterBox"
-__version__ = "1.6.0"
+__version__ = "1.7.0"
 __author__ = "DeflatedPickle"
 
 
@@ -58,24 +58,29 @@ class ToasterBox(tk.Toplevel):
         self.geometry("+{}+{}".format((self.winfo_screenwidth() - self.winfo_width()) - self._minus_width,
                                       (self.winfo_screenheight() - self.winfo_height()) - self._extra_height - self._minus_height))
 
-    def create_popup(self, title=""):
-        popup = Popup(self, title=title, height=self._popup_height)
+    def create_popup(self, title="", image=None):
+        popup = Popup(self, title=title, image=image, height=self._popup_height)
         popup.pack(side="bottom", fill="x", pady=self._popup_padding)
 
         return popup
 
 
 class Popup(ttk.Frame):
-    def __init__(self, parent, title, height, *args):
+    def __init__(self, parent, title, image, height, *args):
         ttk.Frame.__init__(self, parent, height=height, *args)
         self.parent = parent
         self._title = title
+        self._image = image
 
         self.grid_propagate(False)
-        self.columnconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.columnconfigure(1, weight=1)
+
+        image = ttk.Label(self, image=self._image)
+        image.grid(row=0, column=0, rowspan=2)
 
         title_frame = ttk.Frame(self)
-        title_frame.grid(row=1, column=0, sticky="we")
+        title_frame.grid(row=0, column=1, sticky="we")
 
         label = ttk.Label(title_frame, text=self._title)
         label.pack(side="left", fill="both", expand=True)
