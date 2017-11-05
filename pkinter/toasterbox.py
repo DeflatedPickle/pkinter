@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ToasterBox"
-__version__ = "1.9.0"
+__version__ = "1.10.0"
 __author__ = "DeflatedPickle"
 
 
@@ -57,6 +57,10 @@ class ToasterBox(tk.Toplevel):
                                       (self.winfo_screenheight() - self.winfo_height()) - self._extra_height - self._minus_height))
 
         ttk.Style().configure("Popup.TFrame", borderwidth=10, relief="raised")
+        ttk.Style().configure("Close.Popup.TButton")
+        ttk.Style().configure("Image.Popup.TLabel")
+        ttk.Style().configure("Title.Popup.TLabel")
+        ttk.Style().configure("Message.Popup.TLabel")
 
     def create_popup(self, title="", image=None, message="", life=0):
         popup = Popup(self, title=title, image=image, message=message, life=life, height=self._popup_height, ipad=self._popup_ipad)
@@ -79,19 +83,19 @@ class Popup(ttk.Frame):
         self.rowconfigure(1, weight=1)
         self.columnconfigure(1, weight=1)
 
-        image = ttk.Label(self, image=self._image)
-        image.grid(row=0, column=0, rowspan=2, padx=self._ipad, pady=self._ipad)
+        image = ttk.Label(self, image=self._image, style="Image.Popup.TLabel")
+        image.grid(row=0, column=0, rowspan=2, sticky="nesw", padx=self._ipad, pady=self._ipad)
 
         title_frame = ttk.Frame(self)
         title_frame.grid(row=0, column=1, sticky="we", padx=self._ipad, pady=self._ipad)
 
-        label = ttk.Label(title_frame, text=self._title)
+        label = ttk.Label(title_frame, text=self._title, style="Title.Popup.TLabel")
         label.pack(side="left", fill="both", expand=True)
 
-        close = ttk.Button(title_frame, text="X", width=3, command=self.remove)
+        close = ttk.Button(title_frame, text="X", width=3, command=self.remove, style="Close.Popup.TButton")
         close.pack(side="right")
 
-        message = ttk.Label(self, text=self._message)
+        message = ttk.Label(self, text=self._message, style="Message.Popup.TLabel")
         message.grid(row=1, column=1, sticky="nw", padx=self._ipad, pady=self._ipad)
 
         if self._life > 0:
