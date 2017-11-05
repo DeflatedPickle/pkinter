@@ -50,6 +50,7 @@ You will also need to import Tkinter, you can import that like this: `import tki
 - FilePicker
 - DirectoryPicker
 - FileNavigator
+- ToasterBox
 
 ## Planned Widgets
 - StarRating
@@ -69,7 +70,6 @@ You will also need to import Tkinter, you can import that like this: `import tki
 - [PropertyGrid](http://docs.wxwidgets.org/3.1/classwx_property_grid.html)
 
 #### [wxPython](https://wxpython.org/Phoenix/docs/html/gallery.html)
-- [ToasterBox](https://wxpython.org/Phoenix/docs/html/wx.lib.agw.toasterbox.ToasterBox.html)
 - [ZoomBar](https://wxpython.org/Phoenix/docs/html/wx.lib.agw.zoombar.ZoomBar.html)
 - [XLSGrid](https://wxpython.org/Phoenix/docs/html/wx.lib.agw.xlsgrid.XLSGrid.html)
 
