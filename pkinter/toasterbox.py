@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ToasterBox"
-__version__ = "1.10.0"
+__version__ = "1.10.1"
 __author__ = "DeflatedPickle"
 
 
@@ -18,14 +18,22 @@ class ToasterBox(tk.Toplevel):
     A template for new widgets.
 
             -----USAGE-----
-    template = ToasterBox(parent)
+    toasterbox = ToasterBox(parent)
+    toasterbox.create_popup(title=[string], image=[photoimage]/[string], message=[string], life=[integer])
 
             -----PARAMETERS-----
     parent = The parent of the widget.
 
             -----CONTENTS-----
     ---VARIABLES---
-    parent = The parent of the widget.
+    parent         = The parent of the widget.
+    _width         = The width of the widget.
+    _padx          = The horizontal padding of the widget.
+    _pady          = The vertical padding of the widget.
+    _popup_fit     = The amount of popups to fit into the widget.
+    _popup_pad     = The padding of the popups.
+    _popup_ipad    = The internal padding of the popups.
+    _popup_height  = The height of each popup.
 
     ---TKINTER VARIABLES---
     None
@@ -34,15 +42,14 @@ class ToasterBox(tk.Toplevel):
     self
 
     ---FUNCTIONS---
-    None
+    create_popup() = Creates a new popup.
     """
-    def __init__(self, parent, width=350, minus_width=5, minus_height=5, extra_height=40, popup_fit=5, popup_pad=5, popup_ipad=3, popup_height=100, *args):
+    def __init__(self, parent, width=350, padx=5, pady=45, popup_fit=5, popup_pad=5, popup_ipad=3, popup_height=100, *args):
         tk.Toplevel.__init__(self, parent, *args)
         self.parent = parent
         self._width = width
-        self._minus_width = minus_width
-        self._minus_height = minus_height
-        self._extra_height = extra_height
+        self._padx = padx
+        self._pady = pady
         self._popup_fit = popup_fit
         self._popup_pad = popup_pad
         self._popup_ipad = popup_ipad
@@ -53,8 +60,8 @@ class ToasterBox(tk.Toplevel):
 
         self.geometry("{}x{}".format(self._width, self._popup_fit * (self._popup_height + (self._popup_pad * 2))))
         self.update()
-        self.geometry("+{}+{}".format((self.winfo_screenwidth() - self.winfo_width()) - self._minus_width,
-                                      (self.winfo_screenheight() - self.winfo_height()) - self._extra_height - self._minus_height))
+        self.geometry("+{}+{}".format((self.winfo_screenwidth() - self.winfo_width()) - self._padx,
+                                      (self.winfo_screenheight() - self.winfo_height()) - self._pady))
 
         ttk.Style().configure("Popup.TFrame", borderwidth=10, relief="raised")
         ttk.Style().configure("Close.Popup.TButton")
@@ -63,6 +70,7 @@ class ToasterBox(tk.Toplevel):
         ttk.Style().configure("Message.Popup.TLabel")
 
     def create_popup(self, title="", image=None, message="", life=0):
+        """Creates a new popup."""
         popup = Popup(self, title=title, image=image, message=message, life=life, height=self._popup_height, ipad=self._popup_ipad)
         popup.pack(side="bottom", fill="x", pady=self._popup_pad)
 
