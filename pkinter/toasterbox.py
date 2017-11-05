@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ToasterBox"
-__version__ = "1.8.1"
+__version__ = "1.9.0"
 __author__ = "DeflatedPickle"
 
 
@@ -36,7 +36,7 @@ class ToasterBox(tk.Toplevel):
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, width=350, minus_width=5, minus_height=5, extra_height=40, popup_fit=5, popup_pause=500, popup_pad=5, popup_ipad=3, popup_height=100, *args):
+    def __init__(self, parent, width=350, minus_width=5, minus_height=5, extra_height=40, popup_fit=5, popup_pad=5, popup_ipad=3, popup_height=100, *args):
         tk.Toplevel.__init__(self, parent, *args)
         self.parent = parent
         self._width = width
@@ -44,7 +44,6 @@ class ToasterBox(tk.Toplevel):
         self._minus_height = minus_height
         self._extra_height = extra_height
         self._popup_fit = popup_fit
-        self._popup_pause = popup_pause
         self._popup_pad = popup_pad
         self._popup_ipad = popup_ipad
         self._popup_height = popup_height
@@ -59,19 +58,20 @@ class ToasterBox(tk.Toplevel):
 
         ttk.Style().configure("Popup.TFrame", borderwidth=10, relief="raised")
 
-    def create_popup(self, title="", image=None, message=""):
-        popup = Popup(self, title=title, image=image, message=message, height=self._popup_height, ipad=self._popup_ipad)
+    def create_popup(self, title="", image=None, message="", life=0):
+        popup = Popup(self, title=title, image=image, message=message, life=life, height=self._popup_height, ipad=self._popup_ipad)
         popup.pack(side="bottom", fill="x", pady=self._popup_pad)
 
         return popup
 
 
 class Popup(ttk.Frame):
-    def __init__(self, parent, title, image, message, height, ipad, *args):
+    def __init__(self, parent, title, image, message, life, height, ipad, *args):
         ttk.Frame.__init__(self, parent, height=height, style="Popup.TFrame", *args)
         self.parent = parent
         self._title = title
         self._image = image
+        self._life = life
         self._message = message
         self._ipad = ipad
 
@@ -93,6 +93,9 @@ class Popup(ttk.Frame):
 
         message = ttk.Label(self, text=self._message)
         message.grid(row=1, column=1, sticky="nw", padx=self._ipad, pady=self._ipad)
+
+        if self._life > 0:
+            self.after(self._life, self.remove)
 
     def remove(self, event=None):
         self.pack_forget()
