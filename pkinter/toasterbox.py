@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ToasterBox"
-__version__ = "1.4.0"
+__version__ = "1.5.0"
 __author__ = "DeflatedPickle"
 
 
@@ -79,7 +79,7 @@ class Popup(ttk.Frame):
         self.close.pack(anchor="ne")
 
     def remove(self, event=None):
-        print(self.name)
+        self.pack_forget()
 
 ##################################################
 
