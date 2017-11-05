@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ToasterBox"
-__version__ = "1.5.0"
+__version__ = "1.6.0"
 __author__ = "DeflatedPickle"
 
 
@@ -58,25 +58,30 @@ class ToasterBox(tk.Toplevel):
         self.geometry("+{}+{}".format((self.winfo_screenwidth() - self.winfo_width()) - self._minus_width,
                                       (self.winfo_screenheight() - self.winfo_height()) - self._extra_height - self._minus_height))
 
-    def create_popup(self, name):
-        popup = Popup(self, height=self._popup_height, name=name)
+    def create_popup(self, title=""):
+        popup = Popup(self, title=title, height=self._popup_height)
         popup.pack(side="bottom", fill="x", pady=self._popup_padding)
 
         return popup
 
 
 class Popup(ttk.Frame):
-    def __init__(self, parent, height, name=None, *args):
+    def __init__(self, parent, title, height, *args):
         ttk.Frame.__init__(self, parent, height=height, *args)
         self.parent = parent
-        self.pack_propagate(False)
+        self._title = title
 
-        self.name = name
+        self.grid_propagate(False)
+        self.columnconfigure(0, weight=1)
 
-        tk.Label(self, text=self.name).pack(anchor="nw")
+        title_frame = ttk.Frame(self)
+        title_frame.grid(row=1, column=0, sticky="we")
 
-        self.close = tk.Button(self, text="X", width=3, command=self.remove)
-        self.close.pack(anchor="ne")
+        label = ttk.Label(title_frame, text=self._title)
+        label.pack(side="left", fill="both", expand=True)
+
+        close = ttk.Button(title_frame, text="X", width=3, command=self.remove)
+        close.pack(side="right")
 
     def remove(self, event=None):
         self.pack_forget()
@@ -86,7 +91,7 @@ class Popup(ttk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     tbox = ToasterBox(root)
-    tbox.create_popup("dddd")
-    tbox.create_popup("aaaaaaaa")
-    tbox.create_popup("sssss")
+    tbox.create_popup("Popup 1")
+    tbox.create_popup("Popup 2")
+    tbox.create_popup("Popup 3")
     root.mainloop()
