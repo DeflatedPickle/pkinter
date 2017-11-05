@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "ToasterBox"
-__version__ = "1.3.1"
+__version__ = "1.4.0"
 __author__ = "DeflatedPickle"
 
 
@@ -59,17 +59,21 @@ class ToasterBox(tk.Toplevel):
                                       (self.winfo_screenheight() - self.winfo_height()) - self._extra_height - self._minus_height))
 
     def create_popup(self, name):
-        popup = Popup(self, height=self._popup_height)
-        popup.pack(fill="x", pady=self._popup_padding)
+        popup = Popup(self, height=self._popup_height, name=name)
+        popup.pack(side="bottom", fill="x", pady=self._popup_padding)
 
         return popup
 
 
 class Popup(ttk.Frame):
-    def __init__(self, parent, height, *args):
+    def __init__(self, parent, height, name=None, *args):
         ttk.Frame.__init__(self, parent, height=height, *args)
         self.parent = parent
         self.pack_propagate(False)
+
+        self.name = name
+
+        tk.Label(self, text=self.name).pack(anchor="nw")
 
         self.close = tk.Button(self, text="X", width=3, command=self.remove)
         self.close.pack(anchor="ne")
@@ -82,7 +86,7 @@ class Popup(ttk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     tbox = ToasterBox(root)
-    tbox.create_popup()
-    tbox.create_popup()
-    tbox.create_popup()
+    tbox.create_popup("dddd")
+    tbox.create_popup("aaaaaaaa")
+    tbox.create_popup("sssss")
     root.mainloop()
