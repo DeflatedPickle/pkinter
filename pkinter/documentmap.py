@@ -115,8 +115,8 @@ if __name__ == "__main__":
     root = tk.Tk()
     text = tk.Text(root, width=1, height=1, wrap="none")
     text.pack(side="left", fill="both", expand=True, padx=[5, 0], pady=5)
-    for i in range(0, 100):
-        text.insert("{}.0".format(i), "{}\n".format(i))
+    with open("documentmap.py") as file:
+        text.insert(1.0, file.read())
     vscroll = ttk.Scrollbar(root, orient="vertical", command=text.yview)
     vscroll.pack(side="left", fill="y", pady=5)
     text.configure(yscrollcommand=vscroll.set)
