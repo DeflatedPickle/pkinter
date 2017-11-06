@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.7.1"
+__version__ = "1.8.0"
 __author__ = "DeflatedPickle"
 
 
@@ -37,7 +37,7 @@ class DocumentMap(tk.Canvas):
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 4), text_pad=5, collide="harsh", background="white", width=170, *args):
+    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 4), text_pad=5, collide="harsh", scroll="text", background="white", width=170, *args):
         tk.Canvas.__init__(self, parent, background=background, width=width, *args)
         self.parent = parent
         self._text_widget = text_widget
@@ -46,6 +46,7 @@ class DocumentMap(tk.Canvas):
         self._text_font = text_font
         self._text_pad = text_pad
         self._collide = collide
+        self._scroll = scroll
         self._width = width
 
         self._widget_text = self.create_text([self._text_pad, self._text_pad], font=self._text_font, anchor="nw", tags="text")
@@ -92,23 +93,26 @@ class DocumentMap(tk.Canvas):
             c = self.coords(self._handle)
             self.coords(self._handle, c[0], c[1] + 1, c[2], c[3] + 1)
 
-        elif self.coords(self._handle)[3] >= self.winfo_height():
+        elif self.coords(self._handle)[3] >= self._scroll_height():
             c = self.coords(self._handle)
             self.coords(self._handle, c[0], c[1] - 1, c[2], c[3] - 1)
 
         self.after(interval, self._smooth_collide)
 
     def _harsh_collide(self, interval=1, event=None):
+
         if self.coords(self._handle)[1] <= 0:
             c = self.coords(self._handle)
             self.coords(self._handle, c[0], 0, c[2], self._box[3])
 
-        elif self.coords(self._handle)[3] >= self.winfo_height():
+        elif self.coords(self._handle)[3] >= self._scroll_height():
             c = self.coords(self._handle)
-            self.coords(self._handle, c[0], self.winfo_height() - self._box[3], c[2], self.winfo_height())
+            self.coords(self._handle, c[0], self._scroll_height() - self._box[3], c[2], self._scroll_height())
 
         self.after(interval, self._harsh_collide)
 
+    def _scroll_height(self):
+        return self.bbox(self._widget_text)[3] if self._scroll == "text" else self.winfo_height() if self._scroll == "all" else None
 
 ##################################################
 
