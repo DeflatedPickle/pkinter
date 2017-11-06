@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.7.0"
+__version__ = "1.7.1"
 __author__ = "DeflatedPickle"
 
 
@@ -37,7 +37,7 @@ class DocumentMap(tk.Canvas):
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 2), text_pad=5, collide="harsh", background="white", width=170, *args):
+    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 4), text_pad=5, collide="harsh", background="white", width=170, *args):
         tk.Canvas.__init__(self, parent, background=background, width=width, *args)
         self.parent = parent
         self._text_widget = text_widget
@@ -48,7 +48,7 @@ class DocumentMap(tk.Canvas):
         self._collide = collide
         self._width = width
 
-        self._widget_text = self.create_text([self._text_pad, self._text_pad], text=self._text_widget.get(1.0, "end"), font=self._text_font, anchor="nw", tags="text")
+        self._widget_text = self.create_text([self._text_pad, self._text_pad], font=self._text_font, anchor="nw", tags="text")
 
         self._text_widget.update()
         self._box = self._text_widget.bbox(1.0)
@@ -79,7 +79,8 @@ class DocumentMap(tk.Canvas):
         self.update_idletasks()
 
         handle = self.coords(self._handle)[1]
-        height = self.winfo_height()
+        bounds = self.bbox(self._widget_text)
+        height = bounds[3] - bounds[1]
         total_lines = int(self._text_widget.index("end-1c").split(".")[0])
 
         line = (handle / height) * total_lines
