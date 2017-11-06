@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __author__ = "DeflatedPickle"
 
 
@@ -46,18 +46,16 @@ class DocumentMap(tk.Canvas):
         self._text_font = text_font
         self._text_pad = text_pad
 
-        self._widget_text = None
+        self._widget_text = self.create_text([self._text_pad, self._text_pad], text=self._text_widget.get(1.0, "end"), font=self._text_font, anchor="nw", tags="text")
 
-        self._handle = self.create_rectangle([0, 0, width, 70], fill=self._scroll_fill, width=0, stipple="gray50")
+        self._handle = self.create_rectangle([0, 0, width, 70], fill=self._scroll_fill, width=0, stipple="gray25", tags="handle")
 
         self._text_widget.bind("<<Change>>", self._redraw, "+")
         self._text_widget.bind("<Configure>", self._redraw, "+")
         self._text_widget.bind("<KeyRelease>", self._redraw, "+")
 
     def _redraw(self, event=None):
-        self.delete(self._widget_text)
-
-        self._widget_text = self.create_text([self._text_pad, self._text_pad], text=self._text_widget.get(1.0, "end"), font=self._text_font, anchor="nw")
+        self.itemconfigure(self._widget_text, text=self._text_widget.get(1.0, "end"))
 
 ##################################################
 
