@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.4.0"
+__version__ = "1.4.1"
 __author__ = "DeflatedPickle"
 
 
@@ -52,7 +52,9 @@ class DocumentMap(tk.Canvas):
         self._handle = self.create_rectangle([0, 0, self._width, 70], fill=self._scroll_fill, width=0, stipple="gray25", tags="handle")
         self.tag_bind("handle", "<Enter>", lambda event=None: self.configure(cursor="hand2"), "+")
         self.tag_bind("handle", "<Leave>", lambda event=None: self.configure(cursor="arrow"), "+")
-        self.tag_bind("handle", "<B1-Motion>", self._move, "+")
+
+        self.bind("<Button-1>", self._move, "+")
+        self.bind("<B1-Motion>", self._move, "+")
 
         self._text_widget.bind("<<Change>>", self._redraw, "+")
         self._text_widget.bind("<Configure>", self._redraw, "+")
@@ -70,6 +72,8 @@ if __name__ == "__main__":
     root = tk.Tk()
     text = tk.Text(root, width=1, height=1)
     text.pack(side="left", fill="both", expand=True, padx=[5, 0], pady=5)
+    for i in range(0, 100):
+        text.insert("{}.0".format(i), "{}\n".format(i))
     vscroll = ttk.Scrollbar(root, orient="vertical", command=text.yview)
     vscroll.pack(side="left", fill="y", pady=5)
     text.configure(yscrollcommand=vscroll.set)
