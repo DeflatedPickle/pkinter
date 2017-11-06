@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.6.1"
+__version__ = "1.7.0"
 __author__ = "DeflatedPickle"
 
 
@@ -37,7 +37,7 @@ class DocumentMap(tk.Canvas):
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 7), text_pad=5, collide="harsh", background="white", width=170, *args):
+    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 2), text_pad=5, collide="harsh", background="white", width=170, *args):
         tk.Canvas.__init__(self, parent, background=background, width=width, *args)
         self.parent = parent
         self._text_widget = text_widget
@@ -75,6 +75,16 @@ class DocumentMap(tk.Canvas):
 
     def _move(self, event=None):
         self.coords(self._handle, self.coords(self._handle)[0], event.y - self._box[3] / 2, self.coords(self._handle)[0] + self._width, event.y + self._box[3] / 2)
+
+        self.update_idletasks()
+
+        handle = self.coords(self._handle)[1]
+        height = self.winfo_height()
+        total_lines = int(self._text_widget.index("end-1c").split(".")[0])
+
+        line = (handle / height) * total_lines
+
+        self._text_widget.see("{}.0".format(round(line)))
 
     def _smooth_collide(self, interval=60):
         if self.coords(self._handle)[1] <= 0:
