@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.4.1"
+__version__ = "1.5.0"
 __author__ = "DeflatedPickle"
 
 
@@ -60,11 +60,25 @@ class DocumentMap(tk.Canvas):
         self._text_widget.bind("<Configure>", self._redraw, "+")
         self._text_widget.bind("<KeyRelease>", self._redraw, "+")
 
+        self._collide()
+
     def _redraw(self, event=None):
         self.itemconfigure(self._widget_text, text=self._text_widget.get(1.0, "end"))
 
     def _move(self, event=None):
         self.coords(self._handle, self.coords(self._handle)[0], event.y - 35, self.coords(self._handle)[0] + self._width, event.y + 35)
+
+    def _collide(self, interval=60):
+        # FIXME: Make this a harsh collision.
+        if self.coords(self._handle)[1] <= 0:
+            c = self.coords(self._handle)
+            self.coords(self._handle, c[0], c[1] + 1, c[2], c[3] + 1)
+
+        elif self.coords(self._handle)[3] >= self.winfo_height():
+            c = self.coords(self._handle)
+            self.coords(self._handle, c[0], c[1] - 1, c[2], c[3] - 1)
+
+        self.after(interval, self._collide)
 
 ##################################################
 
