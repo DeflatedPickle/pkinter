@@ -74,7 +74,6 @@ class DocumentMap(tk.Canvas):
         self.coords(self._handle, self.coords(self._handle)[0], event.y - 35, self.coords(self._handle)[0] + self._width, event.y + 35)
 
     def _smooth_collide(self, interval=60):
-        # FIXME: Make this a harsh collision.
         if self.coords(self._handle)[1] <= 0:
             c = self.coords(self._handle)
             self.coords(self._handle, c[0], c[1] + 1, c[2], c[3] + 1)
