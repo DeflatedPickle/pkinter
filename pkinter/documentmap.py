@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.9.0"
+__version__ = "1.9.1"
 __author__ = "DeflatedPickle"
 
 
@@ -71,21 +71,25 @@ class DocumentMap(tk.Canvas):
         self._text_widget.bind("<Configure>", self._redraw, "+")
         self._text_widget.bind("<KeyRelease>", self._redraw, "+")
 
+        self._work_out_handle()
+
     def _redraw(self, event=None):
         self.itemconfigure(self._widget_text, text=self._text_widget.get(1.0, "end"))
 
         self._work_out_handle()
 
     def _work_out_handle(self):
-        start = self._text_widget.index(self._text_widget.index("@0,0"))
-        end = self._text_widget.index(self._text_widget.index("@0,{}".format(self._text_widget.winfo_height())))
+        self._handle_start = self._text_widget.index(self._text_widget.index("@0,0"))
+        self._handle_end = self._text_widget.index(self._text_widget.index("@0,{}".format(self._text_widget.winfo_height())))
 
-        self._box = (0, float(start), self._width, float(end) * 4)
+        self._box = (0, float(self._handle_start), self._width, float(self._handle_end) * 4)
 
-        # print(start, end)
+        # print(self._handle_start, self._handle_end)
 
     def _move(self, event=None):
         # self._work_out_handle()
+
+        # print(self._handle_start, self._handle_end)
 
         self.coords(self._handle, self.coords(self._handle)[0], event.y - self._box[3] / 2, self._box[0] + self._width, event.y + self._box[3] / 2)
 
@@ -98,7 +102,10 @@ class DocumentMap(tk.Canvas):
 
         line = (handle / height) * total_lines
 
-        self._text_widget.see("{}.0".format(round(line)))
+        start = float("{}.0".format(round(line)))
+
+        self._text_widget.see(start)
+        self._text_widget.see(start + float(self._handle_end))
 
     def _smooth_collide(self, interval=60):
         if self.coords(self._handle)[1] <= 0:
