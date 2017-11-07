@@ -8,11 +8,8 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.9.1"
+__version__ = "1.9.2"
 __author__ = "DeflatedPickle"
-
-# TODO: Make the handle scroll the canvas when it gets to the edges.
-# TODO: Make the handle move when the scrollbar does.
 
 
 class DocumentMap(tk.Canvas):
@@ -94,7 +91,7 @@ class DocumentMap(tk.Canvas):
 
         # print(self._handle_start, self._handle_end)
 
-        self.coords(self._handle, self.coords(self._handle)[0], event.y - self._box[3] / 2, self._box[0] + self._width, event.y + self._box[3] / 2)
+        self.coords(self._handle, self.coords(self._handle)[0], event.y - self._box[3] / 2, self._box[2], event.y + self._box[3] / 2)
 
         self.update_idletasks()
 
