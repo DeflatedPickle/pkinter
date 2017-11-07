@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.8.0"
+__version__ = "1.9.0"
 __author__ = "DeflatedPickle"
 
 
@@ -37,7 +37,7 @@ class DocumentMap(tk.Canvas):
     ---FUNCTIONS---
     None
     """
-    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 4), text_pad=5, collide="harsh", scroll="text", background="white", width=170, *args):
+    def __init__(self, parent, text_widget, scroll_widget=None, scroll_fill="orange", text_font=("courier", 3), text_pad=5, collide="harsh", scroll="text", background="white", width=170, *args):
         tk.Canvas.__init__(self, parent, background=background, width=width, *args)
         self.parent = parent
         self._text_widget = text_widget
@@ -74,8 +74,20 @@ class DocumentMap(tk.Canvas):
     def _redraw(self, event=None):
         self.itemconfigure(self._widget_text, text=self._text_widget.get(1.0, "end"))
 
+        self._work_out_handle()
+
+    def _work_out_handle(self):
+        start = self._text_widget.index(self._text_widget.index("@0,0"))
+        end = self._text_widget.index(self._text_widget.index("@0,{}".format(self._text_widget.winfo_height())))
+
+        self._box = (0, float(start), self._width, float(end) * 4)
+
+        # print(start, end)
+
     def _move(self, event=None):
-        self.coords(self._handle, self.coords(self._handle)[0], event.y - self._box[3] / 2, self.coords(self._handle)[0] + self._width, event.y + self._box[3] / 2)
+        # self._work_out_handle()
+
+        self.coords(self._handle, self.coords(self._handle)[0], event.y - self._box[3] / 2, self._box[0] + self._width, event.y + self._box[3] / 2)
 
         self.update_idletasks()
 
