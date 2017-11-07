@@ -11,6 +11,9 @@ __title__ = "DocumentMap"
 __version__ = "1.9.1"
 __author__ = "DeflatedPickle"
 
+# TODO: Make the handle scroll the canvas when it gets to the edges.
+# TODO: Make the handle move when the scrollbar does.
+
 
 class DocumentMap(tk.Canvas):
     """
