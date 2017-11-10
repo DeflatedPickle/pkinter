@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.9.2"
+__version__ = "1.10.0"
 __author__ = "DeflatedPickle"
 
 
@@ -106,6 +106,12 @@ class DocumentMap(tk.Canvas):
 
         self._text_widget.see(start)
         self._text_widget.see(start + float(self._handle_end))
+
+        if self.coords(self._handle)[1] < 0 and self._handle_start != self._handle_start:
+            self.yview("scroll", -1, "units")
+
+        elif self.coords(self._handle)[3] > self.winfo_height() and self._handle_end != self._handle_end:
+            self.yview("scroll", 1, "units")
 
     def _smooth_collide(self, interval=60):
         if self.coords(self._handle)[1] <= 0:
