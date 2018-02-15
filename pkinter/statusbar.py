@@ -116,7 +116,7 @@ if __name__ == "__main__":
     sbar = Statusbar(root)
     sbar.pack(expand=True, fill="x", padx=5, pady=5)
     variable = tk.StringVar()
-    sbar.add_variable(textvariable=variable)
+    sbar.add_variable(variable=variable)
     sbar.bind_menu(menu, variable, ["Open the File menu.", "Open the Help menu."])
     sbar.bind_menu(filemenu, variable, ["Tear-off the menu.", "Create a new file.", "Save the current file."])
     sbar.bind_menu(helpmenu, variable, ["Tear-off the menu.", "Open the About window."])
