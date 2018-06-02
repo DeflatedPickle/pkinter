@@ -31,17 +31,18 @@ from .filepicker import FilePicker
 from .directorypicker import DirectoryPicker
 from .filenavigator import FileNavigator
 from .toasterbox import ToasterBox
+from .gridcanvas import GridCanvas
 
 from .center import center_on_screen, center_on_parent
 
 __title__ = "pkinter"
 
 __author__ = "DeflatedPickle/Dibbo"
-__copyright__ = "Copyright (c) 2017 Dibbo"
+__copyright__ = "Copyright (c) 2018 Dibbo"
 __credits__ = ["DeflatedPickle/Dibbo"]
 
 __license__ = "MIT"
-__version__ = "1.33.0"
+__version__ = "1.34.0"
 __maintainer__ = "DeflatedPickle/Dibbo"
 __email__ = "DeflatedPickle@gmail.com"
 __status__ = "Development"
