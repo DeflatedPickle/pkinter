@@ -5,13 +5,13 @@
 import tkinter as tk
 
 __title__ = "GridCanvas"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "DeflatedPickle"
 
 
 class GridCanvas(tk.Canvas):
-    def __init__(self, parent, cell_width=10, cell_height=10, rows=10, columns=10, *args):
-        tk.Canvas.__init__(self, parent, borderwidth=0, highlightthickness=0, *args)
+    def __init__(self, parent, cell_width=10, cell_height=10, rows=10, columns=10, *args, **kwargs):
+        tk.Canvas.__init__(self, parent, borderwidth=0, highlightthickness=0, *args, **kwargs)
         self.parent = parent
 
         self._cell_width = cell_width
