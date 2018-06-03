@@ -7,7 +7,7 @@ import tkinter as tk
 import random
 
 __title__ = "GridCanvas"
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 __author__ = "DeflatedPickle"
 
 
@@ -59,8 +59,6 @@ class GridCanvas(tk.Canvas):
         self._hidden = not self._hidden
 
     def place_cell_location(self, thing, loc_x, loc_y, middle=True, replace=True):
-        original = self.coords(thing)
-
         cells = self.find_closest(loc_x, loc_y)
 
         def place(loc_x, loc_y):
@@ -74,7 +72,6 @@ class GridCanvas(tk.Canvas):
                 self.delete(self.cells_contents[x, y])
 
             self.cells_contents[x, y] = thing
-            original = self.coords(self.cells_contents[x, y])
 
         for c in cells:
             x = self.coords(c)[0]
@@ -103,6 +100,18 @@ class GridCanvas(tk.Canvas):
 
             else:
                 self.delete(thing)
+
+    def remove_cell_location(self, loc_x, loc_y):
+        cells = self.find_closest(loc_x, loc_y)
+
+        for c in cells:
+            x = self.coords(c)[0]
+            y = self.coords(c)[1]
+
+            if "grid" in self.gettags(c):
+                self.delete(self.cells_contents[x, y])
+                self.cells_contents[x, y] = None
+
 
 if __name__ == "__main__":
     root = tk.Tk()
