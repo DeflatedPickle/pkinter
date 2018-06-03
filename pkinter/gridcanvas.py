@@ -4,8 +4,10 @@
 
 import tkinter as tk
 
+import random
+
 __title__ = "GridCanvas"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -56,27 +58,51 @@ class GridCanvas(tk.Canvas):
         self.itemconfigure("grid", width=self._hidden)
         self._hidden = not self._hidden
 
-    def place_cell_location(self, thing, loc_x, loc_y, middle=True, duplicates=False):
+    def place_cell_location(self, thing, loc_x, loc_y, middle=True, replace=True):
+        original = self.coords(thing)
+
         cells = self.find_closest(loc_x, loc_y)
 
+        def place(loc_x, loc_y):
+            if middle:
+                self.move(thing, x + (self._cell_width // 2), y + (self._cell_height // 2))
+
+            else:
+                self.move(thing, x, y)
+
+            if replace:
+                self.delete(self.cells_contents[x, y])
+
+            self.cells_contents[x, y] = thing
+            original = self.coords(self.cells_contents[x, y])
+
         for c in cells:
+            x = self.coords(c)[0]
+            y = self.coords(c)[1]
+
             if "grid" in self.gettags(c):
-                x = self.coords(c)[0]
-                y = self.coords(c)[1]
+                place(x, y)
 
-                if middle:
-                    self.move(thing, x + (self._cell_width // 2), y + (self._cell_height // 2))
+                return x, y
 
-                else:
-                    self.move(thing, x, y)
+            if "current" in self.gettags(c):
+                self.delete(c)
+                close = self.find_closest(loc_x, loc_y)
 
-                if not duplicates:
-                    if self.cells_contents[x, y]:
-                        self.delete(thing)
+                x = 0
+                y = 0
 
-                self.cells_contents[x, y] = thing
+                for i in close:
+                    if "grid" in self.gettags(i):
+                        x = self.coords(i)[0]
+                        y = self.coords(i)[1]
 
-                break
+                place(x, y)
+
+                return x, y
+
+            else:
+                self.delete(thing)
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -89,7 +115,7 @@ if __name__ == "__main__":
     tk.Button(root, text="Clear", command=canvas.clear_grid).pack()
     tk.Button(root, text="Toggle", command=canvas.toggle_grid).pack()
 
-    bind_lamb = lambda event: canvas.place_cell_location(canvas.create_text(0, 0, text="0"), event.x, event.y)
+    bind_lamb = lambda event: canvas.place_cell_location(canvas.create_text(0, 0, text="0", font=f"Courier {random.randint(10, 20)}", fill=random.choice(["red", "green", "blue", "yellow", "orange", "purple"])), event.x, event.y)
 
     canvas.bind("<Button-1>", bind_lamb)
     canvas.bind("<B1-Motion>", bind_lamb)
