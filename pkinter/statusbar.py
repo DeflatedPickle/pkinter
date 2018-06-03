@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Statusbar"
-__version__ = "1.3.4"
+__version__ = "1.3.5"
 __author__ = "DeflatedPickle"
 
 
@@ -49,16 +49,16 @@ class Statusbar(ttk.Frame):
         ttk.Frame.__init__(self, parent, *args)
         self.parent = parent
 
-    def add_label(self, text="", image="", side="left"):
+    def add_label(self, side="left", **kwargs):
         """Adds a Label to the Statusbar."""
-        widget = ttk.Label(self, text=text, image=image)
+        widget = ttk.Label(self, **kwargs)
         widget.pack(side=side)
 
         return widget
 
-    def add_variable(self, variable=None, side="left"):
+    def add_variable(self, side="left", **kwargs):
         """Adds a Label controlled by a variable to the Statusbar."""
-        widget = ttk.Label(self, textvariable=variable)
+        widget = ttk.Label(self, **kwargs)
         widget.pack(side=side)
 
         return widget
@@ -77,7 +77,7 @@ class Statusbar(ttk.Frame):
 
         return widget
 
-    def bind_widget(self, widget, variable, enter_text, leave_text):
+    def bind_widget(self, widget, variable, enter_text, leave_text=""):
         """Binds a widget to change the text of a variable."""
         widget.bind("<Enter>", lambda *args: variable.set(enter_text), "+")
         widget.bind("<Leave>", lambda *args: variable.set(leave_text), "+")

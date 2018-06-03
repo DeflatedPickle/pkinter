@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "Toolbar"
-__version__ = "1.1.5"
+__version__ = "1.2.1"
 __author__ = "DeflatedPickle"
 
 
@@ -48,33 +48,41 @@ class Toolbar(ttk.Frame):
         ttk.Frame.__init__(self, parent, *args)
         self.parent = parent
 
-    def add_button(self, text="", image="", command=None, side="left"):
+    def add_button(self, side="left", **kwargs):
         """Adds a Button to the Toolbar."""
-        widget = ttk.Button(self, text=text, image=image, command=command, style="Toolbutton")
+        widget = ttk.Button(self, **kwargs, style="Toolbutton")
         widget.pack(side=side)
 
         return widget
 
-    def add_checkbutton(self, text="", image="", variable=None, command=None, side="left"):
+    def add_checkbutton(self, side="left", **kwargs):
         """Adds a CheckButton to the Toolbar."""
-        widget = ttk.Checkbutton(self, text=text, image=image, variable=variable, command=command, style="Toolbutton")
+        widget = ttk.Checkbutton(self, **kwargs, style="Toolbutton")
         widget.pack(side=side)
 
         return widget
 
-    def add_radiobutton(self, text="", image="", variable=None, value=None, command=None, side="left"):
+    def add_radiobutton(self, side="left", **kwargs):
         """Adds a RadioButton to the Toolbar."""
-        widget = ttk.Radiobutton(self, text=text, image=image, variable=variable, value=value, command=command, style="Toolbutton")
+        widget = ttk.Radiobutton(self, **kwargs, style="Toolbutton")
+        widget.pack(side=side)
+
+
+        return widget
+
+    def add_separator(self, orient="vertical", side="left"):
+        """Adds a Separator to the Toolbar."""
+        widget = ttk.Separator(self, orient=orient)
+        widget.pack(side=side, fill="y" if orient == "vertical" else "x", padx=3, pady=1)
+
+        return widget
+
+    def add_combobox(self, side="left", **kwargs):
+        widget = ttk.Combobox(self, **kwargs)
         widget.pack(side=side)
 
         return widget
 
-    def add_separator(self, side="left"):
-        """Adds a Separator to the Toolbar."""
-        widget = ttk.Separator(self, orient="vertical")
-        widget.pack(side=side, fill="y", padx=3, pady=1)
-
-        return widget
 
 ##################################################
 
@@ -92,6 +100,8 @@ if __name__ == "__main__":
     tbar.add_radiobutton(text="One", variable=variable3, value=0)
     tbar.add_radiobutton(text="Two", variable=variable3, value=1)
     tbar.add_radiobutton(text="Three", variable=variable3, value=2)
+    tbar.add_separator()
+    tbar.add_combobox(values=["Item 1", "Item 2", "Item 3"])
     tbar.add_separator()
     tbar.add_button(text="Right", side="right")
     root.mainloop()
