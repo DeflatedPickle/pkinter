@@ -7,7 +7,7 @@ import tkinter as tk
 import random
 
 __title__ = "GridCanvas"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __author__ = "DeflatedPickle"
 
 
@@ -111,6 +111,16 @@ class GridCanvas(tk.Canvas):
             if "grid" in self.gettags(c):
                 self.delete(self.cells_contents[x, y])
                 self.cells_contents[x, y] = None
+
+    def closest_cell(self, loc_x, loc_y):
+        cells = self.find_overlapping(loc_x - 5, loc_y - 5, loc_x + 5, loc_y + 5)
+
+        for c in cells:
+            x = self.coords(c)[0]
+            y = self.coords(c)[1]
+
+            if "grid" in self.gettags(c):
+                return self.cells_contents[x, y]
 
 
 if __name__ == "__main__":
