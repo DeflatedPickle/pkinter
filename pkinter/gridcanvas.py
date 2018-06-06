@@ -59,7 +59,8 @@ class GridCanvas(tk.Canvas):
         self._hidden = not self._hidden
 
     def place_cell_location(self, thing, loc_x, loc_y, middle=True, replace=True):
-        cells = self.find_closest(loc_x, loc_y)
+        # cells = self.find_closest(loc_x, loc_y)
+        cells = self.find_overlapping(loc_x - 5, loc_y - 5, loc_x + 5, loc_y + 5)
 
         def place(loc_x, loc_y):
             if middle:
@@ -111,6 +112,8 @@ class GridCanvas(tk.Canvas):
             if "grid" in self.gettags(c):
                 self.delete(self.cells_contents[x, y])
                 self.cells_contents[x, y] = None
+
+                return x, y
 
     def closest_cell(self, loc_x, loc_y):
         cells = self.find_overlapping(loc_x - 5, loc_y - 5, loc_x + 5, loc_y + 5)
