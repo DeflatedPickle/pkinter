@@ -7,7 +7,7 @@ import tkinter as tk
 import random
 
 __title__ = "GridCanvas"
-__version__ = "1.2.0"
+__version__ = "1.4.0"
 __author__ = "DeflatedPickle"
 
 
@@ -58,6 +58,11 @@ class GridCanvas(tk.Canvas):
         self.itemconfigure("grid", width=self._hidden)
         self._hidden = not self._hidden
 
+    def place_in_cell(self, thing, x, y, middle=True, replace=True):
+        self.move(thing, x + (self._cell_width // 2), y + (self._cell_height // 2))
+
+        self.cells_contents[x, y] = thing
+
     def place_cell_location(self, thing, loc_x, loc_y, middle=True, replace=True):
         # cells = self.find_closest(loc_x, loc_y)
         cells = self.find_overlapping(loc_x - 5, loc_y - 5, loc_x + 5, loc_y + 5)
@@ -101,6 +106,11 @@ class GridCanvas(tk.Canvas):
 
             else:
                 self.delete(thing)
+
+    def delete_from_cell(self, x, y):
+        self.delete(self.cells_contents[x, y])
+
+        self.cells_contents[x, y] = None
 
     def remove_cell_location(self, loc_x, loc_y):
         cells = self.find_closest(loc_x, loc_y)
