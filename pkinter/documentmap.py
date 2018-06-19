@@ -61,6 +61,16 @@ class DocumentMap(tk.Canvas):
         self.bind("<Button-1>", self._move, "+")
         self.bind("<B1-Motion>", self._move, "+")
 
+        self._point = 0
+        # True = Down
+        # False = Up
+        self._direction = False
+        self.bind("<Button-1>", self._mark_point, "+")
+        self.bind("<B1-Motion>", self._move_point, "+")
+
+        self.offset = 0
+        self._height_offset = 0
+
         if self._collide == "harsh":
             self._harsh_collide()
 
@@ -79,40 +89,58 @@ class DocumentMap(tk.Canvas):
         self._work_out_handle()
 
     def _work_out_handle(self):
-        self._handle_start = self._text_widget.index(self._text_widget.index("@0,0"))
-        self._handle_end = self._text_widget.index(self._text_widget.index("@0,{}".format(self._text_widget.winfo_height())))
+        self._handle_start = self._text_widget.index("@0,0")
+        self._handle_end = self._text_widget.index("@0,{}".format(self._text_widget.winfo_height()))
 
         self._box = (0, float(self._handle_start), self._width, float(self._handle_end) * 4)
 
         # print(self._handle_start, self._handle_end)
 
+    def _mark_point(self, event=None):
+        self._point = self.coords(self._handle)[1]
+
+    def _move_point(self, event=None):
+        temp = self._point - self.coords((self._handle))[1]
+
+        if temp < 0:
+            self._direction = True
+
+        else:
+            self._direction = False
+
+        self._point = self.coords((self._handle))[1]
+
     def _move(self, event=None):
-        # self._work_out_handle()
-
-        # print(self._handle_start, self._handle_end)
-
-        self.coords(self._handle, self.coords(self._handle)[0], event.y - self._box[3] / 2, self._box[2], event.y + self._box[3] / 2)
-
         self.update_idletasks()
 
-        handle = self.coords(self._handle)[1]
+        handle_height = self.coords(self._handle)[1]
         bounds = self.bbox(self._widget_text)
         height = bounds[3] - bounds[1]
         total_lines = int(self._text_widget.index("end-1c").split(".")[0])
 
-        line = (handle / height) * total_lines
+        line = (handle_height / height) * total_lines
 
-        start = float("{}.0".format(round(line)))
+        start = float("{}.0".format(round(line - (self._height_offset / 4))))
 
         self._text_widget.see(start)
         self._text_widget.see(start + float(self._handle_end))
 
-        if self.coords(self._handle)[1] < 0:
-            self.yview_scroll(-1, "units")
+        if self.winfo_height() < (total_lines * self._text_font[1]):
+            scroll_amount = self.winfo_height() / (total_lines / self._text_font[1])
 
-        elif self.coords(self._handle)[3] > self.winfo_height():
-            # self.yview("scroll", 1, "units")
-            self.yview_scroll(1, "units")
+            if self._direction and self.offset < (total_lines / (self._text_font[1] / 2)):
+                self.offset += 1
+                # self.yview_scroll(1, "units")
+                self._height_offset -= scroll_amount
+
+            elif not self._direction and self.offset > 0:
+                self.offset -= 1
+                # self.yview_scroll(-1, "units")
+                self._height_offset += scroll_amount
+
+            self.coords(self._widget_text, self._text_pad, self._text_pad + self._height_offset)
+
+        self.coords(self._handle, self.coords(self._handle)[0], (event.y - self._box[3] / 2), self._box[2], (event.y + self._box[3] / 2))
 
     def _smooth_collide(self, interval=60):
         if self.coords(self._handle)[1] <= 0:
@@ -126,7 +154,6 @@ class DocumentMap(tk.Canvas):
         self.after(interval, self._smooth_collide)
 
     def _harsh_collide(self, interval=1, event=None):
-
         if self.coords(self._handle)[1] <= 0:
             c = self.coords(self._handle)
             self.coords(self._handle, c[0], 0, c[2], self._box[3])
@@ -144,13 +171,18 @@ class DocumentMap(tk.Canvas):
 
 if __name__ == "__main__":
     root = tk.Tk()
+
     text = tk.Text(root, width=1, height=1, wrap="none")
     text.pack(side="left", fill="both", expand=True, padx=[5, 0], pady=5)
     with open("documentmap.py") as file:
         text.insert(1.0, file.read())
+
     vscroll = ttk.Scrollbar(root, orient="vertical", command=text.yview)
     vscroll.pack(side="left", fill="y", pady=5)
+
     text.configure(yscrollcommand=vscroll.set)
+
     dmap = DocumentMap(root, text_widget=text, scroll_widget=vscroll)
     dmap.pack(side="right", fill="y", padx=[0, 5], pady=5)
+
     root.mainloop()
