@@ -5,10 +5,12 @@
 import tkinter as tk
 from tkinter import ttk
 
+import re
+
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.10.1"
+__version__ = "1.11.2"
 __author__ = "DeflatedPickle"
 
 
@@ -49,7 +51,7 @@ class DocumentMap(tk.Canvas):
         self._scroll = scroll
         self._width = width
 
-        self._widget_text = self.create_text([self._text_pad, self._text_pad], font=self._text_font, anchor="nw", tags="text")
+        self._widget_text = self.create_text([self._text_pad, self._text_pad], font=self._text_font, anchor="nw", tags="original_text")
 
         self._text_widget.update()
         self._box = self._text_widget.bbox(1.0)
@@ -67,6 +69,7 @@ class DocumentMap(tk.Canvas):
         self._direction = False
         self.bind("<Button-1>", self._mark_point, "+")
         self.bind("<B1-Motion>", self._move_point, "+")
+        self._text_widget.bind("<MouseWheel>", self._move_point, "+")
 
         self.offset = 0
         self._height_offset = 0
@@ -80,8 +83,10 @@ class DocumentMap(tk.Canvas):
         self._text_widget.bind("<<Change>>", self._redraw, "+")
         self._text_widget.bind("<Configure>", self._redraw, "+")
         self._text_widget.bind("<KeyRelease>", self._redraw, "+")
+        self._text_widget.bind("<MouseWheel>", self._move, "+")
 
-        self._work_out_handle()
+        # self._work_out_handle()
+        self._redraw()
 
     def _redraw(self, event=None):
         self.itemconfigure(self._widget_text, text=self._text_widget.get(1.0, "end"))
@@ -100,15 +105,23 @@ class DocumentMap(tk.Canvas):
         self._point = self.coords(self._handle)[1]
 
     def _move_point(self, event=None):
-        temp = self._point - self.coords((self._handle))[1]
+        if event.delta == 0:
+            temp = self._point - self.coords((self._handle))[1]
 
-        if temp < 0:
-            self._direction = True
+            if temp < 0:
+                self._direction = True
+
+            else:
+                self._direction = False
+
+            self._point = self.coords((self._handle))[1]
 
         else:
-            self._direction = False
+            if event.delta < 0:
+                self._direction = True
 
-        self._point = self.coords((self._handle))[1]
+            else:
+                self._direction = False
 
     def _move(self, event=None):
         self.update_idletasks()
@@ -122,11 +135,16 @@ class DocumentMap(tk.Canvas):
 
         start = float("{}.0".format(round(line - (self._height_offset / 4))))
 
-        self._text_widget.see(start)
-        self._text_widget.see(start + float(self._handle_end))
+        delta = event.delta / (total_lines * self._text_font[1] / 60)
 
         if self.winfo_height() < (total_lines * self._text_font[1]):
-            scroll_amount = self.winfo_height() / (total_lines / self._text_font[1])
+            delta = 0
+
+            if event.delta == 0:
+                scroll_amount = self.winfo_height() / (total_lines / self._text_font[1])
+
+            else:
+                scroll_amount = (total_lines / self._text_font[1]) / (abs(event.delta) / 16)
 
             if self._direction and self.offset < (total_lines / (self._text_font[1] / 2)):
                 self.offset += 1
@@ -140,7 +158,15 @@ class DocumentMap(tk.Canvas):
 
             self.coords(self._widget_text, self._text_pad, self._text_pad + self._height_offset)
 
-        self.coords(self._handle, self.coords(self._handle)[0], (event.y - self._box[3] / 2), self._box[2], (event.y + self._box[3] / 2))
+        if event.delta != 0:
+            c = self.coords(self._handle)
+            self.coords(self._handle, c[0], c[1] - delta, c[2], c[3] - delta)
+
+        else:
+            self._text_widget.see(start)
+            self._text_widget.see(start + float(self._handle_end))
+
+            self.coords(self._handle, self.coords(self._handle)[0], (event.y - self._box[3] / 2), self._box[2], (event.y + self._box[3] / 2))
 
     def _smooth_collide(self, interval=60):
         if self.coords(self._handle)[1] <= 0:
