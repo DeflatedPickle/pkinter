@@ -10,7 +10,7 @@ import re
 # link
 
 __title__ = "DocumentMap"
-__version__ = "1.11.2"
+__version__ = "1.12.2"
 __author__ = "DeflatedPickle"
 
 
@@ -62,6 +62,7 @@ class DocumentMap(tk.Canvas):
 
         self.bind("<Button-1>", self._move, "+")
         self.bind("<B1-Motion>", self._move, "+")
+        self.bind("<MouseWheel>", lambda e: self._move(e, "self"), "+")
 
         self._point = 0
         # True = Down
@@ -69,6 +70,7 @@ class DocumentMap(tk.Canvas):
         self._direction = False
         self.bind("<Button-1>", self._mark_point, "+")
         self.bind("<B1-Motion>", self._move_point, "+")
+        self.bind("<MouseWheel>", self._move_point, "+")
         self._text_widget.bind("<MouseWheel>", self._move_point, "+")
 
         self.offset = 0
@@ -123,7 +125,7 @@ class DocumentMap(tk.Canvas):
             else:
                 self._direction = False
 
-    def _move(self, event=None):
+    def _move(self, event=None, scroller="text"):
         self.update_idletasks()
 
         handle_height = self.coords(self._handle)[1]
@@ -161,6 +163,10 @@ class DocumentMap(tk.Canvas):
         if event.delta != 0:
             c = self.coords(self._handle)
             self.coords(self._handle, c[0], c[1] - delta, c[2], c[3] - delta)
+
+            if scroller == "self":
+                self._text_widget.see(start)
+                self._text_widget.see(start + float(self._handle_end))
 
         else:
             self._text_widget.see(start)
