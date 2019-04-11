@@ -37,12 +37,11 @@ from .center import center_on_screen, center_on_parent
 
 __title__ = "pkinter"
 
-__author__ = "DeflatedPickle/Dibbo"
-__copyright__ = "Copyright (c) 2018 Dibbo"
-__credits__ = ["DeflatedPickle/Dibbo"]
+__author__ = "DeflatedPickle"
+__copyright__ = "Copyright (c) 2018 DeflatedPickle"
+__credits__ = ["DeflatedPickle"]
 
 __license__ = "MIT"
 __version__ = "1.37.0"
-__maintainer__ = "DeflatedPickle/Dibbo"
-__email__ = "DeflatedPickle@gmail.com"
+__maintainer__ = "DeflatedPickle"
 __status__ = "Development"
