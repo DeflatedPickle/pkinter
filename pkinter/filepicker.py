@@ -9,7 +9,7 @@ from tkinter import filedialog
 # http://docs.wxwidgets.org/3.1/classwx_file_picker_ctrl.html
 
 __title__ = "FilePicker"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -45,10 +45,12 @@ class FilePicker(ttk.Frame):
     _browse()  = Opens the file browser.
     get()      = Returns the value of variable.
     """
-    def __init__(self, parent, filetypes=(("All Files", "*.*"), ("", "")), directory="", *args):
+    def __init__(self, parent, type_="open", filetypes=[("All Files", "*.*")], defaultextension="*.*", directory="", *args):
         ttk.Frame.__init__(self, parent, *args)
         self.parent = parent
+        self._type = type_
         self._filetypes = filetypes
+        self._defaultextension = defaultextension
         self._directory = directory
 
         self._variable = tk.StringVar()
@@ -61,9 +63,16 @@ class FilePicker(ttk.Frame):
 
     def _browse(self):
         """Opens a file browser."""
-        file = filedialog.askopenfile(filetype=self._filetypes, initialdir=self._directory)
-        self._variable.set(file.name)
-        file.close()
+        file = None
+        if self._type == "open":
+            file = filedialog.askopenfile(filetype=self._filetypes, defaultextension=self._defaultextension, initialdir=self._directory)
+
+        elif self._type == "save":
+            file = filedialog.asksaveasfile(filetype=self._filetypes, defaultextension=self._defaultextension, initialdir=self._directory)
+
+        if file is not None:
+            self._variable.set(file.name)
+            file.close()
 
     def get(self):
         """Returns the chosen file."""

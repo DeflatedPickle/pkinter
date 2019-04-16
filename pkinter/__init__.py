@@ -42,6 +42,6 @@ __copyright__ = "Copyright (c) 2018 DeflatedPickle"
 __credits__ = ["DeflatedPickle"]
 
 __license__ = "MIT"
-__version__ = "1.37.0"
+__version__ = "1.37.1"
 __maintainer__ = "DeflatedPickle"
 __status__ = "Development"
