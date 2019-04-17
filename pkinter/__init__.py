@@ -32,6 +32,7 @@ from .directorypicker import DirectoryPicker
 from .filenavigator import FileNavigator
 from .toasterbox import ToasterBox
 from .gridcanvas import GridCanvas
+from .entryspinbox import EntrySpinbox
 
 from .center import center_on_screen, center_on_parent
 
@@ -42,6 +43,6 @@ __copyright__ = "Copyright (c) 2018 DeflatedPickle"
 __credits__ = ["DeflatedPickle"]
 
 __license__ = "MIT"
-__version__ = "1.37.1"
+__version__ = "1.37.2"
 __maintainer__ = "DeflatedPickle"
 __status__ = "Development"

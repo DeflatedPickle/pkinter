@@ -8,7 +8,7 @@ from tkinter import ttk
 # link
 
 __title__ = "RoundingScale"
-__version__ = "1.1.5"
+__version__ = "1.1.6"
 __author__ = "DeflatedPickle"
 
 
@@ -42,19 +42,20 @@ class RoundingScale(ttk.Scale):
     ---FUNCTIONS---
     _round() = Rounds the scales' value.
     """
-    def __init__(self, parent, from_=0, to=0, *args):
-        ttk.Scale.__init__(self, parent, command=self._round, from_=from_, to=to, *args)
+    def __init__(self, parent, from_=0, to=0, precision=0, **kwargs):
+        ttk.Scale.__init__(self, parent, command=self._round, from_=from_, to=to, **kwargs)
         self.parent = parent
         self._from = from_
         self._to = to
+        self._precision = precision
 
         self._value = self.get()
 
     def _round(self, *args):
         """Rounds the Scale."""
         self._value = self.get()
-        if int(self._value) != self._value:
-            self.set(round(self._value))
+        if round(self._value, self._precision) != self._value:
+            self.set(round(self._value, self._precision))
 
 ##################################################
 
