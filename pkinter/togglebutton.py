@@ -8,7 +8,7 @@ from tkinter import ttk
 # https://developer.gnome.org/gtk3/stable/GtkToggleButton.html
 
 __title__ = "ToggleButton"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "DeflatedPickle"
 
 
@@ -45,11 +45,12 @@ class ToggleButton(ttk.Checkbutton):
     turn_off()  = Changes the Button to the off state.
     get_state() = Returns the state of the Button.
     """
-    def __init__(self, parent, text_on="On", text_off="Off", *args):
+    def __init__(self, parent, value_on="On", value_off="Off", key="text", *args):
         ttk.Checkbutton.__init__(self, parent, style="TButton", *args)
         self.parent = parent
-        self._text_on = text_on
-        self._text_off = text_off
+        self._value_on = value_on
+        self._value_off = value_off
+        self._key = key
 
         self._variable = tk.IntVar()
         self.configure(variable=self._variable, command=self._activate)
@@ -58,28 +59,42 @@ class ToggleButton(ttk.Checkbutton):
 
     def _activate(self):
         if not self._variable.get():
-            self.configure(text=self._text_on)
+            if self._key == "command":
+                self.configure(command=lambda: (
+                    self._value_on(),
+                    self._activate()
+                ))
+
+            else:
+                self.configure(**{self._key: self._value_on})
 
         if self._variable.get():
-            self.configure(text=self._text_off)
+            if self._key == "command":
+                self.configure(command=lambda: (
+                    self._value_off(),
+                    self._activate()
+                ))
+
+            else:
+                self.configure(**{self._key: self._value_off})
 
     def toggle(self):
-        """Switches the LabelFrame to the opposite state."""
+        """Switches the ToggleButton to the opposite state."""
         self._variable.set(not self._variable.get())
         self._activate()
 
     def turn_on(self):
-        """Turns the Button on."""
+        """Turns the ToggleButton on."""
         self._variable.set(True)
         self._activate()
 
     def turn_off(self):
-        """Turns the Button off."""
+        """Turns the ToggleButton off."""
         self._variable.set(False)
         self._activate()
 
     def get_state(self):
-        """Gets the state of the Button."""
+        """Gets the state of the ToggleButton."""
         if not self._variable.get():
             return False
 
