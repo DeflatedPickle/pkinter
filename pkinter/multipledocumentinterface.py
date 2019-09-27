@@ -19,7 +19,7 @@ __author__ = "DeflatedPickle"
 
 # TODO: Use system colours for borders OR find a way to query how windows should look like
 # TODO: Theme the buttons after the system title buttons
-# TODO: Generate Tk events when the MDI windows are; focused/unfocused, minimized, maximized, closed and moved
+# TODO: Change the border colour when the window loses focus
 
 
 class MDIFrame(ttk.Frame):
@@ -28,13 +28,14 @@ class MDIFrame(ttk.Frame):
         self.parent = parent
 
         self.window_list = []
+        self.focused_window = None
 
         self.colour_taskbar = "blue"
         self.taskbar_height = 20
 
         self.minimize_width = 60
 
-        self.canvas = tk.Canvas(self, background="white")
+        self.canvas = tk.Canvas(self)
         self.canvas.pack(fill="both", expand=True)
 
         self.taskbar = self.canvas.create_rectangle((0, 0, 0, 0), fill=self.colour_taskbar,
@@ -66,7 +67,8 @@ class MDIWindow(ttk.Frame):
         self.is_maximized = False
         self.is_minimized = False
 
-        self.border_colour = "cyan"
+        self.border_colour_focused = "cyan"
+        self.border_colour_unfocused = "white"
 
         self.title_size = 16
         self.border_size = 2
@@ -78,29 +80,30 @@ class MDIWindow(ttk.Frame):
                             ToggleButton(None, value_on=self.maximize, value_off=self.restore, key="command"),
                             ToggleButton(None, value_on=self.minimize, value_off=self.restore, key="command")]
 
-        self.decoration_dict = {}
+        self.decoration_dict = {"border": {}, "button": {}}
         self.frame_id = None
 
         # TODO: Maybe use widgets for the borders so they don't get drawn underneath the content of other windows
-        for i in ["border_east", "border_south", "border_west"]:
-            self.decoration_dict[i] = self._mdi.canvas.create_line((0, 0, 0, 0), width=self.border_size,
-                                                                   fill=self.border_colour, tags=self.id)
-        self.decoration_dict["border_north"] = self._mdi.canvas.create_rectangle((0, 0, 0, 0),
-                                                                                 fill=self.border_colour,
-                                                                                 outline=self.border_colour,
-                                                                                 tags=(self.id, f"title {self.id}"))
+        for i in ["east", "south", "west"]:
+            self.decoration_dict["border"][i] = self._mdi.canvas.create_line((0, 0, 0, 0), width=self.border_size,
+                                                                   fill=self.border_colour_focused, tags=self.id)
+        self.decoration_dict["border"]["north"] = self._mdi.canvas.create_rectangle((0, 0, 0, 0),
+                                                                                    fill=self.border_colour_focused,
+                                                                                    outline=self.border_colour_focused,
+                                                                                    tags=(self.id, f"title {self.id}"))
 
-        for k, v in {"button_close": self.button_list[0], "button_maximize": self.button_list[1],
-                     "button_minimize": self.button_list[2]}.items():
-            self.decoration_dict[k] = self._mdi.canvas.create_window(0, 0, width=self.button_width,
-                                                                     height=self.button_height, anchor="w",
-                                                                     window=v,
-                                                                     tags=self.id)
+        for k, v in {"close": self.button_list[0], "maximize": self.button_list[1],
+                     "minimize": self.button_list[2]}.items():
+            self.decoration_dict["button"][k] = self._mdi.canvas.create_window(0, 0, width=self.button_width,
+                                                                               height=self.button_height, anchor="w",
+                                                                               window=v,
+                                                                               tags=self.id)
 
-        self.decoration_dict["title"] = self._mdi.canvas.create_text((0, 0), text=self._title, font=self.font,
+        self.decoration_dict["border"]["title"] = self._mdi.canvas.create_text((0, 0), text=self._title, font=self.font,
                                                                      anchor="w", tags=(self.id, f"title {self.id}"))
 
-        self._mdi.canvas.tag_bind(f"title {self.id}", "<Button-1>", lambda e: self.restore() if self.is_minimized else None)
+        self._mdi.canvas.tag_bind(f"title {self.id}", "<Button-1>",
+                                  lambda e: self.restore() if self.is_minimized else None)
 
         self.is_drawn = False
 
@@ -116,15 +119,16 @@ class MDIWindow(ttk.Frame):
             self.frame_id = self._mdi.canvas.create_window(0, 0, width=width, height=height, anchor="nw", window=self,
                                                            tags=self.id)
 
-            for i in ["border_north", "title"]:
-                self._mdi.canvas.tag_bind(self.decoration_dict[i], "<Enter>",
+            for i in ["north", "title"]:
+                self._mdi.canvas.tag_bind(self.decoration_dict["border"][i], "<Enter>",
                                           lambda _: self._mdi.canvas.configure(cursor="hand2"), "+")
-                self._mdi.canvas.tag_bind(self.decoration_dict[i], "<Leave>",
+                self._mdi.canvas.tag_bind(self.decoration_dict["border"][i], "<Leave>",
                                           lambda _: self._mdi.canvas.configure(cursor="arrow"), "+")
-                self._mdi.canvas.tag_bind(self.decoration_dict[i], "<B1-Motion>",
+                self._mdi.canvas.tag_bind(self.decoration_dict["border"][i], "<B1-Motion>",
                                           lambda e: (
                                               self.float(e.x, e.y, width, height),
-                                              self.restore() if self.is_maximized or self.is_minimized else None
+                                              self.restore() if self.is_maximized or self.is_minimized else None,
+                                              self.event_generate("<Configure>", when="tail")
                                           ), "+")
 
                 self._mdi.canvas.tag_bind(self.id, "<Button-1>", lambda e: self.focus())
@@ -134,36 +138,37 @@ class MDIWindow(ttk.Frame):
             self.float(x, y, width, height)
 
         else:
-            self._mdi.canvas.coords(self.decoration_dict["border_north"], (x - self.border_size,
-                                                                           y - self.title_size,
-                                                                           x - 1 + width + self.border_size,
-                                                                           y))
-            self._mdi.canvas.coords(self.decoration_dict["border_east"], (x + width + self.border_size / 2,
-                                                                          y,
-                                                                          x + width + self.border_size / 2,
-                                                                          y + height))
-            self._mdi.canvas.coords(self.decoration_dict["border_south"], (x - self.border_size,
-                                                                           y + height + self.border_size / 2,
-                                                                           x + width + self.border_size,
-                                                                           y + height + self.border_size / 2))
-            self._mdi.canvas.coords(self.decoration_dict["border_west"], (x - self.border_size / 2,
-                                                                          y,
-                                                                          x - self.border_size / 2,
-                                                                          y + height))
+            self._mdi.canvas.coords(self.decoration_dict["border"]["north"], (x - self.border_size,
+                                                                              y - self.title_size,
+                                                                              x - 1 + width + self.border_size,
+                                                                              y))
+            self._mdi.canvas.coords(self.decoration_dict["border"]["east"], (x + width + self.border_size / 2,
+                                                                             y,
+                                                                             x + width + self.border_size / 2,
+                                                                             y + height))
+            self._mdi.canvas.coords(self.decoration_dict["border"]["south"], (x - self.border_size,
+                                                                              y + height + self.border_size / 2,
+                                                                              x + width + self.border_size,
+                                                                              y + height + self.border_size / 2))
+            self._mdi.canvas.coords(self.decoration_dict["border"]["west"], (x - self.border_size / 2,
+                                                                             y,
+                                                                             x - self.border_size / 2,
+                                                                             y + height))
 
-            self._mdi.canvas.coords(self.decoration_dict["button_close"], (x + width - self.button_width,
-                                                                           y - self.button_height / 2))
-            self._mdi.canvas.coords(self.decoration_dict["button_maximize"], (x + width - self.button_width * 2,
+            self._mdi.canvas.coords(self.decoration_dict["button"]["close"], (x + width - self.button_width,
                                                                               y - self.button_height / 2))
-            self._mdi.canvas.coords(self.decoration_dict["button_minimize"], (x + width - self.button_width * 3,
-                                                                              y - self.button_height / 2))
+            self._mdi.canvas.coords(self.decoration_dict["button"]["maximize"], (x + width - self.button_width * 2,
+                                                                                 y - self.button_height / 2))
+            self._mdi.canvas.coords(self.decoration_dict["button"]["minimize"], (x + width - self.button_width * 3,
+                                                                                 y - self.button_height / 2))
 
-            self._mdi.canvas.coords(self.decoration_dict["title"], (x, y - self.font.metrics("linespace") / 2))
+            self._mdi.canvas.coords(self.decoration_dict["border"]["title"], (x, y - self.font.metrics("linespace") / 2))
 
             self._mdi.canvas.coords(self.frame_id, (x, y))
 
     def close(self):
         self._mdi.canvas.delete(self.id)
+        self.event_generate("<Destroy>", when="tail")
 
     def maximize(self):
         self.restore()
@@ -177,21 +182,23 @@ class MDIWindow(ttk.Frame):
         self._mdi.canvas.coords(self.frame_id, (0, self.title_size))
         self._mdi.canvas.itemconfig(self.frame_id, width=self._mdi.canvas.winfo_width(),
                                     height=self._mdi.canvas.winfo_height() - self.title_size - self._mdi.taskbar_height)
-        self._mdi.canvas.coords(self.decoration_dict["border_north"],
+        self._mdi.canvas.coords(self.decoration_dict["border"]["north"],
                                 (0, 0, self._mdi.canvas.winfo_width(), self.title_size))
 
-        self._mdi.canvas.coords(self.decoration_dict["button_close"],
-                                (self._mdi.canvas.winfo_width() - self.button_width, 0))
-        self._mdi.canvas.coords(self.decoration_dict["button_maximize"],
-                                (self._mdi.canvas.winfo_width() - self.button_width * 2, 0))
-        self._mdi.canvas.coords(self.decoration_dict["button_minimize"],
-                                (self._mdi.canvas.winfo_width() - self.button_width * 3, 0))
+        self._mdi.canvas.coords(self.decoration_dict["button"]["close"],
+                                (self._mdi.canvas.winfo_width() - self.button_width, self.button_height / 2))
+        self._mdi.canvas.coords(self.decoration_dict["button"]["maximize"],
+                                (self._mdi.canvas.winfo_width() - self.button_width * 2, self.button_height / 2))
+        self._mdi.canvas.coords(self.decoration_dict["button"]["minimize"],
+                                (self._mdi.canvas.winfo_width() - self.button_width * 3, self.button_height / 2))
 
-        self._mdi.canvas.coords(self.decoration_dict["title"], (self.border_size, self.font.metrics("linespace") / 4))
+        self._mdi.canvas.coords(self.decoration_dict["border"]["title"], (self.border_size, self.font.metrics("linespace") / 2))
 
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_east"], state="hidden")
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_south"], state="hidden")
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_west"], state="hidden")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["east"], state="hidden")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["south"], state="hidden")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["west"], state="hidden")
+
+        self.event_generate("<<Maximize>>", when="tail")
 
     def restore(self):
         self.is_maximized = False
@@ -199,6 +206,9 @@ class MDIWindow(ttk.Frame):
 
         self.button_list[1].turn_off()
         self.button_list[2].turn_off()
+
+        if self._mdi.focused_window == self:
+            self.focus()
 
         self._mdi.canvas.tag_raise(self.id)
 
@@ -211,13 +221,15 @@ class MDIWindow(ttk.Frame):
 
         self._mdi.canvas.itemconfig(self.frame_id, state="normal")
 
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_east"], state="normal")
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_south"], state="normal")
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_west"], state="normal")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["east"], state="normal")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["south"], state="normal")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["west"], state="normal")
 
-        self._mdi.canvas.itemconfig(self.decoration_dict["button_minimize"], state="normal")
+        self._mdi.canvas.itemconfig(self.decoration_dict["button"]["minimize"], state="normal")
 
         self.float(self.x, self.y, self.width, self.height)
+
+        self.event_generate("<<Restore>>", when="tail")
 
     def minimize(self):
         self.restore()
@@ -233,25 +245,28 @@ class MDIWindow(ttk.Frame):
         self.button_list[1].turn_off()
         self.button_list[2].turn_on()
 
-        self._mdi.canvas.coords(self.decoration_dict["border_north"], (
+        self._mdi.canvas.coords(self.decoration_dict["border"]["north"], (
             x, self._mdi.canvas.winfo_height() - self._mdi.taskbar_height, x + self._mdi.minimize_width,
             self._mdi.canvas.winfo_height()))
 
-        self._mdi.canvas.coords(self.decoration_dict["button_close"], (x + self._mdi.minimize_width - self.button_width,
-                                                                       self._mdi.canvas.winfo_height() - self.button_height))
-        self._mdi.canvas.coords(self.decoration_dict["button_maximize"],
+        self._mdi.canvas.coords(self.decoration_dict["button"]["close"],
+                                (x + self._mdi.minimize_width - self.button_width,
+                                 self._mdi.canvas.winfo_height() - self.button_height))
+        self._mdi.canvas.coords(self.decoration_dict["button"]["maximize"],
                                 (x + self._mdi.minimize_width - self.button_width * 2,
                                  self._mdi.canvas.winfo_height() - self.button_height))
 
-        self._mdi.canvas.coords(self.decoration_dict["title"], (
+        self._mdi.canvas.coords(self.decoration_dict["border"]["title"], (
             x + self.border_size, self._mdi.canvas.winfo_height() - self.font.metrics("linespace")))
 
         self._mdi.canvas.itemconfig(self.frame_id, state="hidden")
-        self._mdi.canvas.itemconfig(self.decoration_dict["button_minimize"], state="hidden")
+        self._mdi.canvas.itemconfig(self.decoration_dict["button"]["minimize"], state="hidden")
 
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_east"], state="hidden")
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_south"], state="hidden")
-        self._mdi.canvas.itemconfig(self.decoration_dict["border_west"], state="hidden")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["east"], state="hidden")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["south"], state="hidden")
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["west"], state="hidden")
+
+        self.event_generate("<<Minimize>>", when="tail")
 
     def focus(self):
         self._mdi.canvas.tag_raise(self.id)
@@ -259,6 +274,20 @@ class MDIWindow(ttk.Frame):
 
         for i in self.button_list:
             i.lift()
+
+        for i in self._mdi.window_list:
+            if i != self:
+                i.unfocus()
+
+        self._mdi.focused_window = self
+
+        self.event_generate("<FocusIn>", when="tail")
+
+    def unfocus(self):
+        if self._mdi.focused_window == self:
+            self._mdi.focused_window = None
+
+        self.event_generate("<FocusOut>", when="tail")
 
 
 ##################################################
@@ -272,6 +301,10 @@ if __name__ == "__main__":
     win = MDIWindow(mdi, "Win")
     ttk.Button(win).pack()
     win.float(80, 40, 80, 80)
+    win.bind("<Configure>", lambda e: print(f"Win was moved to: {e.x, e.y}"))
+    win.bind("<Destroy>", lambda e: print("Win was closed"))
+    win.bind("<Map>", lambda e: print("Win was made visible"))
+    win.bind("<Unmap>", lambda e: print("Win was made invisible"))
 
     win2 = MDIWindow(mdi, "Win 2")
     ttk.Combobox(win2).pack()
