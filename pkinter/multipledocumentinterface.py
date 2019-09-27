@@ -19,7 +19,6 @@ __author__ = "DeflatedPickle"
 
 # TODO: Use system colours for borders OR find a way to query how windows should look like
 # TODO: Theme the buttons after the system title buttons
-# TODO: Change the border colour when the window loses focus
 
 
 class MDIFrame(ttk.Frame):
@@ -233,6 +232,7 @@ class MDIWindow(ttk.Frame):
 
     def minimize(self):
         self.restore()
+        self.unfocus()
 
         x = 0
         for i in self._mdi.window_list:
@@ -281,11 +281,21 @@ class MDIWindow(ttk.Frame):
 
         self._mdi.focused_window = self
 
+        for i in self.decoration_dict["border"]:
+            if i != "title":
+                self._mdi.canvas.itemconfig(self.decoration_dict["border"][i], fill=self.border_colour_focused)
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["north"], outline=self.border_colour_focused)
+
         self.event_generate("<FocusIn>", when="tail")
 
     def unfocus(self):
         if self._mdi.focused_window == self:
             self._mdi.focused_window = None
+
+        for i in self.decoration_dict["border"]:
+            if i != "title":
+                self._mdi.canvas.itemconfig(self.decoration_dict["border"][i], fill=self.border_colour_unfocused)
+        self._mdi.canvas.itemconfig(self.decoration_dict["border"]["north"], outline=self.border_colour_unfocused)
 
         self.event_generate("<FocusOut>", when="tail")
 
