@@ -19,7 +19,6 @@ __author__ = "DeflatedPickle"
 
 # TODO: Use system colours for borders OR find a way to query how windows should look like
 # TODO: Theme the buttons after the system title buttons
-# TODO: Make the title text behave like a restore button when minimized
 # TODO: Generate Tk events when the MDI windows are; focused/unfocused, minimized, maximized, closed and moved
 
 
@@ -89,7 +88,7 @@ class MDIWindow(ttk.Frame):
         self.decoration_dict["border_north"] = self._mdi.canvas.create_rectangle((0, 0, 0, 0),
                                                                                  fill=self.border_colour,
                                                                                  outline=self.border_colour,
-                                                                                 tags=self.id)
+                                                                                 tags=(self.id, f"title {self.id}"))
 
         for k, v in {"button_close": self.button_list[0], "button_maximize": self.button_list[1],
                      "button_minimize": self.button_list[2]}.items():
@@ -99,7 +98,9 @@ class MDIWindow(ttk.Frame):
                                                                      tags=self.id)
 
         self.decoration_dict["title"] = self._mdi.canvas.create_text((0, 0), text=self._title, font=self.font,
-                                                                     anchor="w", tags=self.id)
+                                                                     anchor="w", tags=(self.id, f"title {self.id}"))
+
+        self._mdi.canvas.tag_bind(f"title {self.id}", "<Button-1>", lambda e: self.restore() if self.is_minimized else None)
 
         self.is_drawn = False
 
