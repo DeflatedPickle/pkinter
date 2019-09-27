@@ -19,7 +19,6 @@ __author__ = "DeflatedPickle"
 
 # TODO: Use system colours for borders OR find a way to query how windows should look like
 # TODO: Theme the buttons after the system title buttons
-# TODO: Properly vertically align the decorations when the window is minimized
 # TODO: Make the title text behave like a restore button when minimized
 # TODO: Generate Tk events when the MDI windows are; focused/unfocused, minimized, maximized, closed and moved
 
@@ -95,12 +94,12 @@ class MDIWindow(ttk.Frame):
         for k, v in {"button_close": self.button_list[0], "button_maximize": self.button_list[1],
                      "button_minimize": self.button_list[2]}.items():
             self.decoration_dict[k] = self._mdi.canvas.create_window(0, 0, width=self.button_width,
-                                                                     height=self.button_height, anchor="nw",
+                                                                     height=self.button_height, anchor="w",
                                                                      window=v,
                                                                      tags=self.id)
 
         self.decoration_dict["title"] = self._mdi.canvas.create_text((0, 0), text=self._title, font=self.font,
-                                                                     anchor="nw", tags=self.id)
+                                                                     anchor="w", tags=self.id)
 
         self.is_drawn = False
 
@@ -152,13 +151,13 @@ class MDIWindow(ttk.Frame):
                                                                           y + height))
 
             self._mdi.canvas.coords(self.decoration_dict["button_close"], (x + width - self.button_width,
-                                                                           y - self.button_height))
+                                                                           y - self.button_height / 2))
             self._mdi.canvas.coords(self.decoration_dict["button_maximize"], (x + width - self.button_width * 2,
-                                                                              y - self.button_height))
+                                                                              y - self.button_height / 2))
             self._mdi.canvas.coords(self.decoration_dict["button_minimize"], (x + width - self.button_width * 3,
-                                                                              y - self.button_height))
+                                                                              y - self.button_height / 2))
 
-            self._mdi.canvas.coords(self.decoration_dict["title"], (x, y - self.font.metrics("linespace")))
+            self._mdi.canvas.coords(self.decoration_dict["title"], (x, y - self.font.metrics("linespace") / 2))
 
             self._mdi.canvas.coords(self.frame_id, (x, y))
 
