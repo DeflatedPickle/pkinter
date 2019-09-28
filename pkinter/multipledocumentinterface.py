@@ -19,6 +19,7 @@ __author__ = "DeflatedPickle"
 
 # TODO: Use system colours for borders OR find a way to query how windows should look like
 # TODO: Theme the buttons after the system title buttons
+# TODO: Make the windows resizable using the borders
 
 
 class MDIFrame(ttk.Frame):
@@ -34,11 +35,14 @@ class MDIFrame(ttk.Frame):
 
         self.minimize_width = 60
 
+        self.gap = 4
+
         self.canvas = tk.Canvas(self)
         self.canvas.pack(fill="both", expand=True)
 
         self.taskbar = self.canvas.create_rectangle((0, 0, 0, 0), fill=self.colour_taskbar,
                                                     outline=self.colour_taskbar)
+        self.canvas.itemconfig(self.taskbar, state="hidden")
 
         self.canvas.bind("<Configure>", lambda e: self.canvas.coords(self.taskbar, (
             0, self.canvas.winfo_height() - self.taskbar_height, self.canvas.winfo_width(),
@@ -239,6 +243,9 @@ class MDIWindow(ttk.Frame):
             if i != self and i.is_minimized:
                 x += self._mdi.minimize_width
 
+                if x != 0:
+                    x += self._mdi.gap
+
         self.is_maximized = False
         self.is_minimized = True
 
@@ -319,5 +326,8 @@ if __name__ == "__main__":
     win2 = MDIWindow(mdi, "Win 2")
     ttk.Combobox(win2).pack()
     win2.float(220, 80, 80, 80)
+
+    win3 = MDIWindow(mdi, "Win 3")
+    win3.float(160, 140, 80, 80)
 
     root.mainloop()
